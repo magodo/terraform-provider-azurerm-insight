@@ -65,7 +65,7 @@ func main() {
 			}
 		}
 		ofile := filepath.Join(*outputPath, prefix+*resource)
-		if err := genFile(schema.Block, ofile); err != nil {
+		if err := genFile(prefix+*resource, schema.Block, ofile); err != nil {
 			log.Fatal(err)
 		}
 		return
@@ -84,18 +84,15 @@ func main() {
 
 	for res, schema := range schemas {
 		ofile := filepath.Join(*outputPath, oprefix+res)
-		if err := genFile(schema.Block, ofile); err != nil {
+		if err := genFile(oprefix+res, schema.Block, ofile); err != nil {
 			log.Fatal(err)
 		}
 	}
 	return
 }
 
-func genFile(blk *pkg.TerraformBlock, ofileBase string) error {
-	schema, err := pkg.NewSchemaFromTerraformBlock(blk)
-	if err != nil {
-		return err
-	}
+func genFile(schemaName string, blk *pkg.TerraformBlock, ofileBase string) error {
+	schema := pkg.NewSchemaScaffoldFromTerraformBlock(schemaName, blk)
 	b, err := json.MarshalIndent(schema, "", "  ")
 	if err != nil {
 		return err
@@ -121,7 +118,7 @@ func genFile(blk *pkg.TerraformBlock, ofileBase string) error {
 		}
 	}
 
-	if err := ioutil.WriteFile(ofile+".json", b, 0644); err != nil {
+	if err := ioutil.WriteFile(ofile, b, 0644); err != nil {
 		return err
 	}
 	return nil
