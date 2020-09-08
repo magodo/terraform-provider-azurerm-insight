@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestNewSchemaFromTerraformBlock(t *testing.T) {
+func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
 	jsonInput := []byte(`
 {
   "attributes": {
@@ -33,13 +33,13 @@ func TestNewSchemaFromTerraformBlock(t *testing.T) {
   }
 }`)
 
-	expect := TFSchema{
+	expect := &TFSchema{
 		Name: "res1",
 		PropertyLinks: map[string][]SwaggerLink{
-			"bar":                   nil,
-			"block_a.block_a_a.bar": nil,
-			"block_a.foo":           nil,
-			"foo":                   nil,
+			"bar":                   []SwaggerLink{},
+			"block_a.block_a_a.bar": []SwaggerLink{},
+			"block_a.foo":           []SwaggerLink{},
+			"foo":                   []SwaggerLink{},
 		},
 	}
 
@@ -49,7 +49,7 @@ func TestNewSchemaFromTerraformBlock(t *testing.T) {
 	}
 	schema := NewSchemaScaffoldFromTerraformBlock("res1", &block)
 
-	if reflect.DeepEqual(schema, expect) {
+	if !reflect.DeepEqual(schema, expect) {
 		t.Fatalf(`
 expect:
 
@@ -57,39 +57,133 @@ expect:
 
 got:
 
-%+v`, expect, schema)
+%+v`, *expect, *schema)
 	}
 }
 
-func TestUnmarshalSchema(t *testing.T) {
-	jsonInput := []byte(`
-{
-    "name": "res1",
-    "spec": "spec1",
-    "attributes": {
-		"bar": [
-		  {
-			"spec": "xxx",
-			"prop": "a.b"
-		  },
-		  {
-			"spec": "yyy",
-			"prop": "b.c"
-		  }
-		],
-		"block_a::block_a_a::bar": [
-		  {
-			"spec": "xxx",
-			"prop": "a.b"
-		  },
-		  {
-			"spec": "yyy",
-			"prop": "b.c"
-		  }
-		]
-    }
+func TestMarshalTFSchema(t *testing.T) {
+	tfschema := TFSchema{
+		Name:        "res1",
+		SwaggerSpec: "spec1",
+		PropertyLinks: map[string][]SwaggerLink{
+			"bar": {
+				{
+					Spec:       strPtr("xxx"),
+					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
+				},
+				{
+					Spec:       strPtr("yyy"),
+					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
+				},
+			},
+			"block_a::block_a_a::bar": {
+				{
+					Spec:       strPtr("xxx"),
+					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
+				},
+				{
+					Spec:       strPtr("yyy"),
+					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
+				},
+			},
+		},
+	}
+
+	expect := []byte(`{
+    "Name": "res1",
+    "PropertyLinks": {
+        "bar": [
+            {
+                "prop": {
+                    "addr": "p1.p2",
+                    "owner": "schema1"
+                },
+                "spec": "xxx"
+            },
+            {
+                "prop": {
+                    "addr": "p3.p4",
+                    "owner": "schema2"
+                },
+                "spec": "yyy"
+            }
+        ],
+        "block_a::block_a_a::bar": [
+            {
+                "prop": {
+                    "addr": "p1.p2",
+                    "owner": "schema1"
+                },
+                "spec": "xxx"
+            },
+            {
+                "prop": {
+                    "addr": "p3.p4",
+                    "owner": "schema2"
+                },
+                "spec": "yyy"
+            }
+        ]
+    },
+    "spec": "spec1"
+}`)
+
+	actual, err := json.Marshal(tfschema)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !jsonDeepEqual(t, actual, expect) {
+		t.Fatalf(`
+expect:
+
+%+v
+
+got:
+
+%+v`, string(expect), string(actual))
+	}
 }
-`)
+
+func TestUnmarshalTFSchema(t *testing.T) {
+	jsonInput := []byte(`{
+    "Name": "res1",
+    "PropertyLinks": {
+        "bar": [
+            {
+                "prop": {
+                    "addr": "p1.p2",
+                    "owner": "schema1"
+                },
+                "spec": "xxx"
+            },
+            {
+                "prop": {
+                    "addr": "p3.p4",
+                    "owner": "schema2"
+                },
+                "spec": "yyy"
+            }
+        ],
+        "block_a::block_a_a::bar": [
+            {
+                "prop": {
+                    "addr": "p1.p2",
+                    "owner": "schema1"
+                },
+                "spec": "xxx"
+            },
+            {
+                "prop": {
+                    "addr": "p3.p4",
+                    "owner": "schema2"
+                },
+                "spec": "yyy"
+            }
+        ]
+    },
+    "spec": "spec1"
+}`)
 
 	expect := TFSchema{
 		Name:        "res1",
@@ -97,22 +191,22 @@ func TestUnmarshalSchema(t *testing.T) {
 		PropertyLinks: map[string][]SwaggerLink{
 			"bar": {
 				{
-					Spec:              "xxx",
-					SwaggerSchemaProp: propertyAddr{segments: []string{"a", "b"}},
+					Spec:       strPtr("xxx"),
+					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
 				},
 				{
-					Spec:              "yyy",
-					SwaggerSchemaProp: propertyAddr{segments: []string{"b", "c"}},
+					Spec:       strPtr("yyy"),
+					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
 				},
 			},
 			"block_a::block_a_a::bar": {
 				{
-					Spec:              "xxx",
-					SwaggerSchemaProp: propertyAddr{segments: []string{"a", "b"}},
+					Spec:       strPtr("xxx"),
+					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
 				},
 				{
-					Spec:              "yyy",
-					SwaggerSchemaProp: propertyAddr{segments: []string{"b", "c"}},
+					Spec:       strPtr("yyy"),
+					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
 				},
 			},
 		},
@@ -122,7 +216,7 @@ func TestUnmarshalSchema(t *testing.T) {
 	if err := json.Unmarshal(jsonInput, &schema); err != nil {
 		t.Fatal(err)
 	}
-	if reflect.DeepEqual(schema, expect) {
+	if !reflect.DeepEqual(schema, expect) {
 		t.Fatalf(`
 expect:
 
@@ -132,4 +226,21 @@ got:
 
 %+v`, expect, schema)
 	}
+}
+
+func strPtr(s string) *string {
+	return &s
+}
+
+func jsonDeepEqual(t *testing.T, x, y []byte) bool {
+	return reflect.DeepEqual(jsonNormalize(t, x), jsonNormalize(t, y))
+}
+
+func jsonNormalize(t *testing.T, in []byte) []byte {
+	var tmp interface{}
+	if err := json.Unmarshal(in, &tmp); err != nil {
+		t.Fatal(err)
+	}
+	out, _ := json.Marshal(tmp)
+	return out
 }

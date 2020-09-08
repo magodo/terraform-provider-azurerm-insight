@@ -19,7 +19,7 @@ func main() {
 	}
 	schemaPath := flag.String("schema", "", "The relative path to the pkg provider schema file")
 	outputPath := flag.String("output", pwd, "The output directory")
-	resource := flag.String("resource", "", "The pkg resource to generate flattend schema. If not specified, will apply to all resources available.")
+	resource := flag.String("resource", "", "The pkg resource to generate flattened schema. If not specified, will apply to all resources available.")
 	isDataSource := flag.Bool("data-source", false, "Whether applies to data source")
 	showHelp := flag.Bool("help", false, "Display this message")
 

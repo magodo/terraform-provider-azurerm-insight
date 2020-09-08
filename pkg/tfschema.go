@@ -2,57 +2,11 @@ package pkg
 
 import (
 	"fmt"
-	"strings"
 )
 
-const addrSep = "."
-
 type SwaggerLink struct {
-	Spec              *string      `json:"spec"` // swagger spec alias that this property resides in, this overrides the global swagger spec scope
-	SwaggerSchemaProp propertyAddr `json:"prop"` // dot-separated property, starting from the schema used as the PUT body parameter
-}
-
-type propertyAddr struct {
-	segments []string
-}
-
-func newPropertyAddrFromString(addr string) *propertyAddr {
-	return &propertyAddr{strings.Split(addr, addrSep)}
-}
-
-func newPropertyAddr(segments []string) *propertyAddr {
-	return &propertyAddr{segments}
-}
-
-func (addr propertyAddr) String() string {
-	return strings.Join(addr.segments, addrSep)
-}
-
-func (addr *propertyAddr) UnmarshalJSON(b []byte) error {
-	addr.segments = strings.Split(string(b), addrSep)
-	return nil
-}
-
-func (addr propertyAddr) MarshalJSON() ([]byte, error) {
-	return []byte(strings.Join(addr.segments, addrSep)), nil
-}
-
-func (addr propertyAddr) Append(oaddr string) propertyAddr {
-	segments := make([]string, len(addr.segments))
-	copy(segments, addr.segments)
-	segments = append(segments, oaddr)
-	return propertyAddr{segments: segments}
-}
-
-func (addr *propertyAddr) Pop() string {
-	if len(addr.segments) > 1 {
-		addr.segments = addr.segments[:len(addr.segments)-1]
-	}
-	return addr.segments[len(addr.segments)-1]
-}
-
-type SwaggerSchemaProp struct {
-	segments []string
+	Spec       *string      `json:"spec"` // swagger spec alias that this property resides in, this overrides the global swagger spec scope
+	SchemaProp propertyAddr `json:"prop"` // dot-separated swagger schema property, starting from the schema used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
@@ -71,25 +25,28 @@ func NewSchema(name string) *TFSchema {
 }
 
 func (schema TFSchema) LinkSwagger() error {
-	for tfPropAddr, tfToSwaggerLinks := range schema.PropertyLinks {
+	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
+		tfPropAddr := newPropertyAddrFromString(tfProp)
+		tfPropAddr.owner = schema.Name
 		for _, link := range tfToSwaggerLinks {
 			specPath := schema.SwaggerSpec
 			if link.Spec != nil {
 				specPath = *link.Spec
 			}
 			// valid property links will always have the form: <swagger schema definition>.<prop1>.<prop2>...
-			switch len(link.SwaggerSchemaProp.segments) {
+			switch len(link.SchemaProp.addrs) {
 			case 0:
 				return fmt.Errorf("empty property link found for %s, please remove it", schema.Name)
 			case 1:
-				prop := link.SwaggerSchemaProp.segments[0]
+				prop := link.SchemaProp.addrs[0]
 				return fmt.Errorf("malformed property link found for %s: %s", schema.Name, prop)
 			}
 
-			schemaName, swgprops := link.SwaggerSchemaProp.segments[0], newPropertyAddr(link.SwaggerSchemaProp.segments[1:])
+			swgSchemaName, swgProps := link.SchemaProp.addrs[0], link.SchemaProp.addrs[1:]
+			swagPropAddr := newPropertyAddr(swgSchemaName, swgProps...)
 
 			// link swgschema
-			if err := LinkSWGSchema(specPath, schemaName, *swgprops, schema.Name); err != nil {
+			if err := LinkSWGSchema(specPath, *swagPropAddr, *tfPropAddr); err != nil {
 				return fmt.Errorf("linking swgschema: %w", err)
 			}
 		}
