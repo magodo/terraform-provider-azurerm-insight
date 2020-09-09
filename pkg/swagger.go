@@ -2,91 +2,128 @@ package pkg
 
 import (
 	"fmt"
-	"sync"
-
 	"github.com/go-openapi/loads"
 	openapispec "github.com/go-openapi/spec"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"sync"
 )
 
 type TFLink struct {
-	Resource string
-	Prop     propertyAddr
+	Prop propertyaddr.PropertyAddr
 }
 
-type SWGSchemaPropertyLinks map[string][]TFLink
+type SWGSchemaPropertyLink struct {
+	// Terraform property addresses
+	TFLink []TFLink
+	
+	// The schema of this swagger schema property
+	schema openapispec.Schema
+	
+	// The resolved URI refs along the way to this schema, each is an absolute/normalized reference.
+	resolvedRefs []string
+}
+
+// (key: swagger schema relative property addr)
+type SWGSchemaPropertyLinks map[string]SWGSchemaPropertyLink
 
 type SWGSchema struct {
 	Name          string
 	SpecPath      string
 	PropertyLinks SWGSchemaPropertyLinks
+
+	spec *loads.Document
 }
 
-type SWGSchemaCache struct {
+// ExpandPropertyLinkOneLevel expand the specified swagger schema property one level, with any allOf and $ref taken into consideration.
+// If `addr` is absent in the SWGSchema's property links map, error will be returned.
+func (s *SWGSchema) ExpandPropertyLinkOneLevel(parentAddr propertyaddr.PropertyAddr) error {
+	raddr := parentAddr.RelativeAddrs()
+	link, ok := s.PropertyLinks[raddr.String()]
+	if !ok {
+		return fmt.Errorf("swagger schema %s (spec: %s) doesn't have property %s", s.Name, s.SpecPath, raddr)
+	}
+
+	// Direct properties
+	for propK, propV := range link.schema.Properties {
+		addr := parentAddr.Append(propK)	
+		s.PropertyLinks[addr] = SWGSchemaPropertyLink{
+			TFLink:       []string{link.TFLink...},
+			schema:       openapispec.Schema{},
+			resolvedRefs: nil,
+		}
+	}
+	
+	// TODO:
+	// 1. keep the property link of the expanded property in the expanded-out properties
+	// 2. keep the resolvedRefs of the expanded property in the expanded-out properties
+	// 3. remove the expanded property from PropertyLinks
+	// 3. remove the expanded property from resolvedRefs
+	_ = links
+
+	return nil
+}
+
+type SWGSpecSchemaCache struct {
 	sync.Mutex
 	m map[string]*SWGSchema
 }
 
-var swgSchemaCache SWGSchemaCache
+func (c *SWGSpecSchemaCache) Lock() {
+	c.Mutex.Lock()
+}
 
-func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyAddr) error {
-	if !swgPropAddr.IsCanonical() {
-		return fmt.Errorf("swagger property address is not canonical: %s", swgPropAddr.String())
-	}
+func (c *SWGSpecSchemaCache) Unlock() {
+	c.Mutex.Unlock()
+}
 
-	if !tfPropAddr.IsCanonical() {
-		return fmt.Errorf("terraform property address is not canonical: %s", tfPropAddr.String())
-	}
+func (c *SWGSpecSchemaCache) Get(specPath, schemaName string) *SWGSchema {
+	k := specPath + "-" + schemaName
+	return c.m[k]
+}
 
-	swgSchemaCache.Lock()
-	defer swgSchemaCache.Unlock()
+func (c *SWGSpecSchemaCache) Set(specPath, schemaName string, schema *SWGSchema) {
+	k := specPath + "-" + schemaName
+	c.m[k] = schema
+}
+
+// swgSpecSchemaCache caches the SWGSchema using spec + schema as key.
+// During each link operation from terraform schema to swagger schema, it will manipulate one of
+// the SWGSchema in this cache. Afterwards, this cache contains all the mapping info from swagger to terraform.
+var swgSpecSchemaCache SWGSpecSchemaCache
+
+func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+	swgSpecSchemaCache.Lock()
+	defer swgSpecSchemaCache.Unlock()
 
 	// construct key
-	k := specPath + "-" + swgPropAddr.owner
-	swgSchema, ok := swgSchemaCache.m[k]
-	if !ok {
-		// load the swagger specPath and initialize the swgschema based on it
+	swgSchema := swgSpecSchemaCache.Get(specPath, swgPropAddr.Owner())
+	if swgSchema == nil {
 		spec, err := LoadSwaggerSpec(specPath)
 		if err != nil {
-			return fmt.Errorf("loading swagger schema definition: %w", err)
+			return err
 		}
 
 		swgSchema = &SWGSchema{
-			Name:          swgPropAddr.owner,
+			Name:          swgPropAddr.Owner(),
 			SpecPath:      specPath,
-			PropertyLinks: map[string][]TFLink{},
+			PropertyLinks: map[string]SWGSchemaPropertyLink{},
+			spec:          spec,
 		}
 
-		swaggerRef, err := swgPropAddr.ToDefinitionRef()
-		if err != nil {
-			return fmt.Errorf("construct definition reference for %s: %w", swgPropAddr.String(), err)
-		}
-		swaggerSchema, err := openapispec.ResolveRefWithBase(spec, &swaggerRef, &openapispec.ExpandOptions{RelativeBase: specPath})
-		if err != nil {
-			return fmt.Errorf("resolve reference %s: %w", swaggerRef.String(), err)
-		}
+		// expand the root level properties
 
-		// we only set the first-level properties (including inherited) on initialization
-		topProps, err := swaggerSchemaTopProperties(specPath, swaggerSchema)
-		if err != nil {
-			return fmt.Errorf("getting top level properties for %s (%s)", swgPropAddr.String(), specPath)
-		}
-		for prop := range topProps {
-			swgSchema.PropertyLinks[prop] = []TFLink{}
-		}
 	}
 
 	// TODO: now we have the swgSchema, we need to link the terraform resource's properties to it
 
-	// expand to the level of swgprop
-
-	swgSchemaCache.m[k] = swgSchema
+	swgSpecSchemaCache.Set(specPath, swgPropAddr.Owner(), swgSchema)
 
 	return nil
 }
 
 // swaggerSchemaTopProperties get the top level properties of the input swagger schema.
 // It expands both the inherited schema or the refs, but only for the top level.
-func swaggerSchemaTopProperties(base string, schema *openapispec.Schema) (map[string]openapispec.Schema, error) {
+func swaggerSchemaTopProperties(specPath string, schema *openapispec.Schema, resolvedRef map[string][]string) (map[string]openapispec.Schema, error) {
 	out := map[string]openapispec.Schema{}
 	for propK, propV := range schema.Properties {
 		out[propK] = propV
@@ -99,34 +136,15 @@ func swaggerSchemaTopProperties(base string, schema *openapispec.Schema) (map[st
 			continue
 		}
 
-		// TODO: follow the ref and take its top properties
+		// follow the ref and take its top properties
+		inheritExpandSchema, err := openapispec.ResolveRefWithBase(root, &inherit.Ref, &openapispec.ExpandOptions{RelativeBase: specPath})
+		if err != nil {
+			return nil, fmt.Errorf("resolve reference %s: %w", inherit.Ref.String(), err)
+		}
+		normalizeFileRef(&inherit.Ref, specPath).String()
+		for propK, propV := range inheritExpandSchema.Properties {
+		}
 		// NOTE: consider cross file reference and cyclic reference
 	}
 	return out, nil
-}
-
-type SwaggerSpecCache struct {
-	sync.Mutex
-	m map[string]*loads.Document
-}
-
-var swaggerSpecCache SwaggerSpecCache
-
-// LoadSwaggerSpec load a certain swagger spec (document)
-func LoadSwaggerSpec(spec string) (*loads.Document, error) {
-	swaggerSpecCache.Lock()
-	defer swaggerSpecCache.Unlock()
-
-	// construct key
-	if schema, ok := swaggerSpecCache.m[spec]; ok {
-		return schema, nil
-	}
-
-	doc, err := loads.Spec(spec)
-	if err != nil {
-		return nil, fmt.Errorf("loading swagger spec %s: %w", spec, err)
-	}
-
-	swaggerSpecCache.m[spec] = doc
-	return doc, nil
 }

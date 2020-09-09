@@ -2,7 +2,9 @@ package pkg
 
 import (
 	"encoding/json"
-	"reflect"
+	"errors"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -49,16 +51,7 @@ func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
 	}
 	schema := NewSchemaScaffoldFromTerraformBlock("res1", &block)
 
-	if !reflect.DeepEqual(schema, expect) {
-		t.Fatalf(`
-expect:
-
-%+v
-
-got:
-
-%+v`, *expect, *schema)
-	}
+	assert.Equal(t, *expect, *schema)
 }
 
 func TestMarshalTFSchema(t *testing.T) {
@@ -69,27 +62,27 @@ func TestMarshalTFSchema(t *testing.T) {
 			"bar": {
 				{
 					Spec:       strPtr("xxx"),
-					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
 				},
 			},
 			"block_a::block_a_a::bar": {
 				{
 					Spec:       strPtr("xxx"),
-					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
 				},
 			},
 		},
 	}
 
-	expect := []byte(`{
+	expect := `{
     "Name": "res1",
     "PropertyLinks": {
         "bar": [
@@ -126,23 +119,14 @@ func TestMarshalTFSchema(t *testing.T) {
         ]
     },
     "spec": "spec1"
-}`)
+}`
 
 	actual, err := json.Marshal(tfschema)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !jsonDeepEqual(t, actual, expect) {
-		t.Fatalf(`
-expect:
-
-%+v
-
-got:
-
-%+v`, string(expect), string(actual))
-	}
+	assert.JSONEq(t, expect, string(actual))
 }
 
 func TestUnmarshalTFSchema(t *testing.T) {
@@ -192,21 +176,21 @@ func TestUnmarshalTFSchema(t *testing.T) {
 			"bar": {
 				{
 					Spec:       strPtr("xxx"),
-					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
 				},
 			},
 			"block_a::block_a_a::bar": {
 				{
 					Spec:       strPtr("xxx"),
-					SchemaProp: propertyAddr{owner: "schema1", addrs: []string{"p1", "p2"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: propertyAddr{owner: "schema2", addrs: []string{"p3", "p4"}},
+					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
 				},
 			},
 		},
@@ -216,15 +200,68 @@ func TestUnmarshalTFSchema(t *testing.T) {
 	if err := json.Unmarshal(jsonInput, &schema); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(schema, expect) {
-		t.Fatalf(`
-expect:
+	assert.Equal(t, expect, schema)
+}
 
-%+v
+func TestTFSchema_Validate(t *testing.T) {
+	cases := []struct{
+		schema TFSchema
+		err error
+	}{
+		{
+			schema: TFSchema{
+				Name: "foo"	,
+				SwaggerSpec: "spec1",
+				PropertyLinks: map[string][]SwaggerLink{
+					"p1": {
+						{
+							Spec: strPtr("spec2"),
+							SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1"),
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			schema: TFSchema{
+				Name: "foo"	,
+				SwaggerSpec: "spec1",
+				PropertyLinks: map[string][]SwaggerLink{
+					"foo:p1": {
+						{
+							Spec: strPtr("spec2"),
+							SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1"),
+						},
+					},
+				},
+			},
+			err: errors.New("terraform property addr foo:p1 should not specify owner"),
+		},
+		{
+			schema: TFSchema{
+				Name: "foo"	,
+				SwaggerSpec: "spec1",
+				PropertyLinks: map[string][]SwaggerLink{
+					"p1": {
+						{
+							Spec: strPtr("spec2"),
+							SchemaProp: *propertyaddr.NewPropertyAddrFromString("p1.p2"),
+						},
+					},
+				},
+			},
+			err: errors.New("swagger property addr p1.p2 should specify owner"),
+		},
+	}
 
-got:
-
-%+v`, expect, schema)
+	for idx, c :=  range cases {
+		err :=c.schema.Validate()
+		if c.err != nil {
+			assert.EqualError(t, err, c.err.Error(), idx)
+		} else {
+			assert.NoError(t, err, idx)
+		}
 	}
 }
 
@@ -232,15 +269,3 @@ func strPtr(s string) *string {
 	return &s
 }
 
-func jsonDeepEqual(t *testing.T, x, y []byte) bool {
-	return reflect.DeepEqual(jsonNormalize(t, x), jsonNormalize(t, y))
-}
-
-func jsonNormalize(t *testing.T, in []byte) []byte {
-	var tmp interface{}
-	if err := json.Unmarshal(in, &tmp); err != nil {
-		t.Fatal(err)
-	}
-	out, _ := json.Marshal(tmp)
-	return out
-}

@@ -2,11 +2,12 @@ package pkg
 
 import (
 	"fmt"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
 )
 
 type SwaggerLink struct {
-	Spec       *string      `json:"spec"` // swagger spec alias that this property resides in, this overrides the global swagger spec scope
-	SchemaProp propertyAddr `json:"prop"` // dot-separated swagger schema property, starting from the schema used as the PUT body parameter
+	Spec       *string                   `json:"spec"` // swagger spec alias that this propertyaddr resides in, this overrides the global swagger spec scope
+	SchemaProp propertyaddr.PropertyAddr `json:"prop"` // dot-separated swagger schema propertyaddr, starting from the schema used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
@@ -26,27 +27,14 @@ func NewSchema(name string) *TFSchema {
 
 func (schema TFSchema) LinkSwagger() error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
-		tfPropAddr := newPropertyAddrFromString(tfProp)
-		tfPropAddr.owner = schema.Name
+		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
 			specPath := schema.SwaggerSpec
 			if link.Spec != nil {
 				specPath = *link.Spec
 			}
-			// valid property links will always have the form: <swagger schema definition>.<prop1>.<prop2>...
-			switch len(link.SchemaProp.addrs) {
-			case 0:
-				return fmt.Errorf("empty property link found for %s, please remove it", schema.Name)
-			case 1:
-				prop := link.SchemaProp.addrs[0]
-				return fmt.Errorf("malformed property link found for %s: %s", schema.Name, prop)
-			}
-
-			swgSchemaName, swgProps := link.SchemaProp.addrs[0], link.SchemaProp.addrs[1:]
-			swagPropAddr := newPropertyAddr(swgSchemaName, swgProps...)
-
 			// link swgschema
-			if err := LinkSWGSchema(specPath, *swagPropAddr, *tfPropAddr); err != nil {
+			if err := LinkSWGSchema(specPath, link.SchemaProp, *tfPropAddr); err != nil {
 				return fmt.Errorf("linking swgschema: %w", err)
 			}
 		}
@@ -55,13 +43,35 @@ func (schema TFSchema) LinkSwagger() error {
 	return nil
 }
 
+func (schema TFSchema) Validate() error {
+	if err := specAlias.ValidateAlias(schema.SwaggerSpec); err != nil {
+		return err
+	}
+	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
+		if addr := propertyaddr.NewPropertyAddrFromString(tfProp); addr.Owner() != "" {
+			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
+		}
+		for _, link := range tfToSwaggerLinks {
+			if link.Spec != nil {
+				if err := specAlias.ValidateAlias(*link.Spec); err != nil {
+					return err
+				}
+			}
+			if link.SchemaProp.Owner() == "" {
+				return fmt.Errorf("swagger property addr %s should specify owner", link.SchemaProp)
+			}
+		}
+	}
+	return nil
+}
+
 func NewSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock) *TFSchema {
 	schema := NewSchema(name)
-	recordAttributeWithinBlock(propertyAddr{}, schema.PropertyLinks, block)
+	recordAttributeWithinBlock(propertyaddr.PropertyAddr{}, schema.PropertyLinks, block)
 	return schema
 }
 
-func recordAttributeWithinBlock(parentBlockAddr propertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
+func recordAttributeWithinBlock(parentBlockAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
 	for attrKey := range block.Attributes {
 		addr := parentBlockAddr.Append(attrKey)
 		attributes[addr.String()] = []SwaggerLink{}
