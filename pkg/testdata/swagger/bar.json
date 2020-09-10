@@ -1,0 +1,17 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Bar"
+  },
+  "host": "management.azure.com",
+  "schemes": [
+    "https"
+  ],
+  "definitions": {
+    "def_bar": {
+      "properties": {
+        "prop_primitive": {}
+      }
+    }
+  }
+}

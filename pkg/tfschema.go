@@ -6,7 +6,7 @@ import (
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"spec"` // swagger spec alias that this propertyaddr resides in, this overrides the global swagger spec scope
+	Spec       *string                   `json:"swagger"` // swagger swagger alias that this propertyaddr resides in, this overrides the global swagger swagger scope
 	SchemaProp propertyaddr.PropertyAddr `json:"prop"` // dot-separated swagger schema propertyaddr, starting from the schema used as the PUT body parameter
 }
 
@@ -14,7 +14,7 @@ type TFSchemaPropertyLinks map[string][]SwaggerLink
 
 type TFSchema struct {
 	Name          string
-	SwaggerSpec   string `json:"spec"`
+	SwaggerSpec   string `json:"swagger"`
 	PropertyLinks TFSchemaPropertyLinks
 }
 

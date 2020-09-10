@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/go-openapi/loads"
 	openapispec "github.com/go-openapi/spec"
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
 	"sync"
@@ -12,55 +11,202 @@ type TFLink struct {
 	Prop propertyaddr.PropertyAddr
 }
 
-type SWGSchemaPropertyLink struct {
+type SWGSchemaProperty struct {
 	// Terraform property addresses
-	TFLink []TFLink
-	
+	TFLinks []TFLink
+
 	// The schema of this swagger schema property
 	schema openapispec.Schema
-	
+
 	// The resolved URI refs along the way to this schema, each is an absolute/normalized reference.
-	resolvedRefs []string
+	resolvedRefs map[string]interface{}
 }
 
-// (key: swagger schema relative property addr)
-type SWGSchemaPropertyLinks map[string]SWGSchemaPropertyLink
+type SWGSchemaProperties map[string]SWGSchemaProperty // the key is swagger schema relative property addr
 
 type SWGSchema struct {
-	Name          string
-	SpecPath      string
-	PropertyLinks SWGSchemaPropertyLinks
+	Name       string
+	SpecPath   string
+	Properties SWGSchemaProperties
 
-	spec *loads.Document
+	swagger *openapispec.Swagger
 }
 
-// ExpandPropertyLinkOneLevel expand the specified swagger schema property one level, with any allOf and $ref taken into consideration.
-// If `addr` is absent in the SWGSchema's property links map, error will be returned.
-func (s *SWGSchema) ExpandPropertyLinkOneLevel(parentAddr propertyaddr.PropertyAddr) error {
-	raddr := parentAddr.RelativeAddrs()
-	link, ok := s.PropertyLinks[raddr.String()]
-	if !ok {
-		return fmt.Errorf("swagger schema %s (spec: %s) doesn't have property %s", s.Name, s.SpecPath, raddr)
+func NewSWGSchema(specPath string, schemaName string) (*SWGSchema, error) {
+	swagger, err := LoadSwagger(specPath)
+	if err != nil {
+		return nil, err
 	}
 
-	// Direct properties
-	for propK, propV := range link.schema.Properties {
-		addr := parentAddr.Append(propK)	
-		s.PropertyLinks[addr] = SWGSchemaPropertyLink{
-			TFLink:       []string{link.TFLink...},
-			schema:       openapispec.Schema{},
-			resolvedRefs: nil,
+	swgSchema := &SWGSchema{
+		Name:     schemaName,
+		SpecPath: specPath,
+		Properties: map[string]SWGSchemaProperty{
+			"": {
+				TFLinks: []TFLink{},
+				schema:  swagger.Definitions[schemaName],
+				resolvedRefs: map[string]interface{}{
+					// Consider this schema itself as resolved reference
+					normalizePaths("#/definitions/"+schemaName, specPath): struct{}{},
+				},
+			},
+		},
+		swagger: swagger,
+	}
+
+	// Expand the root level properties of the schema
+	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
+	if err != nil {
+		return nil, fmt.Errorf("expanding schema %s (%s): %w", schemaName, specPath, err)
+	}
+	return swgSchema, nil
+}
+
+// ExpandPropertyOneLevelDeep expand the specified swagger schema property one level deep, with any allOf and $ref taken into consideration.
+func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) error {
+	raddr := addr.RelativeAddrs().String()
+	prop, ok := s.Properties[raddr]
+	if !ok {
+		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.SpecPath)
+	}
+
+	isCyclic, err := s.expandProperty(&prop)
+	if err != nil {
+		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.SpecPath, err)
+	}
+
+	// If the property to be expanded is a cyclic reference, we will do nothing but keep that property
+	if isCyclic {
+		return nil
+	}
+
+	// direct top level properties
+	for propK, propV := range prop.schema.Properties {
+		s.addChildProperty(addr, prop, propK, propV)
+	}
+
+	// expand AllOf properties
+	for _, schema := range prop.schema.AllOf {
+
+		// AllOf contains concrete schema, then directly add the property.
+		if schema.Ref.String() == "" {
+			for propK, propV := range schema.Properties {
+				s.addChildProperty(addr, prop, propK, propV)
+			}
+			continue
+		}
+
+		// AllOf contains refs, then need to expandProperty then first.
+
+		// We construct a temp SWGSchemaProperty here (as it has no object/property related) to expand it into a concrete schema.
+		// Then we will iterate that schema's property which by concept is the top level property of this parent property.
+		tflinks := make([]TFLink, len(prop.TFLinks))
+		copy(tflinks, prop.TFLinks)
+		resolvedRefs := map[string]interface{}{}
+		for k, v := range prop.resolvedRefs {
+			resolvedRefs[k] = v
+		}
+		tmpSwgProp := SWGSchemaProperty{
+			TFLinks:      tflinks,
+			schema:       schema,
+			resolvedRefs: resolvedRefs,
+		}
+
+		isCyclic, err := s.expandProperty(&tmpSwgProp)
+		if err != nil {
+			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.SpecPath, err)
+		}
+
+		// Ignore as there is no better way to handle this (since it has no object/property related)
+		if isCyclic {
+			continue
+		}
+
+		for propK, propV := range tmpSwgProp.schema.Properties {
+			s.addChildProperty(addr, prop, propK, propV)
 		}
 	}
-	
-	// TODO:
-	// 1. keep the property link of the expanded property in the expanded-out properties
-	// 2. keep the resolvedRefs of the expanded property in the expanded-out properties
-	// 3. remove the expanded property from PropertyLinks
-	// 3. remove the expanded property from resolvedRefs
-	_ = links
 
+	// We have to check whether we added any child property of this property. If this property is already the leaf property,
+	// we should keep this property from removing it from the SWGSchema property map.
+	for currentRAddr := range s.Properties {
+		currentAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, currentRAddr)
+		if addr.Contains(*currentAddr) {
+			delete(s.Properties, raddr)
+			return nil
+		}
+	}
 	return nil
+}
+
+// addChildProperty adds a child SWGSchemaProperty to the SWGSchema.
+func (s *SWGSchema) addChildProperty(parentAddr propertyaddr.PropertyAddr, parentSwgProp SWGSchemaProperty, childPropName string, childPropSchema openapispec.Schema) {
+	caddr := parentAddr.Append(childPropName)
+
+	// Keep the TFLinks from parent property
+	tflinks := make([]TFLink, len(parentSwgProp.TFLinks))
+	copy(tflinks, parentSwgProp.TFLinks)
+
+	// Keep the resolved Refs from parent property
+	resolvedRefs := map[string]interface{}{}
+	for k, v := range parentSwgProp.resolvedRefs {
+		resolvedRefs[k] = v
+	}
+
+	s.Properties[caddr.RelativeAddrs().String()] = SWGSchemaProperty{
+		TFLinks:      tflinks,
+		schema:       childPropSchema,
+		resolvedRefs: resolvedRefs,
+	}
+}
+
+// expandProperty expand a property itself IN-PLACE until either it is a concrete schema (i.e. not a ref) or hit a cyclic ref.
+func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err error) {
+	if ref := prop.schema.Ref; ref.String() != "" {
+		normalizedRefURI := normalizeFileRef(&ref, s.SpecPath).String()
+
+		// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.
+		if _, ok := prop.resolvedRefs[normalizedRefURI]; ok {
+			return true, nil
+		}
+
+		// Keep track of the resolved reference to avoid cyclic ref
+		prop.resolvedRefs[normalizedRefURI] = struct{}{}
+
+		schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.SpecPath})
+		if err != nil {
+			return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
+		}
+
+		// update the stored schema by the derefed schema
+		prop.schema = *schema
+
+		return s.expandProperty(prop)
+	}
+
+	return false, nil
+}
+
+func (s *SWGSchema) addTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+	for raddr, prop := range s.Properties {
+		addr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, raddr)
+
+		if !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
+			continue
+		}
+
+		if addr.Equals(swgPropAddr) {
+			prop.TFLinks = append(prop.TFLinks, TFLink{Prop: tfPropAddr})
+			return nil
+		}
+
+		// The schema property we're seeking is a direct or indirect member of the property under iteration
+		if err := s.ExpandPropertyOneLevelDeep(*addr); err != nil {
+			return fmt.Errorf("expanding top level property for %s: %w", addr, err)
+		}
+		return s.addTFLink(swgPropAddr, tfPropAddr)
+	}
+	return fmt.Errorf("property %s doesn't belong to schema %s (%s)", swgPropAddr, s.Name, s.SpecPath)
 }
 
 type SWGSpecSchemaCache struct {
@@ -86,7 +232,7 @@ func (c *SWGSpecSchemaCache) Set(specPath, schemaName string, schema *SWGSchema)
 	c.m[k] = schema
 }
 
-// swgSpecSchemaCache caches the SWGSchema using spec + schema as key.
+// swgSpecSchemaCache caches the SWGSchema using swagger + schema as key.
 // During each link operation from terraform schema to swagger schema, it will manipulate one of
 // the SWGSchema in this cache. Afterwards, this cache contains all the mapping info from swagger to terraform.
 var swgSpecSchemaCache SWGSpecSchemaCache
@@ -95,56 +241,16 @@ func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyaddr.Propert
 	swgSpecSchemaCache.Lock()
 	defer swgSpecSchemaCache.Unlock()
 
-	// construct key
 	swgSchema := swgSpecSchemaCache.Get(specPath, swgPropAddr.Owner())
 	if swgSchema == nil {
-		spec, err := LoadSwaggerSpec(specPath)
+		var err error
+		swgSchema, err = NewSWGSchema(specPath, swgPropAddr.Owner())
 		if err != nil {
 			return err
 		}
-
-		swgSchema = &SWGSchema{
-			Name:          swgPropAddr.Owner(),
-			SpecPath:      specPath,
-			PropertyLinks: map[string]SWGSchemaPropertyLink{},
-			spec:          spec,
-		}
-
-		// expand the root level properties
-
 	}
 
-	// TODO: now we have the swgSchema, we need to link the terraform resource's properties to it
+	defer swgSpecSchemaCache.Set(specPath, swgPropAddr.Owner(), swgSchema)
 
-	swgSpecSchemaCache.Set(specPath, swgPropAddr.Owner(), swgSchema)
-
-	return nil
-}
-
-// swaggerSchemaTopProperties get the top level properties of the input swagger schema.
-// It expands both the inherited schema or the refs, but only for the top level.
-func swaggerSchemaTopProperties(specPath string, schema *openapispec.Schema, resolvedRef map[string][]string) (map[string]openapispec.Schema, error) {
-	out := map[string]openapispec.Schema{}
-	for propK, propV := range schema.Properties {
-		out[propK] = propV
-	}
-	for _, inherit := range schema.AllOf {
-		if inherit.Ref.String() == "" {
-			for propK, propV := range inherit.Properties {
-				out[propK] = propV
-			}
-			continue
-		}
-
-		// follow the ref and take its top properties
-		inheritExpandSchema, err := openapispec.ResolveRefWithBase(root, &inherit.Ref, &openapispec.ExpandOptions{RelativeBase: specPath})
-		if err != nil {
-			return nil, fmt.Errorf("resolve reference %s: %w", inherit.Ref.String(), err)
-		}
-		normalizeFileRef(&inherit.Ref, specPath).String()
-		for propK, propV := range inheritExpandSchema.Properties {
-		}
-		// NOTE: consider cross file reference and cyclic reference
-	}
-	return out, nil
+	return swgSchema.addTFLink(swgPropAddr, tfPropAddr)
 }

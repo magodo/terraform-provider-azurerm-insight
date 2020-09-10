@@ -1,0 +1,68 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Foo"
+  },
+  "host": "management.azure.com",
+  "schemes": [
+    "https"
+  ],
+  "definitions": {
+    "def_foo": {
+      "properties": {
+        "prop_primitive": {}
+      }
+    },
+    "def_regular": {
+      "properties" : {
+        "prop_primitive": {
+            "type" : "string"
+        },
+        "prop_array_of_primitive": {
+          "type" : "array",
+          "items": {
+            "type": "int"
+          }
+        },
+        "prop_object": {
+          "type": "object",
+          "properties" : {
+            "prop_nested": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "def_propInFileRef": {
+      "properties" : {
+        "prop_inFileRef": {
+          "$ref": "#/definitions/def_foo"
+        }
+      }
+    },
+    "def_propCrossFileRef": {
+      "properties" : {
+        "prop_crossFileRef": {
+          "$ref" : "./bar.json#/definitions/def_bar"
+        }
+      }
+    },
+    "def_propSelfRef": {
+     "properties" : {
+       "prop_selfRef": {
+         "$ref": "#/definitions/def_selfRef"
+       }
+     }
+    },
+    "def_inFileRef": {
+      "$ref": "#/definitions/def_foo"
+    },
+    "def_crossFileRef": {
+      "$ref" : "./bar.json#/definitions/def_bar"
+    },
+    "def_selfRef": {
+      "$ref": "#/definitions/def_selfRef"
+    }
+  }
+}

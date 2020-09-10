@@ -84,21 +84,21 @@ func TestMarshalTFSchema(t *testing.T) {
 
 	expect := `{
     "Name": "res1",
-    "PropertyLinks": {
+    "Properties": {
         "bar": [
             {
                 "prop": {
                     "addr": "p1.p2",
                     "owner": "schema1"
                 },
-                "spec": "xxx"
+                "swagger": "xxx"
             },
             {
                 "prop": {
                     "addr": "p3.p4",
                     "owner": "schema2"
                 },
-                "spec": "yyy"
+                "swagger": "yyy"
             }
         ],
         "block_a::block_a_a::bar": [
@@ -107,18 +107,18 @@ func TestMarshalTFSchema(t *testing.T) {
                     "addr": "p1.p2",
                     "owner": "schema1"
                 },
-                "spec": "xxx"
+                "swagger": "xxx"
             },
             {
                 "prop": {
                     "addr": "p3.p4",
                     "owner": "schema2"
                 },
-                "spec": "yyy"
+                "swagger": "yyy"
             }
         ]
     },
-    "spec": "spec1"
+    "swagger": "spec1"
 }`
 
 	actual, err := json.Marshal(tfschema)
@@ -132,21 +132,21 @@ func TestMarshalTFSchema(t *testing.T) {
 func TestUnmarshalTFSchema(t *testing.T) {
 	jsonInput := []byte(`{
     "Name": "res1",
-    "PropertyLinks": {
+    "Properties": {
         "bar": [
             {
                 "prop": {
                     "addr": "p1.p2",
                     "owner": "schema1"
                 },
-                "spec": "xxx"
+                "swagger": "xxx"
             },
             {
                 "prop": {
                     "addr": "p3.p4",
                     "owner": "schema2"
                 },
-                "spec": "yyy"
+                "swagger": "yyy"
             }
         ],
         "block_a::block_a_a::bar": [
@@ -155,18 +155,18 @@ func TestUnmarshalTFSchema(t *testing.T) {
                     "addr": "p1.p2",
                     "owner": "schema1"
                 },
-                "spec": "xxx"
+                "swagger": "xxx"
             },
             {
                 "prop": {
                     "addr": "p3.p4",
                     "owner": "schema2"
                 },
-                "spec": "yyy"
+                "swagger": "yyy"
             }
         ]
     },
-    "spec": "spec1"
+    "swagger": "spec1"
 }`)
 
 	expect := TFSchema{

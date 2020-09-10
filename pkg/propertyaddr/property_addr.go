@@ -111,11 +111,20 @@ func (addr PropertyAddr) Contains(oaddr PropertyAddr) bool {
 	if addr.owner != oaddr.owner {
 		return false
 	}
-	// empty addr never contain or is contained by other addr
-	if len(addr.addrs) == 0 || len(oaddr.addrs) == 0{
+
+	if len(addr.addrs) >= len(oaddr.addrs) {
 		return false
 	}
-	if len(addr.addrs) >= len(oaddr.addrs) {
+	for i := range addr.addrs {
+		if addr.addrs[i] != oaddr.addrs[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func (addr PropertyAddr) Equals(oaddr PropertyAddr) bool {
+	if len(addr.addrs) != len(oaddr.addrs) || addr.owner != oaddr.owner {
 		return false
 	}
 	for i := range addr.addrs {

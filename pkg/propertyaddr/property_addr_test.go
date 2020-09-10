@@ -225,7 +225,12 @@ func TestPropertyAddr_Contains(t *testing.T) {
 		{
 			addr:     PropertyAddr{},
 			oaddr:    PropertyAddr{addrs: []string{"p1"}},
-			contains: false,
+			contains: true,
+		},
+		{
+			addr:     PropertyAddr{owner: "res1", addrs: []string{}},
+			oaddr:    PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			contains: true,
 		},
 		{
 			addr:     PropertyAddr{addrs: []string{"p1"}},
@@ -259,8 +264,8 @@ func TestPropertyAddr_Contains(t *testing.T) {
 		},
 		{
 			addr:     PropertyAddr{owner: "res1", addrs: []string{"p1"}},
-			oaddr:    PropertyAddr{owner: "res1", addrs: []string{"p1", "p2"}},
-			contains: true,
+			oaddr:    PropertyAddr{owner: "res2", addrs: []string{"p1"}},
+			contains: false,
 		},
 	}
 
@@ -269,8 +274,91 @@ func TestPropertyAddr_Contains(t *testing.T) {
 	}
 }
 
+func TestPropertyAddr_Equals(t *testing.T) {
+	cases := []struct {
+		addr   PropertyAddr
+		oaddr  PropertyAddr
+		equals bool
+	}{
+		{
+			addr:   PropertyAddr{},
+			oaddr:  PropertyAddr{},
+			equals: true,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1"},
+			oaddr:  PropertyAddr{},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{},
+			oaddr:  PropertyAddr{owner: "res1"},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1"},
+			oaddr:  PropertyAddr{owner: "res1"},
+			equals: true,
+		},
+		{
+			addr:   PropertyAddr{},
+			oaddr:  PropertyAddr{addrs: []string{"p1"}},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{addrs: []string{"p2"}},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{addrs: []string{"p1"}},
+			equals: true,
+		},
+		{
+			addr:   PropertyAddr{addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{addrs: []string{"p1", "p2"}},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{owner: "res1", addrs: []string{"p2"}},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			equals: true,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{owner: "res1", addrs: []string{"p1", "p2"}},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{owner: "res1", addrs: []string{"p1", "p2"}},
+			equals: false,
+		},
+		{
+			addr:   PropertyAddr{owner: "res1", addrs: []string{"p1"}},
+			oaddr:  PropertyAddr{owner: "res2", addrs: []string{"p1"}},
+			equals: false,
+		},
+	}
+
+	for idx, c := range cases {
+		assert.Equal(t, c.equals, c.addr.Equals(c.oaddr), idx)
+	}
+}
+
 func TestToSwaggerDefinitionRef(t *testing.T) {
-	cases := []struct{
+	cases := []struct {
 		addr    PropertyAddr
 		uri     string
 		isError bool
@@ -297,7 +385,7 @@ func TestToSwaggerDefinitionRef(t *testing.T) {
 		},
 	}
 
-	for idx, c :=range cases {
+	for idx, c := range cases {
 		ref, err := ToSwaggerDefinitionRef(c.addr)
 		if c.isError {
 			assert.Error(t, err, idx)
