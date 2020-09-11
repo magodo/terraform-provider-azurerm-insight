@@ -2,12 +2,14 @@ package pkg
 
 import (
 	"fmt"
+	"path/filepath"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
 )
 
 type SwaggerLink struct {
 	Spec       *string                   `json:"swagger"` // swagger swagger alias that this propertyaddr resides in, this overrides the global swagger swagger scope
-	SchemaProp propertyaddr.PropertyAddr `json:"prop"` // dot-separated swagger schema propertyaddr, starting from the schema used as the PUT body parameter
+	SchemaProp propertyaddr.PropertyAddr `json:"prop"`    // dot-separated swagger schema propertyaddr, starting from the schema used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
@@ -25,7 +27,7 @@ func NewSchema(name string) *TFSchema {
 	}
 }
 
-func (schema TFSchema) LinkSwagger() error {
+func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
@@ -33,6 +35,7 @@ func (schema TFSchema) LinkSwagger() error {
 			if link.Spec != nil {
 				specPath = *link.Spec
 			}
+			specPath = filepath.Join(swaggerBasePath, specPath)
 			// link swgschema
 			if err := LinkSWGSchema(specPath, link.SchemaProp, *tfPropAddr); err != nil {
 				return fmt.Errorf("linking swgschema: %w", err)

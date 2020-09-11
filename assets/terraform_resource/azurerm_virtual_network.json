@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_virtual_network",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
+  "PropertyLinks": {
+    "address_space": [
+        {
+            "prop": {
+                "owner": "VirtualNetwork",
+                "addr": "properties.addressSpace"
+            }
+        }
+    ],
+    "ddos_protection_plan.enable": [],
+    "ddos_protection_plan.id": [],
+    "dns_servers": [],
+    "guid": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "subnet": [],
+    "tags": []
+  }
+}

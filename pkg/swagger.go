@@ -247,19 +247,22 @@ func (c *SWGSpecSchemaCache) Unlock() {
 }
 
 func (c *SWGSpecSchemaCache) Get(specPath, schemaName string) *SWGSchema {
-	k := specPath + "-" + schemaName
+	k := specPath + "#/definitions/" + schemaName
 	return c.m[k]
 }
 
 func (c *SWGSpecSchemaCache) Set(specPath, schemaName string, schema *SWGSchema) {
-	k := specPath + "-" + schemaName
+	k := specPath + "#/definitions/" + schemaName
 	c.m[k] = schema
 }
 
 // swgSpecSchemaCache caches the SWGSchema using swagger + schema as key.
 // During each link operation from terraform schema to swagger schema, it will manipulate one of
 // the SWGSchema in this cache. Afterwards, this cache contains all the mapping info from swagger to terraform.
-var swgSpecSchemaCache SWGSpecSchemaCache
+var swgSpecSchemaCache = SWGSpecSchemaCache{
+	Mutex: sync.Mutex{},
+	m:     map[string]*SWGSchema{},
+}
 
 func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
 	swgSpecSchemaCache.Lock()
@@ -277,4 +280,15 @@ func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyaddr.Propert
 	defer swgSpecSchemaCache.Set(specPath, swgPropAddr.Owner(), swgSchema)
 
 	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
+}
+
+// GetSWGSchema get all SWGSchema from cache.
+func GetAllSWGSchemas() map[string]*SWGSchema {
+	swgSpecSchemaCache.Lock()
+	defer swgSpecSchemaCache.Unlock()
+	out := map[string]*SWGSchema{}
+	for k, v := range swgSpecSchemaCache.m {
+		out[k] = v
+	}
+	return out
 }

@@ -1,0 +1,61 @@
+{
+  "/home/magodo/github/azure-rest-api-specs/specification/network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json#/definitions/VirtualNetwork": {
+    "Name": "VirtualNetwork",
+    "SpecPath": "/home/magodo/github/azure-rest-api-specs/specification/network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
+    "Properties": {
+      "etag": {
+        "TFLinks": []
+      },
+      "id": {
+        "TFLinks": []
+      },
+      "location": {
+        "TFLinks": []
+      },
+      "name": {
+        "TFLinks": []
+      },
+      "properties.addressSpace": {
+        "TFLinks": [
+          "azurerm_virtual_network:address_space"
+        ]
+      },
+      "properties.bgpCommunities": {
+        "TFLinks": []
+      },
+      "properties.ddosProtectionPlan": {
+        "TFLinks": []
+      },
+      "properties.dhcpOptions": {
+        "TFLinks": []
+      },
+      "properties.enableDdosProtection": {
+        "TFLinks": []
+      },
+      "properties.enableVmProtection": {
+        "TFLinks": []
+      },
+      "properties.ipAllocations": {
+        "TFLinks": []
+      },
+      "properties.provisioningState": {
+        "TFLinks": []
+      },
+      "properties.resourceGuid": {
+        "TFLinks": []
+      },
+      "properties.subnets": {
+        "TFLinks": []
+      },
+      "properties.virtualNetworkPeerings": {
+        "TFLinks": []
+      },
+      "tags": {
+        "TFLinks": []
+      },
+      "type": {
+        "TFLinks": []
+      }
+    }
+  }
+}

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -13,11 +14,17 @@ import (
 )
 
 func main() {
+	flag.Usage = func() {
+		fmt.Fprint(os.Stderr, "Generate terraform schema file for later adding links to swagger schema.\n\n")
+		flag.PrintDefaults()
+		os.Exit(2)
+	}
+
 	pwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	schemaPath := flag.String("schema", "", "The relative path to the pkg provider schema file")
+	schemaPath := flag.String("schema", "", "The path to the pkg provider schema file")
 	outputPath := flag.String("output", pwd, "The output directory")
 	resource := flag.String("resource", "", "The pkg resource to generate flattened schema. If not specified, will apply to all resources available.")
 	isDataSource := flag.Bool("data-source", false, "Whether applies to data source")
