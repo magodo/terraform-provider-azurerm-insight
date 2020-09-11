@@ -2,9 +2,10 @@ package pkg
 
 import (
 	"fmt"
+	"sync"
+
 	openapispec "github.com/go-openapi/spec"
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
-	"sync"
 )
 
 type TFLink struct {
@@ -22,7 +23,27 @@ type SWGSchemaProperty struct {
 	resolvedRefs map[string]interface{}
 }
 
-type SWGSchemaProperties map[string]SWGSchemaProperty // the key is swagger schema relative property addr
+func NewSWGSchemaProperty(schema openapispec.Schema, tflinks []TFLink, resolvedRefs map[string]interface{}) *SWGSchemaProperty {
+	newTFLinks := []TFLink{}
+	if len(tflinks) != 0 {
+		newTFLinks = make([]TFLink, len(tflinks))
+		copy(newTFLinks, tflinks)
+	}
+
+	newResolvedRefs := map[string]interface{}{}
+	if len(resolvedRefs) != 0 {
+		for k, v := range resolvedRefs {
+			newResolvedRefs[k] = v
+		}
+	}
+	return &SWGSchemaProperty{
+		TFLinks:      newTFLinks,
+		schema:       schema,
+		resolvedRefs: newResolvedRefs,
+	}
+}
+
+type SWGSchemaProperties map[string]*SWGSchemaProperty // the key is swagger schema relative property addr
 
 type SWGSchema struct {
 	Name       string
@@ -41,7 +62,7 @@ func NewSWGSchema(specPath string, schemaName string) (*SWGSchema, error) {
 	swgSchema := &SWGSchema{
 		Name:     schemaName,
 		SpecPath: specPath,
-		Properties: map[string]SWGSchemaProperty{
+		Properties: map[string]*SWGSchemaProperty{
 			"": {
 				TFLinks: []TFLink{},
 				schema:  swagger.Definitions[schemaName],
@@ -70,7 +91,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.SpecPath)
 	}
 
-	isCyclic, err := s.expandProperty(&prop)
+	isCyclic, err := s.expandProperty(prop)
 	if err != nil {
 		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.SpecPath, err)
 	}
@@ -82,7 +103,9 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 
 	// direct top level properties
 	for propK, propV := range prop.schema.Properties {
-		s.addChildProperty(addr, prop, propK, propV)
+		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
+		addr := addr.Append(propK)
+		s.addProperty(addr, *p)
 	}
 
 	// expand AllOf properties
@@ -91,7 +114,9 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 		// AllOf contains concrete schema, then directly add the property.
 		if schema.Ref.String() == "" {
 			for propK, propV := range schema.Properties {
-				s.addChildProperty(addr, prop, propK, propV)
+				p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
+				addr := addr.Append(propK)
+				s.addProperty(addr, *p)
 			}
 			continue
 		}
@@ -100,19 +125,9 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 
 		// We construct a temp SWGSchemaProperty here (as it has no object/property related) to expand it into a concrete schema.
 		// Then we will iterate that schema's property which by concept is the top level property of this parent property.
-		tflinks := make([]TFLink, len(prop.TFLinks))
-		copy(tflinks, prop.TFLinks)
-		resolvedRefs := map[string]interface{}{}
-		for k, v := range prop.resolvedRefs {
-			resolvedRefs[k] = v
-		}
-		tmpSwgProp := SWGSchemaProperty{
-			TFLinks:      tflinks,
-			schema:       schema,
-			resolvedRefs: resolvedRefs,
-		}
+		tmpSwgProp := NewSWGSchemaProperty(schema, prop.TFLinks, prop.resolvedRefs)
 
-		isCyclic, err := s.expandProperty(&tmpSwgProp)
+		isCyclic, err := s.expandProperty(tmpSwgProp)
 		if err != nil {
 			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.SpecPath, err)
 		}
@@ -123,7 +138,9 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 		}
 
 		for propK, propV := range tmpSwgProp.schema.Properties {
-			s.addChildProperty(addr, prop, propK, propV)
+			p := NewSWGSchemaProperty(propV, tmpSwgProp.TFLinks, tmpSwgProp.resolvedRefs)
+			addr := addr.Append(propK)
+			s.addProperty(addr, *p)
 		}
 	}
 
@@ -139,25 +156,9 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 	return nil
 }
 
-// addChildProperty adds a child SWGSchemaProperty to the SWGSchema.
-func (s *SWGSchema) addChildProperty(parentAddr propertyaddr.PropertyAddr, parentSwgProp SWGSchemaProperty, childPropName string, childPropSchema openapispec.Schema) {
-	caddr := parentAddr.Append(childPropName)
-
-	// Keep the TFLinks from parent property
-	tflinks := make([]TFLink, len(parentSwgProp.TFLinks))
-	copy(tflinks, parentSwgProp.TFLinks)
-
-	// Keep the resolved Refs from parent property
-	resolvedRefs := map[string]interface{}{}
-	for k, v := range parentSwgProp.resolvedRefs {
-		resolvedRefs[k] = v
-	}
-
-	s.Properties[caddr.RelativeAddrs().String()] = SWGSchemaProperty{
-		TFLinks:      tflinks,
-		schema:       childPropSchema,
-		resolvedRefs: resolvedRefs,
-	}
+// addProperty adds a new SWGSchemaProperty to the SWGSchema.
+func (s *SWGSchema) addProperty(addr propertyaddr.PropertyAddr, prop SWGSchemaProperty) {
+	s.Properties[addr.RelativeAddrs().String()] = &prop
 }
 
 // expandProperty expand a property itself IN-PLACE until either it is a concrete schema (i.e. not a ref) or hit a cyclic ref.
@@ -187,7 +188,7 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 	return false, nil
 }
 
-func (s *SWGSchema) addTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
 	for raddr, prop := range s.Properties {
 		addr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, raddr)
 
@@ -204,7 +205,7 @@ func (s *SWGSchema) addTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 		if err := s.ExpandPropertyOneLevelDeep(*addr); err != nil {
 			return fmt.Errorf("expanding top level property for %s: %w", addr, err)
 		}
-		return s.addTFLink(swgPropAddr, tfPropAddr)
+		return s.AddTFLink(swgPropAddr, tfPropAddr)
 	}
 	return fmt.Errorf("property %s doesn't belong to schema %s (%s)", swgPropAddr, s.Name, s.SpecPath)
 }
@@ -252,5 +253,5 @@ func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyaddr.Propert
 
 	defer swgSpecSchemaCache.Set(specPath, swgPropAddr.Owner(), swgSchema)
 
-	return swgSchema.addTFLink(swgPropAddr, tfPropAddr)
+	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
 }

@@ -14,19 +14,19 @@
       }
     },
     "def_regular": {
-      "properties" : {
+      "properties": {
         "prop_primitive": {
-            "type" : "string"
+          "type": "string"
         },
         "prop_array_of_primitive": {
-          "type" : "array",
+          "type": "array",
           "items": {
             "type": "int"
           }
         },
         "prop_object": {
           "type": "object",
-          "properties" : {
+          "properties": {
             "prop_nested": {
               "type": "string"
             }
@@ -35,34 +35,83 @@
       }
     },
     "def_propInFileRef": {
-      "properties" : {
+      "properties": {
         "prop_inFileRef": {
           "$ref": "#/definitions/def_foo"
         }
       }
     },
     "def_propCrossFileRef": {
-      "properties" : {
+      "properties": {
         "prop_crossFileRef": {
-          "$ref" : "./bar.json#/definitions/def_bar"
+          "$ref": "./bar.json#/definitions/def_bar"
         }
       }
     },
     "def_propSelfRef": {
-     "properties" : {
-       "prop_selfRef": {
-         "$ref": "#/definitions/def_selfRef"
-       }
-     }
+      "properties": {
+        "prop_selfRef": {
+          "$ref": "#/definitions/def_propSelfRef"
+        }
+      }
     },
     "def_inFileRef": {
       "$ref": "#/definitions/def_foo"
     },
     "def_crossFileRef": {
-      "$ref" : "./bar.json#/definitions/def_bar"
+      "$ref": "./bar.json#/definitions/def_bar"
     },
     "def_selfRef": {
       "$ref": "#/definitions/def_selfRef"
+    },
+
+    "def_allOf": {
+      "allOf": [
+        {
+          "properties": {
+            "prop_nested1": {},
+            "prop_nested2": {}
+          }
+        },
+        {
+          "$ref": "./bar.json#/definitions/def_bar"
+        },
+        {
+          "$ref": "#/definitions/def_allOf"
+        }
+      ],
+      "properties": {
+        "p1": {
+          "allOf":[
+            {
+              "$ref": "./bar.json#/definitions/def_bar"
+            }
+          ],
+          "properties" : {
+            "p1_1": {}
+          }
+        }
+      }
+    },
+
+    "def_a": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/def_foo"
+        }
+      ],
+      "properties": {
+        "p1": {
+          "allOf":[
+            {
+              "$ref": "./bar.json#/definitions/def_bar"
+            }
+          ],
+          "properties" : {
+            "p1_1": {}
+          }
+        }
+      }
     }
   }
 }

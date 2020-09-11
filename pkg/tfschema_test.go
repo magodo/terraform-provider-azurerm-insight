@@ -3,9 +3,10 @@ package pkg
 import (
 	"encoding/json"
 	"errors"
+	"testing"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
@@ -69,7 +70,7 @@ func TestMarshalTFSchema(t *testing.T) {
 					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
 				},
 			},
-			"block_a::block_a_a::bar": {
+			"block_a.block_a_a.bar": {
 				{
 					Spec:       strPtr("xxx"),
 					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
@@ -84,7 +85,7 @@ func TestMarshalTFSchema(t *testing.T) {
 
 	expect := `{
     "Name": "res1",
-    "Properties": {
+    "PropertyLinks": {
         "bar": [
             {
                 "prop": {
@@ -101,7 +102,7 @@ func TestMarshalTFSchema(t *testing.T) {
                 "swagger": "yyy"
             }
         ],
-        "block_a::block_a_a::bar": [
+        "block_a.block_a_a.bar": [
             {
                 "prop": {
                     "addr": "p1.p2",
@@ -132,7 +133,7 @@ func TestMarshalTFSchema(t *testing.T) {
 func TestUnmarshalTFSchema(t *testing.T) {
 	jsonInput := []byte(`{
     "Name": "res1",
-    "Properties": {
+    "PropertyLinks": {
         "bar": [
             {
                 "prop": {
@@ -204,18 +205,18 @@ func TestUnmarshalTFSchema(t *testing.T) {
 }
 
 func TestTFSchema_Validate(t *testing.T) {
-	cases := []struct{
+	cases := []struct {
 		schema TFSchema
-		err error
+		err    error
 	}{
 		{
 			schema: TFSchema{
-				Name: "foo"	,
+				Name:        "foo",
 				SwaggerSpec: "spec1",
 				PropertyLinks: map[string][]SwaggerLink{
 					"p1": {
 						{
-							Spec: strPtr("spec2"),
+							Spec:       strPtr("spec2"),
 							SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1"),
 						},
 					},
@@ -225,12 +226,12 @@ func TestTFSchema_Validate(t *testing.T) {
 		},
 		{
 			schema: TFSchema{
-				Name: "foo"	,
+				Name:        "foo",
 				SwaggerSpec: "spec1",
 				PropertyLinks: map[string][]SwaggerLink{
 					"foo:p1": {
 						{
-							Spec: strPtr("spec2"),
+							Spec:       strPtr("spec2"),
 							SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1"),
 						},
 					},
@@ -240,12 +241,12 @@ func TestTFSchema_Validate(t *testing.T) {
 		},
 		{
 			schema: TFSchema{
-				Name: "foo"	,
+				Name:        "foo",
 				SwaggerSpec: "spec1",
 				PropertyLinks: map[string][]SwaggerLink{
 					"p1": {
 						{
-							Spec: strPtr("spec2"),
+							Spec:       strPtr("spec2"),
 							SchemaProp: *propertyaddr.NewPropertyAddrFromString("p1.p2"),
 						},
 					},
@@ -255,8 +256,8 @@ func TestTFSchema_Validate(t *testing.T) {
 		},
 	}
 
-	for idx, c :=  range cases {
-		err :=c.schema.Validate()
+	for idx, c := range cases {
+		err := c.schema.Validate()
 		if c.err != nil {
 			assert.EqualError(t, err, c.err.Error(), idx)
 		} else {
@@ -268,4 +269,3 @@ func TestTFSchema_Validate(t *testing.T) {
 func strPtr(s string) *string {
 	return &s
 }
-
