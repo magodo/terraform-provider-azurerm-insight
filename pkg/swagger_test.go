@@ -1,13 +1,15 @@
 package pkg
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestNewSWGSchema(t *testing.T) {
@@ -242,10 +244,8 @@ func TestNewSWGSchema(t *testing.T) {
 
 	for idx, c := range cases {
 		actual, err := NewSWGSchema(c.specPath, c.schemaName)
-		assert.Equal(t, c.err, err, idx)
-		if err == nil {
-			assert.Equal(t, c.expect, *actual, idx)
-		}
+		require.Equal(t, c.err, err, idx)
+		require.Equal(t, c.expect, *actual, idx)
 	}
 }
 
@@ -468,12 +468,12 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 
 	for idx, c := range cases {
 		swgschema, err := NewSWGSchema(c.specPath, c.schemaName)
-		assert.Equal(t, c.err, err, idx)
+		require.Equal(t, c.err, err, idx)
 		if err == nil {
 			for _, addr := range c.expandAddrs {
-				assert.NoError(t, swgschema.ExpandPropertyOneLevelDeep(addr), idx)
+				require.NoError(t, swgschema.ExpandPropertyOneLevelDeep(addr), idx)
 			}
-			assert.Equal(t, c.expect, *swgschema, idx)
+			require.Equal(t, c.expect, *swgschema, idx)
 		}
 	}
 }
@@ -510,7 +510,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 			steps: []step{
 				{
 					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1.p1"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
 					err:         nil,
 					expect: SWGSchema{
 						Name:     "def_a",
@@ -518,7 +518,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1.p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -540,7 +540,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				// Add a second tf link to the same swg property
 				{
 					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2.p1"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
 					err:         nil,
 					expect: SWGSchema{
 						Name:     "def_a",
@@ -548,8 +548,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1.p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res2.p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -570,7 +570,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 				{
 					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:p1.prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1.p2"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p2"),
 					err:         nil,
 					expect: SWGSchema{
 						Name:     "def_a",
@@ -578,8 +578,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1.p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res2.p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -589,7 +589,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 							},
 							"p1.prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1.p2")},
+									{*propertyaddr.NewPropertyAddrFromString("res1:p2")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -614,15 +614,164 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 
 	for idx, c := range cases {
 		schema, err := NewSWGSchema(c.specPath, c.schemaName)
-		assert.NoError(t, err, idx)
+		require.NoError(t, err, idx)
 		if err == nil {
 			for iidx, s := range c.steps {
 				err := schema.AddTFLink(s.swgPropAddr, s.tfPropAddr)
-				assert.Equal(t, s.err, err, fmt.Sprintf("%d.%d", idx, iidx))
+				require.Equal(t, s.err, err, fmt.Sprintf("%d.%d", idx, iidx))
 				if err == nil {
-					assert.Equal(t, s.expect, *schema, fmt.Sprintf("%d.%d", idx, iidx))
+					require.Equal(t, s.expect, *schema, fmt.Sprintf("%d.%d", idx, iidx))
 				}
 			}
 		}
+	}
+}
+
+func TestSWGSchema_Marshal(t *testing.T) {
+	pwd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	specFooPath := filepath.Join(pwd, "testdata", "swagger", "foo.json")
+
+	type process func(schema *SWGSchema)
+
+	cases := []struct {
+		specPath   string
+		schemaName string
+		process    process
+		expect     string
+	}{
+		{
+			specPath:   specFooPath,
+			schemaName: "def_regular",
+			expect: fmt.Sprintf(`{
+    "Name": "def_regular",
+    "SpecPath": "%s",
+    "Properties": {
+        "prop_array_of_primitive": {
+            "TFLinks": []
+        },
+        "prop_object": {
+            "TFLinks": []
+        },
+        "prop_primitive": {
+            "TFLinks": []
+        }
+    }
+}`, specFooPath),
+		},
+		{
+			specPath:   specFooPath,
+			schemaName: "def_propInFileRef",
+			expect: fmt.Sprintf(`{
+    "Name": "def_propInFileRef",
+    "SpecPath": "%s",
+    "Properties": {
+        "prop_inFileRef": {
+            "TFLinks": []
+        }
+    }
+}`, specFooPath),
+		},
+		{
+			specPath:   specFooPath,
+			schemaName: "def_allOf",
+			expect: fmt.Sprintf(`{
+    "Name": "def_allOf",
+    "SpecPath": "%s",
+    "Properties": {
+		"prop_nested1": {
+            "TFLinks": []
+ 		},
+		"prop_nested2": {
+            "TFLinks": []
+ 		},
+		"prop_primitive": {
+            "TFLinks": []
+ 		},
+		"p1": {
+            "TFLinks": []
+ 		}
+    }
+}`, specFooPath),
+		},
+		{
+			specPath:   specFooPath,
+			schemaName: "def_a",
+			process: func(schema *SWGSchema) {
+				swgPropAddr := *propertyaddr.NewPropertyAddrFromString("def_a:p1.prop_primitive")
+				tfPropAddr := *propertyaddr.NewPropertyAddrFromString("res1:p2")
+				require.NoError(t, schema.AddTFLink(swgPropAddr, tfPropAddr))
+			},
+			expect: fmt.Sprintf(`{
+    "Name": "def_a",
+    "SpecPath": "%s",
+    "Properties": {
+		"p1.prop_primitive": {
+            "TFLinks": ["res1:p2"]
+ 		},
+		"p1.p1_1": {
+            "TFLinks": []
+ 		},
+		"prop_primitive": {
+            "TFLinks": []
+ 		}
+    }
+}`, specFooPath),
+		},
+	}
+
+	for idx, c := range cases {
+		schema, err := NewSWGSchema(c.specPath, c.schemaName)
+		require.NoError(t, err, idx)
+		if c.process != nil {
+			c.process(schema)
+		}
+		b, err := json.Marshal(schema)
+		require.NoError(t, err, idx)
+		require.JSONEq(t, c.expect, string(b))
+	}
+}
+
+func TestSWGSchema_Unmarshal(t *testing.T) {
+	cases := []struct {
+		input  string
+		expect SWGSchema
+	}{
+		{
+			input: `{
+    "Name": "def_a",
+    "SpecPath": "path",
+    "Properties": {
+		"p1.prop_primitive": {
+            "TFLinks": ["res1:p2"]
+ 		},
+		"p1.p1_1": {
+            "TFLinks": []
+ 		},
+		"prop_primitive": {
+            "TFLinks": []
+ 		}
+    }
+}`,
+			expect: SWGSchema{
+				Name:     "def_a",
+				SpecPath: "path",
+				Properties: SWGSchemaProperties{
+					"p1.prop_primitive": &SWGSchemaProperty{TFLinks: []TFLink{
+						{*propertyaddr.NewPropertyAddrFromString("res1:p2")},
+					}},
+					"p1.p1_1":        &SWGSchemaProperty{TFLinks: []TFLink{}},
+					"prop_primitive": &SWGSchemaProperty{TFLinks: []TFLink{}},
+				},
+			},
+		},
+	}
+
+	for idx, c := range cases {
+		var actual SWGSchema
+		require.NoError(t, json.Unmarshal([]byte(c.input), &actual), idx)
+		require.Equal(t, c.expect, actual, idx)
 	}
 }

@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"encoding/json"
 	"fmt"
 	"sync"
 
@@ -12,9 +13,31 @@ type TFLink struct {
 	Prop propertyaddr.PropertyAddr
 }
 
+type TFLinks []TFLink
+
+func (links TFLinks) MarshalJSON() ([]byte, error) {
+	addrs := []string{}
+	for _, link := range links {
+		addrs = append(addrs, link.Prop.String())
+	}
+	return json.Marshal(addrs)
+}
+
+func (links *TFLinks) UnmarshalJSON(b []byte) error {
+	var addrs []string
+	if err := json.Unmarshal(b, &addrs); err != nil {
+		return err
+	}
+	*links = []TFLink{}
+	for _, addr := range addrs {
+		*links = append(*links, TFLink{*propertyaddr.NewPropertyAddrFromString(addr)})
+	}
+	return nil
+}
+
 type SWGSchemaProperty struct {
 	// Terraform property addresses
-	TFLinks []TFLink
+	TFLinks TFLinks
 
 	// The schema of this swagger schema property
 	schema openapispec.Schema
