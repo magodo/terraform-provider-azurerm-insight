@@ -39,10 +39,10 @@ type SWGSchemaProperty struct {
 	// Terraform property addresses
 	TFLinks TFLinks
 
-	// The schema of this swagger schema property
+	// The schemas of this swagger schemas property
 	schema openapispec.Schema
 
-	// The resolved URI refs along the way to this schema, each is an absolute/normalized reference.
+	// The resolved URI refs along the way to this schemas, each is an absolute/normalized reference.
 	resolvedRefs map[string]interface{}
 }
 
@@ -66,7 +66,7 @@ func NewSWGSchemaProperty(schema openapispec.Schema, tflinks []TFLink, resolvedR
 	}
 }
 
-type SWGSchemaProperties map[string]*SWGSchemaProperty // the key is swagger schema relative property addr
+type SWGSchemaProperties map[string]*SWGSchemaProperty // the key is swagger schemas relative property addr
 
 type SWGSchema struct {
 	Name       string
@@ -90,7 +90,7 @@ func NewSWGSchema(specPath string, schemaName string) (*SWGSchema, error) {
 				TFLinks: []TFLink{},
 				schema:  swagger.Definitions[schemaName],
 				resolvedRefs: map[string]interface{}{
-					// Consider this schema itself as resolved reference
+					// Consider this schemas itself as resolved reference
 					normalizePaths("#/definitions/"+schemaName, specPath): struct{}{},
 				},
 			},
@@ -98,15 +98,15 @@ func NewSWGSchema(specPath string, schemaName string) (*SWGSchema, error) {
 		swagger: swagger,
 	}
 
-	// Expand the root level properties of the schema
+	// Expand the root level properties of the schemas
 	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
 	if err != nil {
-		return nil, fmt.Errorf("expanding schema %s (%s): %w", schemaName, specPath, err)
+		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, specPath, err)
 	}
 	return swgSchema, nil
 }
 
-// ExpandPropertyOneLevelDeep expand the specified swagger schema property one level deep, with any allOf and $ref taken into consideration.
+// ExpandPropertyOneLevelDeep expand the specified swagger schemas property one level deep, with any allOf and $ref taken into consideration.
 func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) error {
 	raddr := addr.RelativeAddrs().String()
 	prop, ok := s.Properties[raddr]
@@ -134,7 +134,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 	// expand AllOf properties
 	for _, schema := range prop.schema.AllOf {
 
-		// AllOf contains concrete schema, then directly add the property.
+		// AllOf contains concrete schemas, then directly add the property.
 		if schema.Ref.String() == "" {
 			for propK, propV := range schema.Properties {
 				p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
@@ -146,8 +146,8 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 
 		// AllOf contains refs, then need to expandProperty then first.
 
-		// We construct a temp SWGSchemaProperty here (as it has no object/property related) to expand it into a concrete schema.
-		// Then we will iterate that schema's property which by concept is the top level property of this parent property.
+		// We construct a temp SWGSchemaProperty here (as it has no object/property related) to expand it into a concrete schemas.
+		// Then we will iterate that schemas's property which by concept is the top level property of this parent property.
 		tmpSwgProp := NewSWGSchemaProperty(schema, prop.TFLinks, prop.resolvedRefs)
 
 		isCyclic, err := s.expandProperty(tmpSwgProp)
@@ -184,7 +184,7 @@ func (s *SWGSchema) addProperty(addr propertyaddr.PropertyAddr, prop SWGSchemaPr
 	s.Properties[addr.RelativeAddrs().String()] = &prop
 }
 
-// expandProperty expand a property itself IN-PLACE until either it is a concrete schema (i.e. not a ref) or hit a cyclic ref.
+// expandProperty expand a property itself IN-PLACE until either it is a concrete schemas (i.e. not a ref) or hit a cyclic ref.
 func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err error) {
 	if ref := prop.schema.Ref; ref.String() != "" {
 		normalizedRefURI := normalizeFileRef(&ref, s.SpecPath).String()
@@ -202,7 +202,7 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 			return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
 		}
 
-		// update the stored schema by the derefed schema
+		// update the stored schemas by the derefed schemas
 		prop.schema = *schema
 
 		return s.expandProperty(prop)
@@ -224,13 +224,13 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 			return nil
 		}
 
-		// The schema property we're seeking is a direct or indirect member of the property under iteration
+		// The schemas property we're seeking is a direct or indirect member of the property under iteration
 		if err := s.ExpandPropertyOneLevelDeep(*addr); err != nil {
 			return fmt.Errorf("expanding top level property for %s: %w", addr, err)
 		}
 		return s.AddTFLink(swgPropAddr, tfPropAddr)
 	}
-	return fmt.Errorf("property %s doesn't belong to schema %s (%s)", swgPropAddr, s.Name, s.SpecPath)
+	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.SpecPath)
 }
 
 type SWGSpecSchemaCache struct {
@@ -256,8 +256,8 @@ func (c *SWGSpecSchemaCache) Set(specPath, schemaName string, schema *SWGSchema)
 	c.m[k] = schema
 }
 
-// swgSpecSchemaCache caches the SWGSchema using swagger + schema as key.
-// During each link operation from terraform schema to swagger schema, it will manipulate one of
+// swgSpecSchemaCache caches the SWGSchema using swagger + schemas as key.
+// During each link operation from terraform schemas to swagger schemas, it will manipulate one of
 // the SWGSchema in this cache. Afterwards, this cache contains all the mapping info from swagger to terraform.
 var swgSpecSchemaCache = SWGSpecSchemaCache{
 	Mutex: sync.Mutex{},

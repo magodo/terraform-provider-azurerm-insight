@@ -3,7 +3,12 @@ package pkg
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
 	"github.com/stretchr/testify/assert"
@@ -263,6 +268,288 @@ func TestTFSchema_Validate(t *testing.T) {
 		} else {
 			assert.NoError(t, err, idx)
 		}
+	}
+}
+
+func TestTFSchema_LinkSwagger(t *testing.T) {
+	pwd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	specDir := filepath.Join(pwd, "testdata", "swagger")
+	specFooPath := filepath.Join(specDir, "foo.json")
+	specBarPath := filepath.Join(specDir, "bar.json")
+
+	cases := []struct {
+		schemas []TFSchema
+		expect  map[string]*SWGSchema
+	}{
+		// single tf schema -> single swagger
+		{
+			[]TFSchema{
+				{
+					Name:        "res1",
+					SwaggerSpec: "foo.json",
+					PropertyLinks: map[string][]SwaggerLink{
+						"p1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+							},
+						},
+						"p2.p2_1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+							},
+						},
+					},
+				},
+			},
+			map[string]*SWGSchema{
+				specFooPath + "#/definitions/def_a": {
+					Name:     "def_a",
+					SpecPath: specFooPath,
+					Properties: map[string]*SWGSchemaProperty{
+						"prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+								},
+							},
+						},
+						"p1": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		// single tf schema -> multiple swaggers (cross file)
+		{
+			[]TFSchema{
+				{
+					Name:        "res1",
+					SwaggerSpec: "foo.json",
+					PropertyLinks: map[string][]SwaggerLink{
+						"p1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+							},
+						},
+						"p2.p2_1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+							},
+						},
+						"p3": {
+							{
+								Spec:       strPtr("bar.json"),
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_bar:prop_primitive"),
+							},
+						},
+					},
+				},
+			},
+			map[string]*SWGSchema{
+				specFooPath + "#/definitions/def_a": {
+					Name:     "def_a",
+					SpecPath: specFooPath,
+					Properties: map[string]*SWGSchemaProperty{
+						"prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+								},
+							},
+						},
+						"p1": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+								},
+							},
+						},
+					},
+				},
+				specBarPath + "#/definitions/def_bar": {
+					Name:     "def_bar",
+					SpecPath: specBarPath,
+					Properties: map[string]*SWGSchemaProperty{
+						"prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p3"),
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		// multiple tf schema -> single swaggers
+		{
+			[]TFSchema{
+				{
+					Name:        "res1",
+					SwaggerSpec: "foo.json",
+					PropertyLinks: map[string][]SwaggerLink{
+						"p1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+							},
+						},
+						"p2.p2_1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+							},
+						},
+					},
+				},
+				{
+					Name:        "res2",
+					SwaggerSpec: "foo.json",
+					PropertyLinks: map[string][]SwaggerLink{
+						"p1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1.p1_1"),
+							},
+						},
+					},
+				},
+			},
+			map[string]*SWGSchema{
+				specFooPath + "#/definitions/def_a": {
+					Name:     "def_a",
+					SpecPath: specFooPath,
+					Properties: map[string]*SWGSchemaProperty{
+						"prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+								},
+							},
+						},
+						"p1.prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+								},
+							},
+						},
+						"p1.p1_1": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+								},
+								{
+									*propertyaddr.NewPropertyAddrFromString("res2:p1"),
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		// multiple tf schema -> multiple swaggers
+		{
+			[]TFSchema{
+				{
+					Name:        "res1",
+					SwaggerSpec: "foo.json",
+					PropertyLinks: map[string][]SwaggerLink{
+						"p1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+							},
+						},
+						"p2.p2_1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+							},
+						},
+						"p3": {
+							{
+								Spec:       strPtr("bar.json"),
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_bar:prop_primitive"),
+							},
+						},
+					},
+				},
+				{
+					Name:        "res2",
+					SwaggerSpec: "foo.json",
+					PropertyLinks: map[string][]SwaggerLink{
+						"p1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1.p1_1"),
+							},
+						},
+					},
+				},
+			},
+			map[string]*SWGSchema{
+				specFooPath + "#/definitions/def_a": {
+					Name:     "def_a",
+					SpecPath: specFooPath,
+					Properties: map[string]*SWGSchemaProperty{
+						"prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+								},
+							},
+						},
+						"p1.prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+								},
+							},
+						},
+						"p1.p1_1": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+								},
+								{
+									*propertyaddr.NewPropertyAddrFromString("res2:p1"),
+								},
+							},
+						},
+					},
+				},
+				specBarPath + "#/definitions/def_bar": {
+					Name:     "def_bar",
+					SpecPath: specBarPath,
+					Properties: map[string]*SWGSchemaProperty{
+						"prop_primitive": {
+							TFLinks: []TFLink{
+								{
+									*propertyaddr.NewPropertyAddrFromString("res1:p3"),
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for idx, c := range cases {
+		for iidx, schema := range c.schemas {
+			require.NoError(t, schema.LinkSwagger(specDir), fmt.Sprintf("%d.%d", idx, iidx))
+		}
+		var actual map[string]*SWGSchema
+		b, err := json.Marshal(swgSpecSchemaCache.m)
+		require.NoError(t, err, idx)
+		require.NoError(t, json.Unmarshal(b, &actual), idx)
+		require.Equal(t, c.expect, actual, idx)
+
+		// clean up the swg schema cache
+		swgSpecSchemaCache.m = map[string]*SWGSchema{}
 	}
 }
 

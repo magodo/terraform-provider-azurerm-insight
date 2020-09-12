@@ -8,15 +8,15 @@ import (
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"swagger"` // swagger swagger alias that this propertyaddr resides in, this overrides the global swagger swagger scope
-	SchemaProp propertyaddr.PropertyAddr `json:"prop"`    // dot-separated swagger schema propertyaddr, starting from the schema used as the PUT body parameter
+	Spec       *string                   `json:"swagger"` // swagger spec abs path that this propertyaddr resides in, this overrides the global swagger scope
+	SchemaProp propertyaddr.PropertyAddr `json:"prop"`    // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
 
 type TFSchema struct {
 	Name          string
-	SwaggerSpec   string `json:"swagger"`
+	SwaggerSpec   string `json:"swagger"` // swagger spec abs path that all the linked swagger property resides in by default
 	PropertyLinks TFSchemaPropertyLinks
 }
 
@@ -46,20 +46,13 @@ func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
 	return nil
 }
 
+// Validate validates the swagger property and tf schemas property has the correct form
 func (schema TFSchema) Validate() error {
-	if err := specAlias.ValidateAlias(schema.SwaggerSpec); err != nil {
-		return err
-	}
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		if addr := propertyaddr.NewPropertyAddrFromString(tfProp); addr.Owner() != "" {
 			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
 		}
 		for _, link := range tfToSwaggerLinks {
-			if link.Spec != nil {
-				if err := specAlias.ValidateAlias(*link.Spec); err != nil {
-					return err
-				}
-			}
 			if link.SchemaProp.Owner() == "" {
 				return fmt.Errorf("swagger property addr %s should specify owner", link.SchemaProp)
 			}
