@@ -70,30 +70,15 @@ func (addr PropertyAddr) RelativeAddrs() RelativeAddrs {
 }
 
 func (addr PropertyAddr) MarshalJSON() ([]byte, error) {
-	o := map[string]interface{}{}
-	if addr.owner != "" {
-		o["owner"] = addr.owner
-	}
-	if len(addr.addrs) == 0 {
-		return json.Marshal(o)
-	}
-	o["addr"] = strings.Join(addr.addrs, addrSep)
-	return json.Marshal(o)
+	return json.Marshal(addr.String())
 }
 
 func (addr *PropertyAddr) UnmarshalJSON(b []byte) error {
-	o := map[string]interface{}{}
-	if err := json.Unmarshal(b, &o); err != nil {
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	if a, ok := o["addr"]; ok {
-		if a := a.(string); a != "" {
-			addr.addrs = strings.Split(a, addrSep)
-		}
-	}
-	if owner, ok := o["owner"]; ok {
-		addr.owner = owner.(string)
-	}
+	*addr = *NewPropertyAddrFromString(s)
 	return nil
 }
 
@@ -136,5 +121,5 @@ func (addr PropertyAddr) Equals(oaddr PropertyAddr) bool {
 }
 
 func ToSwaggerDefinitionRef(addr PropertyAddr) (spec.Ref, error) {
-	return spec.NewRef(strings.TrimRight("#definitions/"+ strings.ReplaceAll(strings.ReplaceAll(addr.String(), ownerSep, "/"), addrSep, "/"), "/"))
+	return spec.NewRef(strings.TrimRight("#definitions/"+strings.ReplaceAll(strings.ReplaceAll(addr.String(), ownerSep, "/"), addrSep, "/"), "/"))
 }

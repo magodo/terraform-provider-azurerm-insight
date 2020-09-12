@@ -4,10 +4,7 @@
   "PropertyLinks": {
     "address_space": [
         {
-            "prop": {
-                "owner": "VirtualNetwork",
-                "addr": "properties.addressSpace"
-            }
+            "prop": "VirtualNetwork:properties.addressSpace"
         }
     ],
     "ddos_protection_plan.enable": [],

@@ -44,10 +44,10 @@ func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
 	expect := &TFSchema{
 		Name: "res1",
 		PropertyLinks: map[string][]SwaggerLink{
-			"bar":                   []SwaggerLink{},
-			"block_a.block_a_a.bar": []SwaggerLink{},
-			"block_a.foo":           []SwaggerLink{},
-			"foo":                   []SwaggerLink{},
+			"bar":                   {},
+			"block_a.block_a_a.bar": {},
+			"block_a.foo":           {},
+			"foo":                   {},
 		},
 	}
 
@@ -93,33 +93,21 @@ func TestMarshalTFSchema(t *testing.T) {
     "PropertyLinks": {
         "bar": [
             {
-                "prop": {
-                    "addr": "p1.p2",
-                    "owner": "schema1"
-                },
+                "prop": "schema1:p1.p2",
                 "swagger": "xxx"
             },
             {
-                "prop": {
-                    "addr": "p3.p4",
-                    "owner": "schema2"
-                },
+                "prop": "schema2:p3.p4",
                 "swagger": "yyy"
             }
         ],
         "block_a.block_a_a.bar": [
             {
-                "prop": {
-                    "addr": "p1.p2",
-                    "owner": "schema1"
-                },
+                "prop": "schema1:p1.p2",
                 "swagger": "xxx"
             },
             {
-                "prop": {
-                    "addr": "p3.p4",
-                    "owner": "schema2"
-                },
+                "prop": "schema2:p3.p4",
                 "swagger": "yyy"
             }
         ]
@@ -141,33 +129,21 @@ func TestUnmarshalTFSchema(t *testing.T) {
     "PropertyLinks": {
         "bar": [
             {
-                "prop": {
-                    "addr": "p1.p2",
-                    "owner": "schema1"
-                },
+                "prop": "schema1:p1.p2",
                 "swagger": "xxx"
             },
             {
-                "prop": {
-                    "addr": "p3.p4",
-                    "owner": "schema2"
-                },
+                "prop": "schema2:p3.p4",
                 "swagger": "yyy"
             }
         ],
         "block_a::block_a_a::bar": [
             {
-                "prop": {
-                    "addr": "p1.p2",
-                    "owner": "schema1"
-                },
+                "prop": "schema1:p1.p2",
                 "swagger": "xxx"
             },
             {
-                "prop": {
-                    "addr": "p3.p4",
-                    "owner": "schema2"
-                },
+                "prop": "schema2:p3.p4",
                 "swagger": "yyy"
             }
         ]
