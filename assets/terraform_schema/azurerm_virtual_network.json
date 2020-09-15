@@ -7,15 +7,50 @@
             "prop": "VirtualNetwork:properties.addressSpace"
         }
     ],
-    "ddos_protection_plan.enable": [],
-    "ddos_protection_plan.id": [],
-    "dns_servers": [],
-    "guid": [],
-    "id": [],
-    "location": [],
-    "name": [],
-    "resource_group_name": [],
-    "subnet": [],
-    "tags": []
+    "ddos_protection_plan.enable": [
+        {
+            "prop": "VirtualNetwork:properties.enableDdosProtection"
+        }
+    ],
+    "ddos_protection_plan.id": [
+        {
+            "prop": "VirtualNetwork:properties.ddosProtectionPlan"
+        }
+    ],
+    "dns_servers": [
+        {
+            "prop": "VirtualNetwork:properties.dhcpOptions.dnsServers"
+        }
+    ],
+    "guid": [
+        {
+            "prop": "VirtualNetwork:properties.resourceGuid"
+        }
+    ],
+    "subnet.address_prefix": [
+        {
+            "prop": "VirtualNetwork:properties.subnets.properties.addressPrefix"
+        }
+    ],
+    "subnet.id": [
+        {
+            "prop": "VirtualNetwork:properties.subnets.id"
+        }
+    ],
+    "subnet.name": [
+        {
+            "prop": "VirtualNetwork:properties.subnets.name"
+        }
+    ],
+    "subnet.security_group": [
+        {
+            "prop": "VirtualNetwork:properties.subnets.properties.networkSecurityGroup"
+        }
+    ],
+    "tags": [
+        {
+            "prop": "VirtualNetwork:tags"
+        }
+    ]
   }
 }
