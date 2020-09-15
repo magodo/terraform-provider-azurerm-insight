@@ -19,7 +19,36 @@ func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
 {
   "attributes": {
 	"foo": {},
-    "bar": {}
+	"bar": {
+	  "type": [
+		"list",
+		[
+		  "object",
+		  {
+			"p1": "string",
+			"p2": [
+              "list",
+              [
+              	"object",
+              	{
+                  "p2_1": "string"
+              	}
+              ]
+			],
+			"p3": [
+			  "map",
+			  "string"
+			]
+		  }
+		]
+	  ]
+	},
+	"baz": {
+	  "type": [
+		"map",
+		"string"
+	  ]
+	}
   },
   "block_types": {
     "block_a": {
@@ -44,10 +73,13 @@ func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
 	expect := &TFSchema{
 		Name: "res1",
 		PropertyLinks: map[string][]SwaggerLink{
-			"bar":                   {},
+			"foo":                   {},
+			"bar.p1":                {},
+			"bar.p2.p2_1":           {},
+			"bar.p3":                {},
+			"baz":                   {},
 			"block_a.block_a_a.bar": {},
 			"block_a.foo":           {},
-			"foo":                   {},
 		},
 	}
 

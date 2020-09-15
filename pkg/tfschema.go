@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/zclconf/go-cty/cty"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
 )
 
@@ -68,12 +70,31 @@ func NewSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock) *TF
 }
 
 func recordAttributeWithinBlock(parentBlockAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
-	for attrKey := range block.Attributes {
+	for attrKey, attrVal := range block.Attributes {
 		addr := parentBlockAddr.Append(attrKey)
-		attributes[addr.String()] = []SwaggerLink{}
+		recordAttributeByType(addr, attributes, attrVal.Type)
 	}
 	for blockKey, blockVal := range block.BlockTypes {
 		addr := parentBlockAddr.Append(blockKey)
 		recordAttributeWithinBlock(addr, attributes, &blockVal.TerraformBlock)
+	}
+}
+
+func recordAttributeByType(parentAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, elementType *cty.Type) {
+	switch {
+	case elementType == nil,
+		elementType.IsPrimitiveType():
+		attributes[parentAddr.String()] = []SwaggerLink{}
+	case elementType.IsListType():
+		recordAttributeByType(parentAddr, attributes, elementType.ListElementType())
+	case elementType.IsSetType():
+		recordAttributeByType(parentAddr, attributes, elementType.SetElementType())
+	case elementType.IsMapType():
+		recordAttributeByType(parentAddr, attributes, elementType.MapElementType())
+	case elementType.IsObjectType():
+		for attrKey, attrVal := range elementType.AttributeTypes() {
+			addr := parentAddr.Append(attrKey)
+			recordAttributeByType(addr, attributes, &attrVal)
+		}
 	}
 }
