@@ -186,29 +186,49 @@ func (s *SWGSchema) addProperty(addr propertyaddr.PropertyAddr, prop SWGSchemaPr
 
 // expandProperty expand a property itself IN-PLACE until either it is a concrete schemas (i.e. not a ref) or hit a cyclic ref.
 func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err error) {
-	if ref := prop.schema.Ref; ref.String() != "" {
-		normalizedRefURI := normalizeFileRef(&ref, s.SpecPath).String()
-
-		// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.
-		if _, ok := prop.resolvedRefs[normalizedRefURI]; ok {
-			return true, nil
+	ref := prop.schema.Ref
+	if ref.String() == "" {
+		// Specially, if current schema is an array and the items is a ref, we need to go on expand it.
+		if prop.schema.Items == nil {
+			return false, nil
 		}
 
-		// Keep track of the resolved reference to avoid cyclic ref
-		prop.resolvedRefs[normalizedRefURI] = struct{}{}
-
-		schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.SpecPath})
-		if err != nil {
-			return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
+		if prop.schema.Items.Schema == nil || len(prop.schema.Items.Schemas) != 0 {
+			return false, nil
 		}
 
-		// update the stored schemas by the derefed schemas
-		prop.schema = *schema
-
-		return s.expandProperty(prop)
+		var schema openapispec.Schema
+		if prop.schema.Items.Schema != nil {
+			schema = *prop.schema.Items.Schema
+		} else {
+			schema = prop.schema.Items.Schemas[0]
+		}
+		if schema.Ref.String() == "" {
+			return false, nil
+		}
+		// continue expanding the ref of the array item
+		ref = schema.Ref
 	}
 
-	return false, nil
+	normalizedRefURI := normalizeFileRef(&ref, s.SpecPath).String()
+
+	// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.
+	if _, ok := prop.resolvedRefs[normalizedRefURI]; ok {
+		return true, nil
+	}
+
+	// Keep track of the resolved reference to avoid cyclic ref
+	prop.resolvedRefs[normalizedRefURI] = struct{}{}
+
+	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.SpecPath})
+	if err != nil {
+		return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
+	}
+
+	// update the stored schemas by the derefed schemas
+	prop.schema = *schema
+
+	return s.expandProperty(prop)
 }
 
 func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {

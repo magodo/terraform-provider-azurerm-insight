@@ -1,9 +1,10 @@
 package propertyaddr
 
 import (
-	"github.com/go-openapi/spec"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/go-openapi/spec"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewPropertyAddrFromString(t *testing.T) {
@@ -49,19 +50,19 @@ func TestNewPropertyAddrFromString(t *testing.T) {
 	}
 
 	for idx, c := range cases {
-		assert.Equal(t, c.expect, NewPropertyAddrFromString(c.input), idx)
+		require.Equal(t, c.expect, NewPropertyAddrFromString(c.input), idx)
 	}
 }
 
 func TestNewPropertyAddr(t *testing.T) {
-	assert.Equal(t, &PropertyAddr{
+	require.Equal(t, &PropertyAddr{
 		owner: "res1",
 		addrs: []string{"p1", "p2"},
 	}, NewPropertyAddr("res1", "p1", "p2"))
 }
 
 func TestNewPropertyAddrFromStringWithOwner(t *testing.T) {
-	assert.Equal(t, &PropertyAddr{
+	require.Equal(t, &PropertyAddr{
 		owner: "res1",
 		addrs: []string{"p1", "p2"},
 	}, NewPropertyAddrFromStringWithOwner("res1", "p1.p2"))
@@ -79,7 +80,7 @@ func TestPropertyAddr_String(t *testing.T) {
 
 	for _, addr := range addrs {
 		propAddr := NewPropertyAddrFromString(addr)
-		assert.Equal(t, addr, propAddr.String())
+		require.Equal(t, addr, propAddr.String())
 	}
 }
 
@@ -90,33 +91,30 @@ func TestPropertyAddr_MarshalJSON(t *testing.T) {
 	}{
 		{
 			addr:   PropertyAddr{},
-			expect: "{}",
+			expect: `""`,
 		},
 		{
-			addr: PropertyAddr{addrs: []string{"p1"}},
-			expect: `{
-  "addr": "p1"
-}`,
+			addr:   PropertyAddr{addrs: []string{"p1"}},
+			expect: `"p1"`,
 		},
 		{
-			addr: PropertyAddr{addrs: []string{"p1", "p2"}},
-			expect: `{
-  "addr": "p1.p2"
-}`,
+			addr:   PropertyAddr{addrs: []string{"p1", "p2"}},
+			expect: `"p1.p2"`,
 		},
 		{
-			addr: PropertyAddr{owner: "res1", addrs: []string{"p1", "p2"}},
-			expect: `{
-  "owner": "res1",
-  "addr": "p1.p2"
-}`,
+			addr:   PropertyAddr{owner: "res1", addrs: []string{"p1", "p2"}},
+			expect: `"res1:p1.p2"`,
 		},
 	}
 
-	for _, c := range cases {
+	for idx, c := range cases {
 		actual, err := c.addr.MarshalJSON()
-		assert.NoError(t, err)
-		assert.JSONEq(t, c.expect, string(actual))
+		require.NoError(t, err)
+		if c.expect == "" {
+			require.Equal(t, c.expect, string(actual), idx)
+		} else {
+			require.JSONEq(t, c.expect, string(actual), idx)
+		}
 	}
 }
 
@@ -126,26 +124,19 @@ func TestPropertyAddr_UnmarshalJSON(t *testing.T) {
 		expect PropertyAddr
 	}{
 		{
-			input:  "{}",
-			expect: PropertyAddr{},
+			input:  `""`,
+			expect: PropertyAddr{addrs: []string{}},
 		},
 		{
-			input: `{
-  "addr": "p1"
-}`,
+			input:  `"p1"`,
 			expect: PropertyAddr{addrs: []string{"p1"}},
 		},
 		{
-			input: `{
-  "addr": "p1.p2"
-}`,
+			input:  `"p1.p2"`,
 			expect: PropertyAddr{addrs: []string{"p1", "p2"}},
 		},
 		{
-			input: `{
-  "owner": "res1",
-  "addr": "p1.p2"
-}`,
+			input:  `"res1:p1.p2"`,
 			expect: PropertyAddr{owner: "res1", addrs: []string{"p1", "p2"}},
 		},
 	}
@@ -153,8 +144,8 @@ func TestPropertyAddr_UnmarshalJSON(t *testing.T) {
 	for _, c := range cases {
 		var addr PropertyAddr
 		err := addr.UnmarshalJSON([]byte(c.input))
-		assert.NoError(t, err)
-		assert.Equal(t, c.expect, addr)
+		require.NoError(t, err)
+		require.Equal(t, c.expect, addr)
 	}
 }
 
@@ -192,7 +183,7 @@ func TestPropertyAddr_Append(t *testing.T) {
 	}
 
 	for idx, c := range cases {
-		assert.Equal(t, c.expect, c.addr.Append(c.oaddr), idx)
+		require.Equal(t, c.expect, c.addr.Append(c.oaddr), idx)
 	}
 }
 
@@ -270,7 +261,7 @@ func TestPropertyAddr_Contains(t *testing.T) {
 	}
 
 	for idx, c := range cases {
-		assert.Equal(t, c.contains, c.addr.Contains(c.oaddr), idx)
+		require.Equal(t, c.contains, c.addr.Contains(c.oaddr), idx)
 	}
 }
 
@@ -353,7 +344,7 @@ func TestPropertyAddr_Equals(t *testing.T) {
 	}
 
 	for idx, c := range cases {
-		assert.Equal(t, c.equals, c.addr.Equals(c.oaddr), idx)
+		require.Equal(t, c.equals, c.addr.Equals(c.oaddr), idx)
 	}
 }
 
@@ -388,10 +379,10 @@ func TestToSwaggerDefinitionRef(t *testing.T) {
 	for idx, c := range cases {
 		ref, err := ToSwaggerDefinitionRef(c.addr)
 		if c.isError {
-			assert.Error(t, err, idx)
+			require.Error(t, err, idx)
 			continue
 		}
 		expect, _ := spec.NewRef(c.uri)
-		assert.Equal(t, expect.String(), ref.String(), idx)
+		require.Equal(t, expect.String(), ref.String(), idx)
 	}
 }

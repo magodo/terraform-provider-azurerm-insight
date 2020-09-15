@@ -24,6 +24,12 @@
             "type": "int"
           }
         },
+        "prop_array_of_object": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/def_foo"
+          }
+        },
         "prop_object": {
           "type": "object",
           "properties": {
@@ -110,8 +116,35 @@
           "properties" : {
             "p1_1": {}
           }
+        },
+        "p2": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "p3": {
+          "type": "array",
+          "items": {
+            "$ref": "./bar.json#/definitions/def_bar"
+          }
         }
       }
+    },
+    "def_array_simple": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "def_array_ref": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/def_foo"
+      }
+    },
+    "def_array_ref_ref": {
+      "$ref": "#/definitions/def_array_ref"
     }
   }
 }

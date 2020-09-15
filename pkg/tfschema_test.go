@@ -277,6 +277,16 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
 							},
 						},
+						"p3": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p2"),
+							},
+						},
+						"p4.p4_1": {
+							{
+								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p3.prop_primitive"),
+							},
+						},
 					},
 				},
 			},
@@ -299,6 +309,16 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
+						"p2": {TFLinks: []TFLink{
+							{
+								*propertyaddr.NewPropertyAddrFromString("res1:p3"),
+							},
+						}},
+						"p3.prop_primitive": {TFLinks: []TFLink{
+							{
+								*propertyaddr.NewPropertyAddrFromString("res1:p4.p4_1"),
+							},
+						}},
 					},
 				},
 			},
@@ -348,6 +368,8 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
+						"p2": {TFLinks: []TFLink{}},
+						"p3": {TFLinks: []TFLink{}},
 					},
 				},
 				specBarPath + "#/definitions/def_bar": {
@@ -425,6 +447,8 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
+						"p2": {TFLinks: []TFLink{}},
+						"p3": {TFLinks: []TFLink{}},
 					},
 				},
 			},
@@ -495,6 +519,8 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
+						"p2": {TFLinks: []TFLink{}},
+						"p3": {TFLinks: []TFLink{}},
 					},
 				},
 				specBarPath + "#/definitions/def_bar": {

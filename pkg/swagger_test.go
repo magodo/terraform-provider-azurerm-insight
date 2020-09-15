@@ -20,10 +20,9 @@ func TestNewSWGSchema(t *testing.T) {
 	specFooPath := filepath.Join(pwd, "testdata", "swagger", "foo.json")
 	specBarPath := filepath.Join(pwd, "testdata", "swagger", "bar.json")
 	specFoo, err := LoadSwagger(specFooPath)
+	require.NoError(t, err)
 	specBar, err := LoadSwagger(specBarPath)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	cases := []struct {
 		specPath   string
@@ -68,6 +67,13 @@ func TestNewSWGSchema(t *testing.T) {
 					"prop_array_of_primitive": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_regular"].Properties["prop_array_of_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_regular": struct{}{},
+						},
+					},
+					"prop_array_of_object": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_regular"].Properties["prop_array_of_object"],
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_regular": struct{}{},
 						},
@@ -240,6 +246,66 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger: specFoo,
 			},
 		},
+		{
+			specPath:   specFooPath,
+			schemaName: "def_array_simple",
+			err:        nil,
+			expect: SWGSchema{
+				Name:     "def_array_simple",
+				SpecPath: specFooPath,
+				Properties: map[string]*SWGSchemaProperty{
+					"": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_array_simple"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_array_simple": struct{}{},
+						},
+					},
+				},
+				swagger: specFoo,
+			},
+		},
+		{
+			specPath:   specFooPath,
+			schemaName: "def_array_ref",
+			err:        nil,
+			expect: SWGSchema{
+				Name:     "def_array_ref",
+				SpecPath: specFooPath,
+				Properties: map[string]*SWGSchemaProperty{
+					"prop_primitive": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_foo":       struct{}{},
+							specFooPath + "#/definitions/def_array_ref": struct{}{},
+						},
+					},
+				},
+				swagger: specFoo,
+			},
+		},
+		{
+			specPath:   specFooPath,
+			schemaName: "def_array_ref_ref",
+			err:        nil,
+			expect: SWGSchema{
+				Name:     "def_array_ref_ref",
+				SpecPath: specFooPath,
+				Properties: map[string]*SWGSchemaProperty{
+					"prop_primitive": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_foo":           struct{}{},
+							specFooPath + "#/definitions/def_array_ref":     struct{}{},
+							specFooPath + "#/definitions/def_array_ref_ref": struct{}{},
+						},
+					},
+				},
+				swagger: specFoo,
+			},
+		},
 	}
 
 	for idx, c := range cases {
@@ -297,6 +363,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 			schemaName: "def_regular",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_regular", "prop_object"),
+				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_regular", "prop_array_of_object"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -315,6 +382,14 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						schema:  specFoo.Definitions["def_regular"].Properties["prop_array_of_primitive"],
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_regular": struct{}{},
+						},
+					},
+					"prop_array_of_object.prop_primitive": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_regular": struct{}{},
+							specFooPath + "#/definitions/def_foo":     struct{}{},
 						},
 					},
 					"prop_object.prop_nested": {
@@ -533,6 +608,20 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
 							},
+							"p2": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p2"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p3": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p3"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
 						},
 						swagger: specFoo,
 					},
@@ -560,6 +649,20 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 							"p1": {
 								TFLinks: []TFLink{},
 								schema:  specFoo.Definitions["def_a"].Properties["p1"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p2": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p2"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p3": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p3"],
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
@@ -602,6 +705,77 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								schema:  specFoo.Definitions["def_foo"].Properties["p1"].Properties["p1_1"],
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p2": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p2"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p3": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p3"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+						},
+						swagger: specFoo,
+					},
+				},
+				{
+					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:p3.prop_primitive"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p3"),
+					err:         nil,
+					expect: SWGSchema{
+						Name:     "def_a",
+						SpecPath: specFooPath,
+						Properties: map[string]*SWGSchemaProperty{
+							"prop_primitive": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+								},
+								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a":   struct{}{},
+									specFooPath + "#/definitions/def_foo": struct{}{},
+								},
+							},
+							"p1.prop_primitive": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res1:p2")},
+								},
+								schema: specBar.Definitions["def_bar"].Properties["prop_primitive"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a":   struct{}{},
+									specBarPath + "#/definitions/def_bar": struct{}{},
+								},
+							},
+							"p1.p1_1": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_foo"].Properties["p1"].Properties["p1_1"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p2": {
+								TFLinks: []TFLink{},
+								schema:  specFoo.Definitions["def_a"].Properties["p2"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a": struct{}{},
+								},
+							},
+							"p3.prop_primitive": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res1:p3")},
+								},
+								schema: specBar.Definitions["def_bar"].Properties["prop_primitive"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_a":   struct{}{},
+									specBarPath + "#/definitions/def_bar": struct{}{},
 								},
 							},
 						},
@@ -650,6 +824,9 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "SpecPath": "%s",
     "Properties": {
         "prop_array_of_primitive": {
+            "TFLinks": []
+        },
+        "prop_array_of_object": {
             "TFLinks": []
         },
         "prop_object": {
@@ -708,13 +885,19 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "Name": "def_a",
     "SpecPath": "%s",
     "Properties": {
+		"prop_primitive": {
+            "TFLinks": []
+ 		},
 		"p1.prop_primitive": {
             "TFLinks": ["res1:p2"]
  		},
 		"p1.p1_1": {
             "TFLinks": []
  		},
-		"prop_primitive": {
+		"p2": {
+            "TFLinks": []
+ 		},
+		"p3": {
             "TFLinks": []
  		}
     }
