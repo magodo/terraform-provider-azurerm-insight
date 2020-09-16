@@ -1,3 +1,21 @@
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"
+    ><img
+      src="https://img.shields.io/badge/License-MIT-yellow.svg"
+      alt="License: MIT"
+  /></a>
+  <a href="https://github.com/magodo/terraform-provider-azurerm-insight/actions"
+    ><img
+      src="https://img.shields.io/github/workflow/status/magodo/terraform-provider-azurerm-insight/Go?label=workflow&style=flat-square"
+      alt="GitHub Actions workflow status"
+  /></a>
+  <a href="https://twitter.com/magodo_"
+    ><img
+      src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fmagodo_"
+      alt="Follow me on Twitter"
+  /></a>
+</p>
+
 # Terraform AzureRM Provider Insight
 
 A tool to map the underlying Azure API Swagger schema to the resource schema of Terraform AzureRM provider.
