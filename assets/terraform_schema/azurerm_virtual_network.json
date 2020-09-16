@@ -2,6 +2,22 @@
   "Name": "azurerm_virtual_network",
   "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
   "PropertyLinks": {
+    "name": [
+        {
+            "prop": "VirtualNetwork:name"
+        }
+    ],
+    "location": [
+        {
+            "prop": "VirtualNetwork:location"
+        }
+    ],
+    "id": [
+        {
+            "prop": "VirtualNetwork:id"
+        }
+    ],
+    "resource_group_name": [],
     "address_space": [
         {
             "prop": "VirtualNetwork:properties.addressSpace"
