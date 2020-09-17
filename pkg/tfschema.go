@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"github.com/zclconf/go-cty/cty"
 
@@ -33,13 +32,12 @@ func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
-			specPath := schema.SwaggerSpec
+			swaggerRelPath := schema.SwaggerSpec
 			if link.Spec != nil {
-				specPath = *link.Spec
+				swaggerRelPath = *link.Spec
 			}
-			specPath = filepath.Join(swaggerBasePath, specPath)
 			// link swgschema
-			if err := LinkSWGSchema(specPath, link.SchemaProp, *tfPropAddr); err != nil {
+			if err := LinkSWGSchema(swaggerBasePath, swaggerRelPath, link.SchemaProp, *tfPropAddr); err != nil {
 				return fmt.Errorf("linking swgschema: %w", err)
 			}
 		}

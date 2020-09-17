@@ -3,6 +3,7 @@ package pkg
 import (
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 	"sync"
 
 	openapispec "github.com/go-openapi/spec"
@@ -69,39 +70,42 @@ func NewSWGSchemaProperty(schema openapispec.Schema, tflinks []TFLink, resolvedR
 type SWGSchemaProperties map[string]*SWGSchemaProperty // the key is swagger schemas relative property addr
 
 type SWGSchema struct {
-	Name       string
-	SpecPath   string
-	Properties SWGSchemaProperties
+	SwaggerRelPath string
+	Name           string
+	Properties     SWGSchemaProperties
 
+	swaggerAbsPath string
 	swagger *openapispec.Swagger
 }
 
-func NewSWGSchema(specPath string, schemaName string) (*SWGSchema, error) {
-	swagger, err := LoadSwagger(specPath)
+func NewSWGSchema(swaggerBasePath, swaggerRelPath string, schemaName string) (*SWGSchema, error) {
+	swaggerAbsPath := filepath.Join(swaggerBasePath, swaggerRelPath)
+	swagger, err := LoadSwagger(swaggerAbsPath)
 	if err != nil {
 		return nil, err
 	}
 
 	swgSchema := &SWGSchema{
-		Name:     schemaName,
-		SpecPath: specPath,
+		SwaggerRelPath: swaggerRelPath,
+		Name:           schemaName,
 		Properties: map[string]*SWGSchemaProperty{
 			"": {
 				TFLinks: []TFLink{},
 				schema:  swagger.Definitions[schemaName],
 				resolvedRefs: map[string]interface{}{
 					// Consider this schemas itself as resolved reference
-					normalizePaths("#/definitions/"+schemaName, specPath): struct{}{},
+					normalizePaths("#/definitions/"+schemaName, swaggerAbsPath): struct{}{},
 				},
 			},
 		},
+		swaggerAbsPath: swaggerAbsPath,
 		swagger: swagger,
 	}
 
 	// Expand the root level properties of the schemas
 	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
 	if err != nil {
-		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, specPath, err)
+		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerAbsPath, err)
 	}
 	return swgSchema, nil
 }
@@ -111,12 +115,12 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 	raddr := addr.RelativeAddrs().String()
 	prop, ok := s.Properties[raddr]
 	if !ok {
-		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.SpecPath)
+		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerAbsPath)
 	}
 
 	isCyclic, err := s.expandProperty(prop)
 	if err != nil {
-		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.SpecPath, err)
+		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerAbsPath, err)
 	}
 
 	// If the property to be expanded is a cyclic reference, we will do nothing but keep that property
@@ -152,7 +156,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 
 		isCyclic, err := s.expandProperty(tmpSwgProp)
 		if err != nil {
-			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.SpecPath, err)
+			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerAbsPath, err)
 		}
 
 		// Ignore as there is no better way to handle this (since it has no object/property related)
@@ -210,7 +214,7 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 		ref = schema.Ref
 	}
 
-	normalizedRefURI := normalizeFileRef(&ref, s.SpecPath).String()
+	normalizedRefURI := normalizeFileRef(&ref, s.swaggerAbsPath).String()
 
 	// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.
 	if _, ok := prop.resolvedRefs[normalizedRefURI]; ok {
@@ -220,7 +224,7 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 	// Keep track of the resolved reference to avoid cyclic ref
 	prop.resolvedRefs[normalizedRefURI] = struct{}{}
 
-	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.SpecPath})
+	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.swaggerAbsPath})
 	if err != nil {
 		return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
 	}
@@ -250,64 +254,64 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 		}
 		return s.AddTFLink(swgPropAddr, tfPropAddr)
 	}
-	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.SpecPath)
+	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerAbsPath)
 }
 
-type SWGSpecSchemaCache struct {
+type SWGSchemaCache struct {
 	sync.Mutex
 	m map[string]*SWGSchema
 }
 
-func (c *SWGSpecSchemaCache) Lock() {
+func (c *SWGSchemaCache) Lock() {
 	c.Mutex.Lock()
 }
 
-func (c *SWGSpecSchemaCache) Unlock() {
+func (c *SWGSchemaCache) Unlock() {
 	c.Mutex.Unlock()
 }
 
-func (c *SWGSpecSchemaCache) Get(specPath, schemaName string) *SWGSchema {
-	k := specPath + "#/definitions/" + schemaName
+func (c *SWGSchemaCache) Get(swaggerRelPath, schemaName string) *SWGSchema {
+	k := swaggerRelPath + "#/definitions/" + schemaName
 	return c.m[k]
 }
 
-func (c *SWGSpecSchemaCache) Set(specPath, schemaName string, schema *SWGSchema) {
-	k := specPath + "#/definitions/" + schemaName
+func (c *SWGSchemaCache) Set(swaggerRelPath, schemaName string, schema *SWGSchema) {
+	k := swaggerRelPath + "#/definitions/" + schemaName
 	c.m[k] = schema
 }
 
-// swgSpecSchemaCache caches the SWGSchema using swagger + schemas as key.
+// swgSchemaCache caches the SWGSchema using swagger + schemas as key.
 // During each link operation from terraform schemas to swagger schemas, it will manipulate one of
 // the SWGSchema in this cache. Afterwards, this cache contains all the mapping info from swagger to terraform.
-var swgSpecSchemaCache = SWGSpecSchemaCache{
+var swgSchemaCache = SWGSchemaCache{
 	Mutex: sync.Mutex{},
 	m:     map[string]*SWGSchema{},
 }
 
-func LinkSWGSchema(specPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
-	swgSpecSchemaCache.Lock()
-	defer swgSpecSchemaCache.Unlock()
+func LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+	swgSchemaCache.Lock()
+	defer swgSchemaCache.Unlock()
 
-	swgSchema := swgSpecSchemaCache.Get(specPath, swgPropAddr.Owner())
+	swgSchema := swgSchemaCache.Get(swaggerRelPath, swgPropAddr.Owner())
 	if swgSchema == nil {
 		var err error
-		swgSchema, err = NewSWGSchema(specPath, swgPropAddr.Owner())
+		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Owner())
 		if err != nil {
 			return err
 		}
 	}
 
-	defer swgSpecSchemaCache.Set(specPath, swgPropAddr.Owner(), swgSchema)
+	defer swgSchemaCache.Set(swaggerRelPath, swgPropAddr.Owner(), swgSchema)
 
 	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
 }
 
 // GetSWGSchema get all SWGSchema from cache.
 func GetAllSWGSchemas() map[string]*SWGSchema {
-	swgSpecSchemaCache.Lock()
-	defer swgSpecSchemaCache.Unlock()
+	swgSchemaCache.Lock()
+	defer swgSchemaCache.Unlock()
 	out := map[string]*SWGSchema{}
-	for k, v := range swgSpecSchemaCache.m {
+	for k, v := range swgSchemaCache.m {
 		out[k] = v
 	}
 	return out

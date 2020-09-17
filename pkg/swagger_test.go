@@ -17,26 +17,27 @@ func TestNewSWGSchema(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	specFooPath := filepath.Join(pwd, "testdata", "swagger", "foo.json")
-	specBarPath := filepath.Join(pwd, "testdata", "swagger", "bar.json")
+	specBasePath := filepath.Join(pwd, "testdata", "swagger")
+	specFooPath := filepath.Join(specBasePath, "foo.json")
+	specBarPath := filepath.Join(specBasePath, "bar.json")
 	specFoo, err := LoadSwagger(specFooPath)
 	require.NoError(t, err)
 	specBar, err := LoadSwagger(specBarPath)
 	require.NoError(t, err)
 
 	cases := []struct {
-		specPath   string
-		schemaName string
-		err        error
-		expect     SWGSchema
+		specRelPath string
+		schemaName  string
+		err         error
+		expect      SWGSchema
 	}{
 		{
-			specPath:   specFooPath,
-			schemaName: "def_foo",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_foo",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_foo",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:           "def_foo",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -46,16 +47,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_regular",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_regular",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_regular",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_regular",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -86,16 +88,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propInFileRef",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_propInFileRef",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_propInFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_propInFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_inFileRef": {
 						TFLinks: []TFLink{},
@@ -105,16 +108,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propSelfRef",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_propSelfRef",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_propSelfRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_propSelfRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_selfRef": {
 						TFLinks: []TFLink{},
@@ -124,16 +128,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propCrossFileRef",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_propCrossFileRef",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_propCrossFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_propCrossFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_crossFileRef": {
 						TFLinks: []TFLink{},
@@ -143,16 +148,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_inFileRef",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_inFileRef",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_inFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_inFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -163,16 +169,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_crossFileRef",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_crossFileRef",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_crossFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_crossFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -183,16 +190,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_selfRef",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_selfRef",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_selfRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_selfRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"": {
 						TFLinks: []TFLink{},
@@ -202,16 +210,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_allOf",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_allOf",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_allOf",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_allOf",
 				Properties: map[string]*SWGSchemaProperty{
 					"p1": {
 						TFLinks: []TFLink{},
@@ -243,16 +252,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_array_simple",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_array_simple",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_array_simple",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_array_simple",
 				Properties: map[string]*SWGSchemaProperty{
 					"": {
 						TFLinks: []TFLink{},
@@ -262,16 +272,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_array_ref",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_array_ref",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_array_ref",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_array_ref",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -282,16 +293,17 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_array_ref_ref",
-			err:        nil,
+			specRelPath: "foo.json",
+			schemaName:  "def_array_ref_ref",
+			err:         nil,
 			expect: SWGSchema{
-				Name:     "def_array_ref_ref",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_array_ref_ref",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -303,13 +315,14 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 	}
 
 	for idx, c := range cases {
-		actual, err := NewSWGSchema(c.specPath, c.schemaName)
+		actual, err := NewSWGSchema(specBasePath, c.specRelPath, c.schemaName)
 		require.Equal(t, c.err, err, idx)
 		require.Equal(t, c.expect, *actual, idx)
 	}
@@ -320,8 +333,9 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	specFooPath := filepath.Join(pwd, "testdata", "swagger", "foo.json")
-	specBarPath := filepath.Join(pwd, "testdata", "swagger", "bar.json")
+	specBasePath := filepath.Join(pwd, "testdata", "swagger")
+	specFooPath := filepath.Join(specBasePath, "foo.json")
+	specBarPath := filepath.Join(specBasePath, "bar.json")
 	specFoo, err := LoadSwagger(specFooPath)
 	specBar, err := LoadSwagger(specBarPath)
 	if err != nil {
@@ -329,23 +343,23 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 	}
 
 	cases := []struct {
-		specPath    string
-		schemaName  string
-		expandAddrs []propertyaddr.PropertyAddr
-		err         error
-		expect      SWGSchema
+		swaggerRelPath string
+		schemaName     string
+		expandAddrs    []propertyaddr.PropertyAddr
+		err            error
+		expect         SWGSchema
 	}{
 		{
-			specPath:   specFooPath,
-			schemaName: "def_foo",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_foo",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_foo", "prop_primitive"),
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_foo", "prop_primitive"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_foo",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_foo",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -355,20 +369,21 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_regular",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_regular",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_regular", "prop_object"),
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_regular", "prop_array_of_object"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_regular",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_regular",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -400,19 +415,20 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propInFileRef",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_propInFileRef",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_propInFileRef", "prop_inFileRef"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_propInFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_propInFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_inFileRef.prop_primitive": {
 						TFLinks: []TFLink{},
@@ -423,19 +439,20 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propSelfRef",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_propSelfRef",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_propSelfRef", "prop_selfRef"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_propSelfRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_propSelfRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_selfRef": {
 						TFLinks: []TFLink{},
@@ -445,19 +462,20 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propCrossFileRef",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_propCrossFileRef",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_propCrossFileRef", "prop_crossFileRef"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_propCrossFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_propCrossFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_crossFileRef.prop_primitive": {
 						TFLinks: []TFLink{},
@@ -468,19 +486,20 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_inFileRef",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_inFileRef",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_inFileRef", "prop_primitive"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_inFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_inFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -491,19 +510,20 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_crossFileRef",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_crossFileRef",
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_crossFileRef", "prop_primitive"),
 			},
 			err: nil,
 			expect: SWGSchema{
-				Name:     "def_crossFileRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_crossFileRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -514,19 +534,20 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_selfRef",
-			err:        nil,
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_selfRef",
+			err:            nil,
 			expandAddrs: []propertyaddr.PropertyAddr{
 				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_selfRef", ""),
 			},
 			expect: SWGSchema{
-				Name:     "def_selfRef",
-				SpecPath: specFooPath,
+				SwaggerRelPath: "foo.json",
+				Name:        "def_selfRef",
 				Properties: map[string]*SWGSchemaProperty{
 					"": {
 						TFLinks: []TFLink{},
@@ -536,13 +557,14 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 					},
 				},
-				swagger: specFoo,
+				swaggerAbsPath: specFooPath,
+				swagger:        specFoo,
 			},
 		},
 	}
 
 	for idx, c := range cases {
-		swgschema, err := NewSWGSchema(c.specPath, c.schemaName)
+		swgschema, err := NewSWGSchema(specBasePath, c.swaggerRelPath, c.schemaName)
 		require.Equal(t, c.err, err, idx)
 		if err == nil {
 			for _, addr := range c.expandAddrs {
@@ -558,8 +580,9 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	specFooPath := filepath.Join(pwd, "testdata", "swagger", "foo.json")
-	specBarPath := filepath.Join(pwd, "testdata", "swagger", "bar.json")
+	specBasePath := filepath.Join(pwd, "testdata", "swagger")
+	specFooPath := filepath.Join(specBasePath, "foo.json")
+	specBarPath := filepath.Join(specBasePath, "bar.json")
 	specFoo, err := LoadSwagger(specFooPath)
 	specBar, err := LoadSwagger(specBarPath)
 	_ = specBar
@@ -575,21 +598,21 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 	}
 
 	cases := []struct {
-		specPath   string
-		schemaName string
-		steps      []step
+		swaggerRelPath string
+		schemaName     string
+		steps          []step
 	}{
 		{
-			specPath:   specFooPath,
-			schemaName: "def_a",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_a",
 			steps: []step{
 				{
 					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
 					err:         nil,
 					expect: SWGSchema{
-						Name:     "def_a",
-						SpecPath: specFooPath,
+						SwaggerRelPath: "foo.json",
+						Name:        "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
@@ -623,7 +646,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								},
 							},
 						},
-						swagger: specFoo,
+						swaggerAbsPath: specFooPath,
+						swagger:        specFoo,
 					},
 				},
 				// Add a second tf link to the same swg property
@@ -632,8 +656,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
 					err:         nil,
 					expect: SWGSchema{
-						Name:     "def_a",
-						SpecPath: specFooPath,
+						SwaggerRelPath: "foo.json",
+						Name:        "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
@@ -668,7 +692,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								},
 							},
 						},
-						swagger: specFoo,
+						swaggerAbsPath: specFooPath,
+						swagger:        specFoo,
 					},
 				},
 				{
@@ -676,8 +701,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p2"),
 					err:         nil,
 					expect: SWGSchema{
-						Name:     "def_a",
-						SpecPath: specFooPath,
+						SwaggerRelPath: "foo.json",
+						Name:        "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
@@ -722,7 +747,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								},
 							},
 						},
-						swagger: specFoo,
+						swaggerAbsPath: specFooPath,
+						swagger:        specFoo,
 					},
 				},
 				{
@@ -730,8 +756,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p3"),
 					err:         nil,
 					expect: SWGSchema{
-						Name:     "def_a",
-						SpecPath: specFooPath,
+						SwaggerRelPath: "foo.json",
+						Name:        "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
@@ -779,7 +805,8 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								},
 							},
 						},
-						swagger: specFoo,
+						swaggerAbsPath: specFooPath,
+						swagger:        specFoo,
 					},
 				},
 			},
@@ -787,7 +814,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 	}
 
 	for idx, c := range cases {
-		schema, err := NewSWGSchema(c.specPath, c.schemaName)
+		schema, err := NewSWGSchema(specBasePath, c.swaggerRelPath, c.schemaName)
 		require.NoError(t, err, idx)
 		if err == nil {
 			for iidx, s := range c.steps {
@@ -806,22 +833,22 @@ func TestSWGSchema_Marshal(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	specFooPath := filepath.Join(pwd, "testdata", "swagger", "foo.json")
+	specBasePath := filepath.Join(pwd, "testdata", "swagger")
 
 	type process func(schema *SWGSchema)
 
 	cases := []struct {
-		specPath   string
-		schemaName string
-		process    process
-		expect     string
+		swaggerRelPath string
+		schemaName     string
+		process        process
+		expect         string
 	}{
 		{
-			specPath:   specFooPath,
-			schemaName: "def_regular",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_regular",
 			expect: fmt.Sprintf(`{
+    "SwaggerRelPath": "foo.json",
     "Name": "def_regular",
-    "SpecPath": "%s",
     "Properties": {
         "prop_array_of_primitive": {
             "TFLinks": []
@@ -836,27 +863,27 @@ func TestSWGSchema_Marshal(t *testing.T) {
             "TFLinks": []
         }
     }
-}`, specFooPath),
+}`),
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_propInFileRef",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_propInFileRef",
 			expect: fmt.Sprintf(`{
+    "SwaggerRelPath": "foo.json",
     "Name": "def_propInFileRef",
-    "SpecPath": "%s",
     "Properties": {
         "prop_inFileRef": {
             "TFLinks": []
         }
     }
-}`, specFooPath),
+}`),
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_allOf",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_allOf",
 			expect: fmt.Sprintf(`{
+    "SwaggerRelPath": "foo.json",
     "Name": "def_allOf",
-    "SpecPath": "%s",
     "Properties": {
 		"prop_nested1": {
             "TFLinks": []
@@ -871,19 +898,19 @@ func TestSWGSchema_Marshal(t *testing.T) {
             "TFLinks": []
  		}
     }
-}`, specFooPath),
+}`),
 		},
 		{
-			specPath:   specFooPath,
-			schemaName: "def_a",
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_a",
 			process: func(schema *SWGSchema) {
 				swgPropAddr := *propertyaddr.NewPropertyAddrFromString("def_a:p1.prop_primitive")
 				tfPropAddr := *propertyaddr.NewPropertyAddrFromString("res1:p2")
 				require.NoError(t, schema.AddTFLink(swgPropAddr, tfPropAddr))
 			},
 			expect: fmt.Sprintf(`{
+    "SwaggerRelPath": "foo.json",
     "Name": "def_a",
-    "SpecPath": "%s",
     "Properties": {
 		"prop_primitive": {
             "TFLinks": []
@@ -901,12 +928,12 @@ func TestSWGSchema_Marshal(t *testing.T) {
             "TFLinks": []
  		}
     }
-}`, specFooPath),
+}`),
 		},
 	}
 
 	for idx, c := range cases {
-		schema, err := NewSWGSchema(c.specPath, c.schemaName)
+		schema, err := NewSWGSchema(specBasePath, c.swaggerRelPath, c.schemaName)
 		require.NoError(t, err, idx)
 		if c.process != nil {
 			c.process(schema)
@@ -924,8 +951,8 @@ func TestSWGSchema_Unmarshal(t *testing.T) {
 	}{
 		{
 			input: `{
+    "SwaggerRelPath": "foo.json",
     "Name": "def_a",
-    "SpecPath": "path",
     "Properties": {
 		"p1.prop_primitive": {
             "TFLinks": ["res1:p2"]
@@ -939,8 +966,8 @@ func TestSWGSchema_Unmarshal(t *testing.T) {
     }
 }`,
 			expect: SWGSchema{
-				Name:     "def_a",
-				SpecPath: "path",
+				SwaggerRelPath: "foo.json",
+				Name: "def_a",
 				Properties: SWGSchemaProperties{
 					"p1.prop_primitive": &SWGSchemaProperty{TFLinks: []TFLink{
 						{*propertyaddr.NewPropertyAddrFromString("res1:p2")},

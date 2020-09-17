@@ -284,9 +284,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	specDir := filepath.Join(pwd, "testdata", "swagger")
-	specFooPath := filepath.Join(specDir, "foo.json")
-	specBarPath := filepath.Join(specDir, "bar.json")
+	specBasePath := filepath.Join(pwd, "testdata", "swagger")
 
 	cases := []struct {
 		schemas []TFSchema
@@ -323,9 +321,9 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 				},
 			},
 			map[string]*SWGSchema{
-				specFooPath + "#/definitions/def_a": {
-					Name:     "def_a",
-					SpecPath: specFooPath,
+				"foo.json" + "#/definitions/def_a": {
+					SwaggerRelPath: "foo.json",
+					Name:           "def_a",
 					Properties: map[string]*SWGSchemaProperty{
 						"prop_primitive": {
 							TFLinks: []TFLink{
@@ -382,9 +380,9 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 				},
 			},
 			map[string]*SWGSchema{
-				specFooPath + "#/definitions/def_a": {
-					Name:     "def_a",
-					SpecPath: specFooPath,
+				"foo.json" + "#/definitions/def_a": {
+					Name:           "def_a",
+					SwaggerRelPath: "foo.json",
 					Properties: map[string]*SWGSchemaProperty{
 						"prop_primitive": {
 							TFLinks: []TFLink{
@@ -404,9 +402,9 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"p3": {TFLinks: []TFLink{}},
 					},
 				},
-				specBarPath + "#/definitions/def_bar": {
-					Name:     "def_bar",
-					SpecPath: specBarPath,
+				"bar.json" + "#/definitions/def_bar": {
+					Name:           "def_bar",
+					SwaggerRelPath: "bar.json",
 					Properties: map[string]*SWGSchemaProperty{
 						"prop_primitive": {
 							TFLinks: []TFLink{
@@ -451,9 +449,9 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 				},
 			},
 			map[string]*SWGSchema{
-				specFooPath + "#/definitions/def_a": {
-					Name:     "def_a",
-					SpecPath: specFooPath,
+				"foo.json" + "#/definitions/def_a": {
+					Name:           "def_a",
+					SwaggerRelPath: "foo.json",
 					Properties: map[string]*SWGSchemaProperty{
 						"prop_primitive": {
 							TFLinks: []TFLink{
@@ -523,9 +521,9 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 				},
 			},
 			map[string]*SWGSchema{
-				specFooPath + "#/definitions/def_a": {
-					Name:     "def_a",
-					SpecPath: specFooPath,
+				"foo.json" + "#/definitions/def_a": {
+					Name:           "def_a",
+					SwaggerRelPath: "foo.json",
 					Properties: map[string]*SWGSchemaProperty{
 						"prop_primitive": {
 							TFLinks: []TFLink{
@@ -555,9 +553,9 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"p3": {TFLinks: []TFLink{}},
 					},
 				},
-				specBarPath + "#/definitions/def_bar": {
-					Name:     "def_bar",
-					SpecPath: specBarPath,
+				"bar.json" + "#/definitions/def_bar": {
+					Name:           "def_bar",
+					SwaggerRelPath: "bar.json",
 					Properties: map[string]*SWGSchemaProperty{
 						"prop_primitive": {
 							TFLinks: []TFLink{
@@ -574,16 +572,16 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 
 	for idx, c := range cases {
 		for iidx, schema := range c.schemas {
-			require.NoError(t, schema.LinkSwagger(specDir), fmt.Sprintf("%d.%d", idx, iidx))
+			require.NoError(t, schema.LinkSwagger(specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
 		}
 		var actual map[string]*SWGSchema
-		b, err := json.Marshal(swgSpecSchemaCache.m)
+		b, err := json.Marshal(swgSchemaCache.m)
 		require.NoError(t, err, idx)
 		require.NoError(t, json.Unmarshal(b, &actual), idx)
 		require.Equal(t, c.expect, actual, idx)
 
 		// clean up the swg schema cache
-		swgSpecSchemaCache.m = map[string]*SWGSchema{}
+		swgSchemaCache.m = map[string]*SWGSchema{}
 	}
 }
 
