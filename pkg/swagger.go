@@ -75,7 +75,7 @@ type SWGSchema struct {
 	Properties     SWGSchemaProperties
 
 	swaggerAbsPath string
-	swagger *openapispec.Swagger
+	swagger        *openapispec.Swagger
 }
 
 func NewSWGSchema(swaggerBasePath, swaggerRelPath string, schemaName string) (*SWGSchema, error) {
@@ -99,7 +99,7 @@ func NewSWGSchema(swaggerBasePath, swaggerRelPath string, schemaName string) (*S
 			},
 		},
 		swaggerAbsPath: swaggerAbsPath,
-		swagger: swagger,
+		swagger:        swagger,
 	}
 
 	// Expand the root level properties of the schemas
@@ -257,9 +257,11 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerAbsPath)
 }
 
+type SWGSchemas map[string]*SWGSchema
+
 type SWGSchemaCache struct {
 	sync.Mutex
-	m map[string]*SWGSchema
+	m SWGSchemas
 }
 
 func (c *SWGSchemaCache) Lock() {

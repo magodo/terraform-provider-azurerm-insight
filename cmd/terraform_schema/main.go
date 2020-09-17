@@ -129,5 +129,4 @@ func genFile(schemaName string, blk *pkg.TerraformBlock, ofileBase string) error
 		return err
 	}
 	return nil
-
 }
