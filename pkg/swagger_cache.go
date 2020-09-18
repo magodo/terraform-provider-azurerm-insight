@@ -18,21 +18,21 @@ var swaggerCache = SwaggerCache{
 	m:     map[string]*openapispec.Swagger{},
 }
 
-// LoadSwagger load a certain swagger spec (document)
-func LoadSwagger(specPath string) (*openapispec.Swagger, error) {
+// LoadSwagger load a certain swagger spec (document) from either file or http
+func LoadSwagger(swaggerURI string) (*openapispec.Swagger, error) {
 	swaggerCache.Lock()
 	defer swaggerCache.Unlock()
 
 	// construct key
-	if schema, ok := swaggerCache.m[specPath]; ok {
+	if schema, ok := swaggerCache.m[swaggerURI]; ok {
 		return schema, nil
 	}
 
-	doc, err := loads.Spec(specPath)
+	doc, err := loads.Spec(swaggerURI)
 	if err != nil {
-		return nil, fmt.Errorf("loading swagger spec %s: %w", specPath, err)
+		return nil, fmt.Errorf("loading swagger spec %s: %w", swaggerURI, err)
 	}
 
-	swaggerCache.m[specPath] = doc.Spec()
+	swaggerCache.m[swaggerURI] = doc.Spec()
 	return doc.Spec(), nil
 }

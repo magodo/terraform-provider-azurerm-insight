@@ -25,7 +25,7 @@ func main() {
 	}
 
 	tfSchemaDir := flag.String("tf-schema-dir", "", "The path to the directory contains terraform schemas")
-	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. /.../azure-rest-api-specs/specification)")
+	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	outputPath := flag.String("output", filepath.Join(pwd, "swagger_schema.json"), "The output file")
 	showHelp := flag.Bool("help", false, "Display this message")
 

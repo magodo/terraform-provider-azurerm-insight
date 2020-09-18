@@ -1,3 +1,0 @@
-[submodule "assets/static/azure-rest-api-specs"]
-	path = assets/static/azure-rest-api-specs
-	url = https://github.com/Azure/azure-rest-api-specs.git

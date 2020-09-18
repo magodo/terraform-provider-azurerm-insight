@@ -4,24 +4,35 @@ import (
 	"fmt"
 	openapispec "github.com/go-openapi/spec"
 	"net/url"
+	"path"
 	"path/filepath"
 	"strings"
 )
 
-// normalize URI reference against the base path, for local files only.
+// relativeBase could be an ABSOLUTE file path or an ABSOLUTE URL
 func normalizeFileRef(ref *openapispec.Ref, relativeBase string) *openapispec.Ref {
 	if ref.String() == "" {
 		r, _ := openapispec.NewRef(relativeBase)
 		return &r
 	}
+
 	s := normalizePaths(ref.String(), relativeBase)
 	r, _ := openapispec.NewRef(s)
 	return &r
 }
 
-// normalize URI reference string against the base path, for local files only.
+// base or refPath could be a file path or a URL
+// given a base absolute path and a ref path, return the absolute path of refPath
+// 1) if refPath is absolute, return it
+// 2) if refPath is relative, join it with basePath keeping the scheme, hosts, and ports if exists
+// base could be a directory or a full file path
 func normalizePaths(refPath, base string) string {
-	if filepath.IsAbs(refPath) {
+	refURL, _ := url.Parse(refPath)
+	if path.IsAbs(refURL.Path) || filepath.IsAbs(refPath) {
+		// refPath is actually absolute
+		if refURL.Host != "" {
+			return refPath
+		}
 		parts := strings.Split(refPath, "#")
 		result := filepath.FromSlash(parts[0])
 		if len(parts) == 2 {
@@ -30,12 +41,16 @@ func normalizePaths(refPath, base string) string {
 		return result
 	}
 
-	refURL, _ := url.Parse(refPath)
+	// relative refPath
 	baseURL, _ := url.Parse(base)
 	if !strings.HasPrefix(refPath, "#") {
 		// combining paths
-		newBase := fmt.Sprintf("%s#%s", filepath.Join(filepath.Dir(base), filepath.FromSlash(refURL.Path)), refURL.Fragment)
-		return newBase
+		if baseURL.Host != "" {
+			baseURL.Path = path.Join(path.Dir(baseURL.Path), refURL.Path)
+		} else { // base is a file
+			newBase := fmt.Sprintf("%s#%s", filepath.Join(filepath.Dir(base), filepath.FromSlash(refURL.Path)), refURL.Fragment)
+			return newBase
+		}
 
 	}
 	// copying fragment from ref to base
