@@ -3,7 +3,8 @@ package pkg
 import (
 	"encoding/json"
 	"fmt"
-	"path/filepath"
+	"net/url"
+	"path"
 	"sync"
 
 	openapispec "github.com/go-openapi/spec"
@@ -74,13 +75,18 @@ type SWGSchema struct {
 	Name           string
 	Properties     SWGSchemaProperties
 
-	swaggerAbsPath string
-	swagger *openapispec.Swagger
+	swaggerURL string
+	swagger    *openapispec.Swagger
 }
 
-func NewSWGSchema(swaggerBasePath, swaggerRelPath string, schemaName string) (*SWGSchema, error) {
-	swaggerAbsPath := filepath.Join(swaggerBasePath, swaggerRelPath)
-	swagger, err := LoadSwagger(swaggerAbsPath)
+func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SWGSchema, error) {
+	swaggerURI, err := url.Parse(swaggerBaseURL)
+	if err != nil {
+		return nil, fmt.Errorf("parsing URL %s: %w", swaggerBaseURL, err)
+	}
+	swaggerURI.Path = path.Join(swaggerURI.Path, swaggerRelPath)
+	swaggerURIString := swaggerURI.String()
+	swagger, err := LoadSwagger(swaggerURIString)
 	if err != nil {
 		return nil, err
 	}
@@ -94,18 +100,18 @@ func NewSWGSchema(swaggerBasePath, swaggerRelPath string, schemaName string) (*S
 				schema:  swagger.Definitions[schemaName],
 				resolvedRefs: map[string]interface{}{
 					// Consider this schemas itself as resolved reference
-					normalizePaths("#/definitions/"+schemaName, swaggerAbsPath): struct{}{},
+					normalizePaths("#/definitions/"+schemaName, swaggerURIString): struct{}{},
 				},
 			},
 		},
-		swaggerAbsPath: swaggerAbsPath,
-		swagger: swagger,
+		swaggerURL: swaggerURIString,
+		swagger:    swagger,
 	}
 
 	// Expand the root level properties of the schemas
 	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
 	if err != nil {
-		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerAbsPath, err)
+		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerURIString, err)
 	}
 	return swgSchema, nil
 }
@@ -115,12 +121,12 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 	raddr := addr.RelativeAddrs().String()
 	prop, ok := s.Properties[raddr]
 	if !ok {
-		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerAbsPath)
+		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerURL)
 	}
 
 	isCyclic, err := s.expandProperty(prop)
 	if err != nil {
-		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerAbsPath, err)
+		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerURL, err)
 	}
 
 	// If the property to be expanded is a cyclic reference, we will do nothing but keep that property
@@ -156,7 +162,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 
 		isCyclic, err := s.expandProperty(tmpSwgProp)
 		if err != nil {
-			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerAbsPath, err)
+			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerURL, err)
 		}
 
 		// Ignore as there is no better way to handle this (since it has no object/property related)
@@ -214,7 +220,7 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 		ref = schema.Ref
 	}
 
-	normalizedRefURI := normalizeFileRef(&ref, s.swaggerAbsPath).String()
+	normalizedRefURI := normalizeFileRef(&ref, s.swaggerURL).String()
 
 	// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.
 	if _, ok := prop.resolvedRefs[normalizedRefURI]; ok {
@@ -224,7 +230,7 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 	// Keep track of the resolved reference to avoid cyclic ref
 	prop.resolvedRefs[normalizedRefURI] = struct{}{}
 
-	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.swaggerAbsPath})
+	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.swaggerURL})
 	if err != nil {
 		return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
 	}
@@ -254,7 +260,7 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 		}
 		return s.AddTFLink(swgPropAddr, tfPropAddr)
 	}
-	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerAbsPath)
+	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerURL)
 }
 
 type SWGSchemaCache struct {
