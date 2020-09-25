@@ -1,0 +1,65 @@
+{
+  "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json#/definitions/VirtualNetwork": {
+    "SwaggerRelPath": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
+    "Name": "VirtualNetwork",
+    "Properties": {
+      "etag": {
+        "TFLinks": []
+      },
+      "id": {
+        "TFLinks": []
+      },
+      "location": {
+        "TFLinks": [
+          "azurerm_virtual_network:location"
+        ]
+      },
+      "name": {
+        "TFLinks": [
+          "azurerm_virtual_network:name"
+        ]
+      },
+      "properties.addressSpace": {
+        "TFLinks": [
+          "azurerm_virtual_network:address_space"
+        ]
+      },
+      "properties.bgpCommunities": {
+        "TFLinks": []
+      },
+      "properties.ddosProtectionPlan": {
+        "TFLinks": []
+      },
+      "properties.dhcpOptions": {
+        "TFLinks": []
+      },
+      "properties.enableDdosProtection": {
+        "TFLinks": []
+      },
+      "properties.enableVmProtection": {
+        "TFLinks": []
+      },
+      "properties.ipAllocations": {
+        "TFLinks": []
+      },
+      "properties.provisioningState": {
+        "TFLinks": []
+      },
+      "properties.resourceGuid": {
+        "TFLinks": []
+      },
+      "properties.subnets": {
+        "TFLinks": []
+      },
+      "properties.virtualNetworkPeerings": {
+        "TFLinks": []
+      },
+      "tags": {
+        "TFLinks": []
+      },
+      "type": {
+        "TFLinks": []
+      }
+    }
+  }
+}
