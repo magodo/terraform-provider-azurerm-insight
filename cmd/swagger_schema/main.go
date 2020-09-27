@@ -52,6 +52,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	swgschemas := pkg.NewSGWSchemas()
 	err = filepath.Walk(*tfSchemaDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -68,7 +69,7 @@ func main() {
 			return err
 		}
 
-		if err := tfschema.LinkSwagger(*swaggerBaseDir); err != nil {
+		if err := tfschema.LinkSwagger(swgschemas, *swaggerBaseDir); err != nil {
 			return err
 		}
 
@@ -78,7 +79,7 @@ func main() {
 		log.Fatalf("error walking the terraform schema directory %q: %v\n", *tfSchemaDir, err)
 	}
 
-	b, err := json.MarshalIndent(pkg.GetAllSWGSchemas(), "", "  ")
+	b, err := json.MarshalIndent(swgschemas.GetAll(), "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -263,42 +263,44 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerURL)
 }
 
-type SWGSchemaCache struct {
+// SWGSchemas caches the SWGSchema using swagger + schemas as key.
+// During each link operation from terraform schemas to swagger schemas, it will manipulate one of
+// the SWGSchema. Afterwards, this type contains all the mapping info from swagger to terraform.
+type SWGSchemas struct {
 	sync.Mutex
 	m map[string]*SWGSchema
 }
 
-func (c *SWGSchemaCache) Lock() {
+func (c *SWGSchemas) Lock() {
 	c.Mutex.Lock()
 }
 
-func (c *SWGSchemaCache) Unlock() {
+func (c *SWGSchemas) Unlock() {
 	c.Mutex.Unlock()
 }
 
-func (c *SWGSchemaCache) Get(swaggerRelPath, schemaName string) *SWGSchema {
+func (c *SWGSchemas) Get(swaggerRelPath, schemaName string) *SWGSchema {
 	k := swaggerRelPath + "#/definitions/" + schemaName
 	return c.m[k]
 }
 
-func (c *SWGSchemaCache) Set(swaggerRelPath, schemaName string, schema *SWGSchema) {
+func (c *SWGSchemas) Set(swaggerRelPath, schemaName string, schema *SWGSchema) {
 	k := swaggerRelPath + "#/definitions/" + schemaName
 	c.m[k] = schema
 }
 
-// swgSchemaCache caches the SWGSchema using swagger + schemas as key.
-// During each link operation from terraform schemas to swagger schemas, it will manipulate one of
-// the SWGSchema in this cache. Afterwards, this cache contains all the mapping info from swagger to terraform.
-var swgSchemaCache = SWGSchemaCache{
-	Mutex: sync.Mutex{},
-	m:     map[string]*SWGSchema{},
+func NewSGWSchemas() SWGSchemas {
+	return SWGSchemas{
+		Mutex: sync.Mutex{},
+		m:     map[string]*SWGSchema{},
+	}
 }
 
-func LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
-	swgSchemaCache.Lock()
-	defer swgSchemaCache.Unlock()
+func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+	c.Lock()
+	defer c.Unlock()
 
-	swgSchema := swgSchemaCache.Get(swaggerRelPath, swgPropAddr.Owner())
+	swgSchema := c.Get(swaggerRelPath, swgPropAddr.Owner())
 	if swgSchema == nil {
 		var err error
 		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Owner())
@@ -307,17 +309,17 @@ func LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAd
 		}
 	}
 
-	defer swgSchemaCache.Set(swaggerRelPath, swgPropAddr.Owner(), swgSchema)
+	defer c.Set(swaggerRelPath, swgPropAddr.Owner(), swgSchema)
 
 	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
 }
 
 // GetSWGSchema get all SWGSchema from cache.
-func GetAllSWGSchemas() map[string]*SWGSchema {
-	swgSchemaCache.Lock()
-	defer swgSchemaCache.Unlock()
+func (c *SWGSchemas) GetAll() map[string]*SWGSchema {
+	c.Lock()
+	defer c.Unlock()
 	out := map[string]*SWGSchema{}
-	for k, v := range swgSchemaCache.m {
+	for k, v := range c.m {
 		out[k] = v
 	}
 	return out
