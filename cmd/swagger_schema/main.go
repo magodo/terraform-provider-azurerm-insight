@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
-
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg"
 )
 
 func main() {
@@ -52,7 +51,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	swgschemas := pkg.NewSGWSchemas()
+	swgschemas := core.NewSGWSchemas()
 	err = filepath.Walk(*tfSchemaDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -64,7 +63,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		var tfschema pkg.TFSchema
+		var tfschema core.TFSchema
 		if err := json.Unmarshal(b, &tfschema); err != nil {
 			return err
 		}

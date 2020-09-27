@@ -1,4 +1,4 @@
-package pkg
+package core
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 	"github.com/stretchr/testify/assert"
 )
 

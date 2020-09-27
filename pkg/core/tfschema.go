@@ -1,11 +1,11 @@
-package pkg
+package core
 
 import (
 	"fmt"
 
 	"github.com/zclconf/go-cty/cty"
 
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
 type SwaggerLink struct {

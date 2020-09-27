@@ -1,4 +1,4 @@
-package pkg
+package core
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	openapispec "github.com/go-openapi/spec"
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
 type TFLink struct {
