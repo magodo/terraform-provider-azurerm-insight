@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"io/ioutil"
 	"log"
@@ -24,6 +25,7 @@ func main() {
 	}
 
 	tfSchemaDir := flag.String("tf-schema-dir", "", "The path to the directory contains terraform schemas")
+	swaggerGrantBaseDir := flag.String("swagger-grant-dir", "", "The path to the base directory contains swagger grant info (e.g. azure_knowledgebase/swagger_grants)")
 	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	outputPath := flag.String("output", filepath.Join(pwd, "swagger_schema.json"), "The output file")
 	showHelp := flag.Bool("help", false, "Display this message")
@@ -76,6 +78,15 @@ func main() {
 	})
 	if err != nil {
 		log.Fatalf("error walking the terraform schema directory %q: %v\n", *tfSchemaDir, err)
+	}
+
+	if *swaggerGrantBaseDir != "" {
+		swggrant, err := core.NewSWGGrantFromFiles(*swaggerGrantBaseDir)
+		if err != nil {
+			log.Fatal(err)
+		}
+		spew.Dump(swggrant)
+		swgschemas.Grant(swggrant)
 	}
 
 	b, err := json.MarshalIndent(swgschemas.GetAll(), "", "  ")

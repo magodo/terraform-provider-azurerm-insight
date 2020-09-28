@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"path"
+	"strings"
 	"sync"
 
 	openapispec "github.com/go-openapi/spec"
@@ -39,7 +40,11 @@ func (links *TFLinks) UnmarshalJSON(b []byte) error {
 
 type SWGSchemaProperty struct {
 	// Terraform property addresses
-	TFLinks TFLinks
+	TFLinks TFLinks `json:",omitempty"`
+
+	// Whether this property is granted to be not to implement in Terraform
+	IsGranted bool `json:",omitempty"`
+	GrantComment string `json:",omitempty"`
 
 	// The schemas of this swagger schemas property
 	schema openapispec.Schema
@@ -74,6 +79,10 @@ type SWGSchema struct {
 	SwaggerRelPath string
 	Name           string
 	Properties     SWGSchemaProperties
+
+	// Whether this property is granted to be not to implement in Terraform
+	IsGranted bool `json:",omitempty"`
+	GrantComment string `json:",omitempty"`
 
 	swaggerURL string
 	swagger    *openapispec.Swagger
@@ -263,12 +272,28 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerURL)
 }
 
+const swgSchemaAddrSep = "#/definitions/"
+
+type SWGSchemaAddr string
+
+func NewSWGSchemaAddr(swaggerRelPath, schemaName string) SWGSchemaAddr {
+	return SWGSchemaAddr(swaggerRelPath + swgSchemaAddrSep + schemaName)
+}
+
+func (addr SWGSchemaAddr) SwaggerRelPath() string {
+	return strings.Split(string(addr), swgSchemaAddrSep)[0]
+}
+
+func (addr SWGSchemaAddr) SchemaName() string {
+	return strings.Split(string(addr), swgSchemaAddrSep)[1]
+}
+
 // SWGSchemas caches the SWGSchema using swagger + schemas as key.
 // During each link operation from terraform schemas to swagger schemas, it will manipulate one of
 // the SWGSchema. Afterwards, this type contains all the mapping info from swagger to terraform.
 type SWGSchemas struct {
 	sync.Mutex
-	m map[string]*SWGSchema
+	m map[SWGSchemaAddr]*SWGSchema
 }
 
 func (c *SWGSchemas) Lock() {
@@ -279,20 +304,18 @@ func (c *SWGSchemas) Unlock() {
 	c.Mutex.Unlock()
 }
 
-func (c *SWGSchemas) Get(swaggerRelPath, schemaName string) *SWGSchema {
-	k := swaggerRelPath + "#/definitions/" + schemaName
-	return c.m[k]
+func (c *SWGSchemas) Get(addr SWGSchemaAddr) *SWGSchema {
+	return c.m[addr]
 }
 
-func (c *SWGSchemas) Set(swaggerRelPath, schemaName string, schema *SWGSchema) {
-	k := swaggerRelPath + "#/definitions/" + schemaName
-	c.m[k] = schema
+func (c *SWGSchemas) Set(addr SWGSchemaAddr, schema *SWGSchema) {
+	c.m[addr] = schema
 }
 
 func NewSGWSchemas() SWGSchemas {
 	return SWGSchemas{
 		Mutex: sync.Mutex{},
-		m:     map[string]*SWGSchema{},
+		m:     map[SWGSchemaAddr]*SWGSchema{},
 	}
 }
 
@@ -300,7 +323,7 @@ func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPr
 	c.Lock()
 	defer c.Unlock()
 
-	swgSchema := c.Get(swaggerRelPath, swgPropAddr.Owner())
+	swgSchema := c.Get(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Owner()))
 	if swgSchema == nil {
 		var err error
 		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Owner())
@@ -309,16 +332,43 @@ func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPr
 		}
 	}
 
-	defer c.Set(swaggerRelPath, swgPropAddr.Owner(), swgSchema)
+	defer c.Set(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Owner()), swgSchema)
 
 	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
 }
 
-// GetSWGSchema get all SWGSchema from cache.
-func (c *SWGSchemas) GetAll() map[string]*SWGSchema {
+// Grant inquiries the SWGGrant to add the granting information onto the SWGSchemas
+func (c *SWGSchemas) Grant(grant SWGGrant) {
 	c.Lock()
 	defer c.Unlock()
-	out := map[string]*SWGSchema{}
+	for schemaAddr, schemaGrant := range grant {
+		schema, ok := c.m[schemaAddr]
+		if !ok {
+			continue
+		}
+
+		if schemaGrant.IsSchemaGranted() {
+			schema.IsGranted = true
+			schema.GrantComment = schemaGrant.Comment
+			continue
+		}
+
+		for propertyAddr, propertyGrantComment := range schemaGrant.Properties {
+			property, ok:= schema.Properties[propertyAddr]
+			if !ok {
+				continue
+			}
+			property.IsGranted = true
+			property.GrantComment = propertyGrantComment
+		}
+	}
+}
+
+// GetSWGSchema get all SWGSchema from cache.
+func (c *SWGSchemas) GetAll() map[SWGSchemaAddr]*SWGSchema {
+	c.Lock()
+	defer c.Unlock()
+	out := map[SWGSchemaAddr]*SWGSchema{}
 	for k, v := range c.m {
 		out[k] = v
 	}
