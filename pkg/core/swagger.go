@@ -43,7 +43,7 @@ type SWGSchemaProperty struct {
 	TFLinks TFLinks `json:",omitempty"`
 
 	// Whether this property is granted to be not to implement in Terraform
-	IsGranted bool `json:",omitempty"`
+	IsGranted    bool   `json:",omitempty"`
 	GrantComment string `json:",omitempty"`
 
 	// The schemas of this swagger schemas property
@@ -81,11 +81,12 @@ type SWGSchema struct {
 	Properties     SWGSchemaProperties
 
 	// Whether this property is granted to be not to implement in Terraform
-	IsGranted bool `json:",omitempty"`
+	IsGranted    bool   `json:",omitempty"`
 	GrantComment string `json:",omitempty"`
 
 	swaggerURL string
 	swagger    *openapispec.Swagger
+	coverageStore SWGPropertyCoverageStore
 }
 
 func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SWGSchema, error) {
@@ -272,6 +273,27 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerURL)
 }
 
+// CalcCoverage calculates the property coverage (<=1) of the schema/property, and fill in the SWGSchema.
+// Those granted properties are not counted during the calculation.
+func (s *SWGSchema) CalcCoverage() error {
+	store := NewSWGPropertyCoverageStore()
+	for propAddr, prop := range s.Properties {
+		if err := store.Add(*propertyaddr.NewPropertyAddrFromString(propAddr), *prop); err != nil {
+			return fmt.Errorf("adding property %q: %v", propAddr, err)
+		}
+	}
+	s.coverageStore = store
+	return nil
+}
+
+func (s *SWGSchema) SchemaCoverage() (covered, total int) {
+	return s.coverageStore.SchemaCoverage()
+}
+
+func (s *SWGSchema) FindCoverage(propAddr propertyaddr.PropertyAddr) (covered, total int, ok bool) {
+	return s.coverageStore.FindCoverage(propAddr)
+}
+
 const swgSchemaAddrSep = "#/definitions/"
 
 type SWGSchemaAddr string
@@ -354,7 +376,7 @@ func (c *SWGSchemas) Grant(grant SWGGrant) {
 		}
 
 		for propertyAddr, propertyGrantComment := range schemaGrant.Properties {
-			property, ok:= schema.Properties[propertyAddr]
+			property, ok := schema.Properties[propertyAddr]
 			if !ok {
 				continue
 			}

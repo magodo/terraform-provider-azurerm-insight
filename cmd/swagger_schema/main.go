@@ -90,7 +90,27 @@ func main() {
 		swgschemas.Grant(swggrant)
 	}
 
-	b, err := json.MarshalIndent(swgschemas.GetAll(), "", "  ")
+	for schemaAddr, schema := range swgschemas.GetAll() {
+		if err := schema.CalcCoverage(); err != nil {
+			log.Fatalf("calculating coverage for %q: %v", schemaAddr, err)
+		}
+	}
+
+	// Construct a temporary type to include the property coverage info in schema level.
+	type swgSchemaWithCoverage struct {
+		Coverage float64
+		*core.SWGSchema
+	}
+	schemaMap := map[core.SWGSchemaAddr]swgSchemaWithCoverage{}
+	for schemaAddr, schema := range swgschemas.GetAll() {
+		covered, total := schema.SchemaCoverage()
+		schemaMap[schemaAddr] = swgSchemaWithCoverage{
+			Coverage:  float64(covered) / float64(total),
+			SWGSchema: schema,
+		}
+	}
+
+	b, err := json.MarshalIndent(schemaMap, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}

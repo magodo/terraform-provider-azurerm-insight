@@ -688,7 +688,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 						swagger:    specFoo,
 					},
 				},
-				// Add a second tf link to the same swg property
+				// add a second tf link to the same swg property
 				{
 					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
@@ -998,6 +998,73 @@ func TestSWGSchema_Unmarshal(t *testing.T) {
 	}
 }
 
+func TestSWGSchema_CalcCoverage(t *testing.T) {
+	cases := []struct {
+		swgschema   SWGSchema
+		expectStore SWGPropertyCoverageStore
+	}{
+		{
+			swgschema: SWGSchema{
+				Properties: SWGSchemaProperties{
+					"prop1.covered": {
+						TFLinks: []TFLink{{}},
+					},
+					"prop1.not_covered": {
+						TFLinks: []TFLink{},
+					},
+					"prop2.covered": {
+						TFLinks: []TFLink{{}},
+					},
+					"prop_granted": {
+						IsGranted: true,
+						TFLinks:   []TFLink{},
+					},
+				},
+			},
+			expectStore: SWGPropertyCoverageStore{
+				node: swgPropertyCoverageNode{
+					TotalAmount:   3,
+					CoveredAmount: 2,
+					Children: map[string]*swgPropertyCoverageNode{
+						"prop1": {
+							TotalAmount:   2,
+							CoveredAmount: 1,
+							Children: map[string]*swgPropertyCoverageNode{
+								"not_covered": {
+									TotalAmount:   1,
+									CoveredAmount: 0,
+									Children:      map[string]*swgPropertyCoverageNode{},
+								},
+								"covered": {
+									TotalAmount:   1,
+									CoveredAmount: 1,
+									Children:      map[string]*swgPropertyCoverageNode{},
+								},
+							},
+						},
+						"prop2": {
+							TotalAmount:   1,
+							CoveredAmount: 1,
+							Children: map[string]*swgPropertyCoverageNode{
+								"covered": {
+									TotalAmount:   1,
+									CoveredAmount: 1,
+									Children:      map[string]*swgPropertyCoverageNode{},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for idx, c := range cases {
+		require.NoError(t, c.swgschema.CalcCoverage(), idx)
+		require.Equal(t, c.expectStore, c.swgschema.coverageStore, idx)
+	}
+}
+
 func TestSWGSchemas_Grant(t *testing.T) {
 	cases := []struct {
 		swggrant         SWGGrant
@@ -1022,8 +1089,8 @@ func TestSWGSchemas_Grant(t *testing.T) {
 			expectSwgSchemas: SWGSchemas{
 				m: map[SWGSchemaAddr]*SWGSchema{
 					NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
-						IsGranted: true,
-						GrantComment: "granted because of some reason",
+						IsGranted:      true,
+						GrantComment:   "granted because of some reason",
 						SwaggerRelPath: "swaggerRelPath",
 						Name:           "schema1",
 					},
