@@ -1,4 +1,4 @@
-package pkg
+package core
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -398,8 +398,8 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
-						"p2": {TFLinks: []TFLink{}},
-						"p3": {TFLinks: []TFLink{}},
+						"p2": {},
+						"p3": {},
 					},
 				},
 				"bar.json" + "#/definitions/def_bar": {
@@ -477,8 +477,8 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
-						"p2": {TFLinks: []TFLink{}},
-						"p3": {TFLinks: []TFLink{}},
+						"p2": {},
+						"p3": {},
 					},
 				},
 			},
@@ -549,8 +549,8 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 								},
 							},
 						},
-						"p2": {TFLinks: []TFLink{}},
-						"p3": {TFLinks: []TFLink{}},
+						"p2": {},
+						"p3": {},
 					},
 				},
 				"bar.json" + "#/definitions/def_bar": {
@@ -571,17 +571,15 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 	}
 
 	for idx, c := range cases {
+		swgschemas := NewSGWSchemas()
 		for iidx, schema := range c.schemas {
-			require.NoError(t, schema.LinkSwagger(specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
+			require.NoError(t, schema.LinkSwagger(swgschemas, specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
 		}
 		var actual map[string]*SWGSchema
-		b, err := json.Marshal(swgSchemaCache.m)
+		b, err := json.Marshal(swgschemas.GetAll())
 		require.NoError(t, err, idx)
 		require.NoError(t, json.Unmarshal(b, &actual), idx)
 		require.Equal(t, c.expect, actual, idx)
-
-		// clean up the swg schema cache
-		swgSchemaCache.m = map[string]*SWGSchema{}
 	}
 }
 

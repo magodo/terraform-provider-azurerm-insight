@@ -1,0 +1,8 @@
+{
+  "VirtualNetwork": {
+    "Properties": {
+      "etag": "etag is not needed",
+      "properties.subnets.properties.privateEndpointNetworkPolicies": "granted"
+    }
+  }
+}

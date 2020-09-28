@@ -4,13 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
-
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg"
 )
 
 func main() {
@@ -44,7 +43,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var providerSchemas pkg.TerraformProviderSchemas
+	var providerSchemas core.TerraformProviderSchemas
 	if err := json.Unmarshal(b, &providerSchemas); err != nil {
 		log.Fatal(err)
 	}
@@ -63,7 +62,7 @@ func main() {
 		var (
 			ok     bool
 			prefix string
-			schema *pkg.TerraformSchema
+			schema *core.TerraformSchema
 		)
 		if *isDataSource {
 			schema, ok = provider.DataSourceSchemas[*resource]
@@ -85,7 +84,7 @@ func main() {
 	}
 
 	var (
-		schemas map[string]*pkg.TerraformSchema
+		schemas map[string]*core.TerraformSchema
 		oprefix string
 	)
 	if *isDataSource {
@@ -104,8 +103,8 @@ func main() {
 	return
 }
 
-func genFile(schemaName string, blk *pkg.TerraformBlock, ofileBase string) error {
-	schema := pkg.NewSchemaScaffoldFromTerraformBlock(schemaName, blk)
+func genFile(schemaName string, blk *core.TerraformBlock, ofileBase string) error {
+	schema := core.NewSchemaScaffoldFromTerraformBlock(schemaName, blk)
 	b, err := json.MarshalIndent(schema, "", "  ")
 	if err != nil {
 		return err

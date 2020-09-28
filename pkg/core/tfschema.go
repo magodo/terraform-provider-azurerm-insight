@@ -1,11 +1,11 @@
-package pkg
+package core
 
 import (
 	"fmt"
 
 	"github.com/zclconf/go-cty/cty"
 
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
 type SwaggerLink struct {
@@ -28,7 +28,7 @@ func NewSchema(name string) *TFSchema {
 	}
 }
 
-func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
+func (schema TFSchema) LinkSwagger(swgSchemaCache SWGSchemas, swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
@@ -37,7 +37,7 @@ func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
 				swaggerRelPath = *link.Spec
 			}
 			// link swgschema
-			if err := LinkSWGSchema(swaggerBasePath, swaggerRelPath, link.SchemaProp, *tfPropAddr); err != nil {
+			if err := swgSchemaCache.LinkSWGSchema(swaggerBasePath, swaggerRelPath, link.SchemaProp, *tfPropAddr); err != nil {
 				return fmt.Errorf("linking swgschema: %w", err)
 			}
 		}
