@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/zclconf/go-cty/cty"
 
@@ -9,7 +10,7 @@ import (
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"swagger"` // swagger spec abs path that this propertyaddr resides in, this overrides the global swagger scope
+	Spec       *string                   `json:"swagger"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
 	SchemaProp propertyaddr.PropertyAddr `json:"prop"`    // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
 }
 
@@ -17,7 +18,7 @@ type TFSchemaPropertyLinks map[string][]SwaggerLink
 
 type TFSchema struct {
 	Name          string
-	SwaggerSpec   string `json:"swagger"` // swagger spec abs path that all the linked swagger property resides in by default
+	SwaggerSpec   string `json:"swagger"` // swagger spec relative path path that all the linked swagger property resides in by default
 	PropertyLinks TFSchemaPropertyLinks
 }
 
@@ -48,6 +49,9 @@ func (schema TFSchema) LinkSwagger(swgSchemaCache SWGSchemas, swaggerBasePath st
 
 // Validate validates the swagger property and tf schemas property has the correct form
 func (schema TFSchema) Validate() error {
+	if strings.HasPrefix(schema.SwaggerSpec, "/") {
+		return fmt.Errorf(`swagger spec path should be relative (not starting with "/")`)
+	}
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		if addr := propertyaddr.NewPropertyAddrFromString(tfProp); addr.Owner() != "" {
 			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
@@ -55,6 +59,9 @@ func (schema TFSchema) Validate() error {
 		for _, link := range tfToSwaggerLinks {
 			if link.SchemaProp.Owner() == "" {
 				return fmt.Errorf("swagger property addr %s should specify owner", link.SchemaProp)
+			}
+			if link.Spec != nil && strings.HasPrefix(*link.Spec, "/") {
+				return fmt.Errorf(`swagger spec path should be relative (not starting with "/")`)
 			}
 		}
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"io/ioutil"
 	"log"
@@ -69,6 +68,9 @@ func main() {
 		if err := json.Unmarshal(b, &tfschema); err != nil {
 			return err
 		}
+		if err := tfschema.Validate(); err != nil {
+			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
+		}
 
 		if err := tfschema.LinkSwagger(swgschemas, *swaggerBaseDir); err != nil {
 			return err
@@ -85,7 +87,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		spew.Dump(swggrant)
 		swgschemas.Grant(swggrant)
 	}
 
