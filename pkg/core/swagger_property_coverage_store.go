@@ -63,8 +63,6 @@ type swgPropertyCoverageNode struct {
 	TotalAmount   int
 	CoveredAmount int
 	Children      map[string]*swgPropertyCoverageNode
-
-	SWGSchemaProperty SWGSchemaProperty
 }
 
 func (node *swgPropertyCoverageNode) add(addrs propertyaddr.RelativeAddrs, isCovered bool) {
