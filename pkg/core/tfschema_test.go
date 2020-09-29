@@ -573,7 +573,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 	for idx, c := range cases {
 		swgschemas := NewSGWSchemas()
 		for iidx, schema := range c.schemas {
-			require.NoError(t, schema.LinkSwagger(swgschemas, specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
+			require.NoError(t, schema.LinkSwagger(*swgschemas, specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
 		}
 		var actual map[string]*SWGSchema
 		b, err := json.Marshal(swgschemas.GetAll())

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
