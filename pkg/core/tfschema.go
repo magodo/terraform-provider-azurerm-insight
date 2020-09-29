@@ -1,15 +1,16 @@
-package pkg
+package core
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/zclconf/go-cty/cty"
 
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"swagger"` // swagger spec abs path that this propertyaddr resides in, this overrides the global swagger scope
+	Spec       *string                   `json:"swagger"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
 	SchemaProp propertyaddr.PropertyAddr `json:"prop"`    // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
 }
 
@@ -17,7 +18,7 @@ type TFSchemaPropertyLinks map[string][]SwaggerLink
 
 type TFSchema struct {
 	Name          string
-	SwaggerSpec   string `json:"swagger"` // swagger spec abs path that all the linked swagger property resides in by default
+	SwaggerSpec   string `json:"swagger"` // swagger spec relative path path that all the linked swagger property resides in by default
 	PropertyLinks TFSchemaPropertyLinks
 }
 
@@ -28,7 +29,7 @@ func NewSchema(name string) *TFSchema {
 	}
 }
 
-func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
+func (schema TFSchema) LinkSwagger(swgSchemaCache SWGSchemas, swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
@@ -37,7 +38,7 @@ func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
 				swaggerRelPath = *link.Spec
 			}
 			// link swgschema
-			if err := LinkSWGSchema(swaggerBasePath, swaggerRelPath, link.SchemaProp, *tfPropAddr); err != nil {
+			if err := swgSchemaCache.LinkSWGSchema(swaggerBasePath, swaggerRelPath, link.SchemaProp, *tfPropAddr); err != nil {
 				return fmt.Errorf("linking swgschema: %w", err)
 			}
 		}
@@ -48,6 +49,9 @@ func (schema TFSchema) LinkSwagger(swaggerBasePath string) error {
 
 // Validate validates the swagger property and tf schemas property has the correct form
 func (schema TFSchema) Validate() error {
+	if strings.HasPrefix(schema.SwaggerSpec, "/") {
+		return fmt.Errorf(`swagger spec path should be relative (not starting with "/")`)
+	}
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		if addr := propertyaddr.NewPropertyAddrFromString(tfProp); addr.Owner() != "" {
 			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
@@ -55,6 +59,9 @@ func (schema TFSchema) Validate() error {
 		for _, link := range tfToSwaggerLinks {
 			if link.SchemaProp.Owner() == "" {
 				return fmt.Errorf("swagger property addr %s should specify owner", link.SchemaProp)
+			}
+			if link.Spec != nil && strings.HasPrefix(*link.Spec, "/") {
+				return fmt.Errorf(`swagger spec path should be relative (not starting with "/")`)
 			}
 		}
 	}

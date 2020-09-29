@@ -1,4 +1,4 @@
-package pkg
+package core
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/propertyaddr"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
 func TestNewSWGSchema(t *testing.T) {
@@ -688,7 +688,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 						swagger:    specFoo,
 					},
 				},
-				// Add a second tf link to the same swg property
+				// add a second tf link to the same swg property
 				{
 					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
@@ -888,18 +888,10 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "SwaggerRelPath": "foo.json",
     "Name": "def_regular",
     "Properties": {
-        "prop_array_of_primitive": {
-            "TFLinks": []
-        },
-        "prop_array_of_object": {
-            "TFLinks": []
-        },
-        "prop_object": {
-            "TFLinks": []
-        },
-        "prop_primitive": {
-            "TFLinks": []
-        }
+        "prop_array_of_primitive": {},
+        "prop_array_of_object": {},
+        "prop_object": {},
+        "prop_primitive": {}
     }
 }`),
 		},
@@ -910,9 +902,7 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "SwaggerRelPath": "foo.json",
     "Name": "def_propInFileRef",
     "Properties": {
-        "prop_inFileRef": {
-            "TFLinks": []
-        }
+        "prop_inFileRef": {}
     }
 }`),
 		},
@@ -923,18 +913,10 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "SwaggerRelPath": "foo.json",
     "Name": "def_allOf",
     "Properties": {
-		"prop_nested1": {
-            "TFLinks": []
- 		},
-		"prop_nested2": {
-            "TFLinks": []
- 		},
-		"prop_primitive": {
-            "TFLinks": []
- 		},
-		"p1": {
-            "TFLinks": []
- 		}
+		"prop_nested1": {},
+		"prop_nested2": {},
+		"prop_primitive": {},
+		"p1": {}
     }
 }`),
 		},
@@ -950,21 +932,13 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "SwaggerRelPath": "foo.json",
     "Name": "def_a",
     "Properties": {
-		"prop_primitive": {
-            "TFLinks": []
- 		},
+		"prop_primitive": {},
 		"p1.prop_primitive": {
             "TFLinks": ["res1:p2"]
  		},
-		"p1.p1_1": {
-            "TFLinks": []
- 		},
-		"p2": {
-            "TFLinks": []
- 		},
-		"p3": {
-            "TFLinks": []
- 		}
+		"p1.p1_1": {},
+		"p2": {},
+		"p3": {}
     }
 }`),
 		},
@@ -978,7 +952,7 @@ func TestSWGSchema_Marshal(t *testing.T) {
 		}
 		b, err := json.Marshal(schema)
 		require.NoError(t, err, idx)
-		require.JSONEq(t, c.expect, string(b))
+		require.JSONEq(t, c.expect, string(b), idx)
 	}
 }
 
@@ -1021,5 +995,156 @@ func TestSWGSchema_Unmarshal(t *testing.T) {
 		var actual SWGSchema
 		require.NoError(t, json.Unmarshal([]byte(c.input), &actual), idx)
 		require.Equal(t, c.expect, actual, idx)
+	}
+}
+
+func TestSWGSchema_CalcCoverage(t *testing.T) {
+	cases := []struct {
+		swgschema   SWGSchema
+		expectStore SWGPropertyCoverageStore
+	}{
+		{
+			swgschema: SWGSchema{
+				Properties: SWGSchemaProperties{
+					"prop1.covered": {
+						TFLinks: []TFLink{{}},
+					},
+					"prop1.not_covered": {
+						TFLinks: []TFLink{},
+					},
+					"prop2.covered": {
+						TFLinks: []TFLink{{}},
+					},
+					"prop_granted": {
+						IsGranted: true,
+						TFLinks:   []TFLink{},
+					},
+				},
+			},
+			expectStore: SWGPropertyCoverageStore{
+				node: swgPropertyCoverageNode{
+					TotalAmount:   3,
+					CoveredAmount: 2,
+					Children: map[string]*swgPropertyCoverageNode{
+						"prop1": {
+							TotalAmount:   2,
+							CoveredAmount: 1,
+							Children: map[string]*swgPropertyCoverageNode{
+								"not_covered": {
+									TotalAmount:   1,
+									CoveredAmount: 0,
+									Children:      map[string]*swgPropertyCoverageNode{},
+								},
+								"covered": {
+									TotalAmount:   1,
+									CoveredAmount: 1,
+									Children:      map[string]*swgPropertyCoverageNode{},
+								},
+							},
+						},
+						"prop2": {
+							TotalAmount:   1,
+							CoveredAmount: 1,
+							Children: map[string]*swgPropertyCoverageNode{
+								"covered": {
+									TotalAmount:   1,
+									CoveredAmount: 1,
+									Children:      map[string]*swgPropertyCoverageNode{},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for idx, c := range cases {
+		require.NoError(t, c.swgschema.CalcCoverage(), idx)
+		require.Equal(t, c.expectStore, c.swgschema.coverageStore, idx)
+	}
+}
+
+func TestSWGSchemas_Grant(t *testing.T) {
+	cases := []struct {
+		swggrant         SWGGrant
+		swgschemas       SWGSchemas
+		expectSwgSchemas SWGSchemas
+	}{
+		// grant schema
+		{
+			swggrant: map[SWGSchemaAddr]SWGSchemaGrant{
+				NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+					Comment: "granted because of some reason",
+				},
+			},
+			swgschemas: SWGSchemas{
+				m: map[SWGSchemaAddr]*SWGSchema{
+					NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+						SwaggerRelPath: "swaggerRelPath",
+						Name:           "schema1",
+					},
+				},
+			},
+			expectSwgSchemas: SWGSchemas{
+				m: map[SWGSchemaAddr]*SWGSchema{
+					NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+						IsGranted:      true,
+						GrantComment:   "granted because of some reason",
+						SwaggerRelPath: "swaggerRelPath",
+						Name:           "schema1",
+					},
+				},
+			},
+		},
+		// grant property
+		{
+			swggrant: map[SWGSchemaAddr]SWGSchemaGrant{
+				NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+					Properties: map[string]string{
+						"prop1": "granted because of some reason",
+					},
+				},
+			},
+			swgschemas: SWGSchemas{
+				m: map[SWGSchemaAddr]*SWGSchema{
+					NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+						SwaggerRelPath: "swaggerRelPath",
+						Name:           "schema1",
+						Properties: map[string]*SWGSchemaProperty{
+							"prop1": {
+								TFLinks: []TFLink{},
+							},
+							"prop2": {
+								TFLinks: []TFLink{},
+							},
+						},
+					},
+				},
+			},
+			expectSwgSchemas: SWGSchemas{
+				m: map[SWGSchemaAddr]*SWGSchema{
+					NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+						SwaggerRelPath: "swaggerRelPath",
+						Name:           "schema1",
+						Properties: map[string]*SWGSchemaProperty{
+							"prop1": {
+								IsGranted:    true,
+								GrantComment: "granted because of some reason",
+								TFLinks:      []TFLink{},
+							},
+							"prop2": {
+								TFLinks: []TFLink{},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	for idx, c := range cases {
+		swgschemas := c.swgschemas
+		swgschemas.Grant(c.swggrant)
+		require.Equal(t, c.expectSwgSchemas, swgschemas, idx)
 	}
 }

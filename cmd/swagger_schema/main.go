@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
-
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg"
 )
 
 func main() {
@@ -25,6 +24,7 @@ func main() {
 	}
 
 	tfSchemaDir := flag.String("tf-schema-dir", "", "The path to the directory contains terraform schemas")
+	swaggerGrantBaseDir := flag.String("swagger-grant-dir", "", "The path to the base directory contains swagger grant info (e.g. azure_knowledgebase/swagger_grants)")
 	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	outputPath := flag.String("output", filepath.Join(pwd, "swagger_schema.json"), "The output file")
 	showHelp := flag.Bool("help", false, "Display this message")
@@ -52,6 +52,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	swgschemas := core.NewSGWSchemas()
 	err = filepath.Walk(*tfSchemaDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -63,12 +64,15 @@ func main() {
 		if err != nil {
 			return err
 		}
-		var tfschema pkg.TFSchema
+		var tfschema core.TFSchema
 		if err := json.Unmarshal(b, &tfschema); err != nil {
 			return err
 		}
+		if err := tfschema.Validate(); err != nil {
+			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
+		}
 
-		if err := tfschema.LinkSwagger(*swaggerBaseDir); err != nil {
+		if err := tfschema.LinkSwagger(swgschemas, *swaggerBaseDir); err != nil {
 			return err
 		}
 
@@ -78,7 +82,35 @@ func main() {
 		log.Fatalf("error walking the terraform schema directory %q: %v\n", *tfSchemaDir, err)
 	}
 
-	b, err := json.MarshalIndent(pkg.GetAllSWGSchemas(), "", "  ")
+	if *swaggerGrantBaseDir != "" {
+		swggrant, err := core.NewSWGGrantFromFiles(*swaggerGrantBaseDir)
+		if err != nil {
+			log.Fatal(err)
+		}
+		swgschemas.Grant(swggrant)
+	}
+
+	for schemaAddr, schema := range swgschemas.GetAll() {
+		if err := schema.CalcCoverage(); err != nil {
+			log.Fatalf("calculating coverage for %q: %v", schemaAddr, err)
+		}
+	}
+
+	// Construct a temporary type to include the property coverage info in schema level.
+	type swgSchemaWithCoverage struct {
+		Coverage float64
+		*core.SWGSchema
+	}
+	schemaMap := map[core.SWGSchemaAddr]swgSchemaWithCoverage{}
+	for schemaAddr, schema := range swgschemas.GetAll() {
+		covered, total := schema.SchemaCoverage()
+		schemaMap[schemaAddr] = swgSchemaWithCoverage{
+			Coverage:  float64(covered) / float64(total),
+			SWGSchema: schema,
+		}
+	}
+
+	b, err := json.MarshalIndent(schemaMap, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}
