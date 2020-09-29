@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
@@ -62,6 +63,8 @@ type swgPropertyCoverageNode struct {
 	TotalAmount   int
 	CoveredAmount int
 	Children      map[string]*swgPropertyCoverageNode
+
+	SWGSchemaProperty SWGSchemaProperty
 }
 
 func (node *swgPropertyCoverageNode) add(addrs propertyaddr.RelativeAddrs, isCovered bool) {

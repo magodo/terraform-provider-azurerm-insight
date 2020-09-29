@@ -52,48 +52,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	swgschemas := core.NewSGWSchemas()
-	err = filepath.Walk(*tfSchemaDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.Mode().IsRegular() {
-			return nil
-		}
-		b, err := ioutil.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		var tfschema core.TFSchema
-		if err := json.Unmarshal(b, &tfschema); err != nil {
-			return err
-		}
-		if err := tfschema.Validate(); err != nil {
-			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
-		}
-
-		if err := tfschema.LinkSwagger(swgschemas, *swaggerBaseDir); err != nil {
-			return err
-		}
-
-		return nil
-	})
+	swgschemas, err := core.NewSWGSchemasFromTerraformSchema(*swaggerBaseDir, *tfSchemaDir, *swaggerGrantBaseDir)
 	if err != nil {
-		log.Fatalf("error walking the terraform schema directory %q: %v\n", *tfSchemaDir, err)
-	}
-
-	if *swaggerGrantBaseDir != "" {
-		swggrant, err := core.NewSWGGrantFromFiles(*swaggerGrantBaseDir)
-		if err != nil {
-			log.Fatal(err)
-		}
-		swgschemas.Grant(swggrant)
-	}
-
-	for schemaAddr, schema := range swgschemas.GetAll() {
-		if err := schema.CalcCoverage(); err != nil {
-			log.Fatalf("calculating coverage for %q: %v", schemaAddr, err)
-		}
+		log.Fatal(err)
 	}
 
 	// Construct a temporary type to include the property coverage info in schema level.

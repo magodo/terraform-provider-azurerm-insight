@@ -3,8 +3,12 @@ package core
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/url"
+	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"sync"
 
@@ -334,11 +338,64 @@ func (c *SWGSchemas) Set(addr SWGSchemaAddr, schema *SWGSchema) {
 	c.m[addr] = schema
 }
 
-func NewSGWSchemas() SWGSchemas {
-	return SWGSchemas{
+func NewSGWSchemas() *SWGSchemas {
+	return &SWGSchemas{
 		Mutex: sync.Mutex{},
 		m:     map[SWGSchemaAddr]*SWGSchema{},
 	}
+}
+
+// Build SWGSchemas by processing on Terraform schema files (which resides in the tfSchemaDir)
+// and the Swagger specs (which resides in the swaggerBaseDir)
+// Optionally, users can specify the swaggerGrantDir which contains the grants for those non-terraform
+// appropriate swagger schema/properties.
+func NewSWGSchemasFromTerraformSchema(swaggerBaseDir, tfSchemaDir, swaggerGrantBaseDir string) (*SWGSchemas, error) {
+	swgschemas := NewSGWSchemas()
+	err := filepath.Walk(tfSchemaDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.Mode().IsRegular() {
+			return nil
+		}
+		b, err := ioutil.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		var tfschema TFSchema
+		if err := json.Unmarshal(b, &tfschema); err != nil {
+			return err
+		}
+		if err := tfschema.Validate(); err != nil {
+			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
+		}
+
+		if err := tfschema.LinkSwagger(*swgschemas, swaggerBaseDir); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("error walking the terraform schema directory %q: %v\n", tfSchemaDir, err)
+	}
+
+	// grant swagger schemas
+	if swaggerGrantBaseDir != "" {
+		swggrant, err := NewSWGGrantFromFiles(swaggerGrantBaseDir)
+		if err != nil {
+			log.Fatal(err)
+		}
+		swgschemas.Grant(swggrant)
+	}
+
+	// calculate swagger property coverage
+	for schemaAddr, schema := range swgschemas.GetAll() {
+		if err := schema.CalcCoverage(); err != nil {
+			log.Fatalf("calculating coverage for %q: %v", schemaAddr, err)
+		}
+	}
+	return swgschemas, nil
 }
 
 func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
