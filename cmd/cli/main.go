@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/magodo/ghwalk"
 
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"github.com/rivo/tview"
@@ -26,6 +29,7 @@ func main() {
 	swaggerGrantBaseDir := flag.String("swagger-grant-dir", "", "The path to the base directory contains swagger grant info (e.g. azure_knowledgebase/swagger_grants)")
 	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	showHelp := flag.Bool("help", false, "Display this message")
+	githubToken := flag.String("github-token", "", "Github access token used to interact with github repos (e.g. azure-rest-api-spec which holds the Azure Swagger Spec)")
 
 	flag.Parse()
 
@@ -40,6 +44,7 @@ func main() {
 	}
 
 	azureswgschemas := NewSWGResourceProviders(*swgschemas)
+	azureswgschemas.CompleteSWGResourceProviders(context.TODO(), &ghwalk.WalkOptions{Token: *githubToken, Reverse: true})
 
 	page := PageSwagger(azureswgschemas)
 

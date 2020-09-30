@@ -73,9 +73,15 @@ func refreshSchemaList(items pageSwaggerItems, swgschemas SWGSchemas) {
 	for _, k := range schemas {
 		v := swgschemas[k]
 		propCovered, propTotal := v.SchemaCoverage()
-		items.schemaList.AddItem(k, fmt.Sprintf("[cov. %.2f%%]", 100*float64(propCovered)/float64(propTotal)), 0,
+		var cov float64
+		if propTotal == 0 {
+			cov = 0
+		} else {
+			cov = 100 * float64(propCovered) / float64(propTotal)
+		}
+		items.schemaList.AddItem(k, fmt.Sprintf("[cov. %.2f%%]", cov), 0,
 			func() {
-				refreshPropertyTree(items, v)
+				refreshPropertyTree(items, *v)
 				app.SetFocus(items.propertyTree)
 				items.propertyDetail.Clear()
 			})
@@ -244,7 +250,7 @@ func PageSwagger(swgrps SWGResourceProviders) tview.Primitive {
 		SetDirection(tview.FlexColumn).
 		AddItem(items.rpList, 0, 1, true).
 		AddItem(items.apiList, 0, 1, true).
-		AddItem(items.schemaList, 0, 1, true).
+		AddItem(items.schemaList, 0, 2, true).
 		AddItem(
 			tview.NewFlex().
 				SetDirection(tview.FlexRow).

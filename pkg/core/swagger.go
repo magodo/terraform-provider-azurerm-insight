@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/url"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -88,19 +86,14 @@ type SWGSchema struct {
 	IsGranted    bool   `json:",omitempty"`
 	GrantComment string `json:",omitempty"`
 
-	swaggerURL string
-	swagger    *openapispec.Swagger
+	swaggerURL    string
+	swagger       *openapispec.Swagger
 	coverageStore SWGPropertyCoverageStore
 }
 
 func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SWGSchema, error) {
-	swaggerURI, err := url.Parse(swaggerBaseURL)
-	if err != nil {
-		return nil, fmt.Errorf("parsing URL %s: %w", swaggerBaseURL, err)
-	}
-	swaggerURI.Path = path.Join(swaggerURI.Path, swaggerRelPath)
-	swaggerURIString := swaggerURI.String()
-	swagger, err := LoadSwagger(swaggerURIString)
+	swaggerURI := swaggerBaseURL + "/" + swaggerRelPath
+	swagger, err := LoadSwagger(swaggerURI)
 	if err != nil {
 		return nil, err
 	}
@@ -114,20 +107,42 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 				schema:  swagger.Definitions[schemaName],
 				resolvedRefs: map[string]interface{}{
 					// Consider this schemas itself as resolved reference
-					normalizePaths("#/definitions/"+schemaName, swaggerURIString): struct{}{},
+					normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
 				},
 			},
 		},
-		swaggerURL: swaggerURIString,
+		swaggerURL: swaggerURI,
 		swagger:    swagger,
 	}
 
 	// Expand the root level properties of the schemas
 	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
 	if err != nil {
-		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerURIString, err)
+		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerURI, err)
 	}
 	return swgSchema, nil
+}
+
+type SWGSchemaCollector func(swagger *openapispec.Swagger) (schemaNames []string)
+
+// NewSWGSchemasMeetingCriteria collects the schemas from a swagger spec
+func NewSWGSchemasMeetingCriteria(swaggerBaseURL, swaggerRelPath string, collector SWGSchemaCollector) ([]SWGSchema, error) {
+	swaggerURI := swaggerBaseURL + "/" + swaggerRelPath
+	swagger, err := LoadSwagger(swaggerURI)
+	if err != nil {
+		return nil, err
+	}
+	schemas := collector(swagger)
+
+	out := make([]SWGSchema, 0, len(schemas))
+	for _, schemaName := range schemas {
+		schema, err := NewSWGSchema(swaggerBaseURL, swaggerRelPath, schemaName)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, *schema)
+	}
+	return out, nil
 }
 
 // ExpandPropertyOneLevelDeep expand the specified swagger schemas property one level deep, with any allOf and $ref taken into consideration.
