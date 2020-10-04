@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -69,6 +71,8 @@ func (addr SWGSchemaAddr) RelPathToSwaggerFile() string {
 	return fmt.Sprintf("%s/%s.json", addr.RelPathToApiVersion(), addr.ResourceCollectionName)
 }
 
+// NewSWGResourceProviders convert the core.SWGSchemas, whose key is swagger file + schema name,
+// into a hierarchy of structures mapping to the Azure concept, beginning from the resource provider level.
 func NewSWGResourceProviders(swgschemas core.SWGSchemas) SWGResourceProviders {
 	out := map[string]*SWGResourceProvider{}
 	for addr, swgschema := range swgschemas.GetAll() {
@@ -88,10 +92,10 @@ func NewSWGResourceProviders(swgschemas core.SWGSchemas) SWGResourceProviders {
 	return out
 }
 
-// CompleteSWGResourceProviders completes the swagger resource providers by querying swagger spec repo via Github.
+// CompleteSWGResourceProvidersViaGithubAPI completes the swagger resource providers by querying swagger spec repo via Github.
 // For each (RP,API Version), searching for all the swagger spec files to collect all the schemas that belongs to
 // the "in-body" parameter of an endpoint which has PUT and DELETE methods.
-func (swgrps SWGResourceProviders) CompleteSWGResourceProviders(ctx context.Context, options *ghwalk.WalkOptions) error {
+func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaGithubAPI(ctx context.Context, options *ghwalk.WalkOptions) error {
 	log.Println("Start to complete SWGResourceProviders")
 	const (
 		swaggerRepoOwner        = "Azure"
@@ -160,8 +164,61 @@ func (swgrps SWGResourceProviders) CompleteSWGResourceProviders(ctx context.Cont
 	return nil
 }
 
+// CompleteSWGResourceProvidersViaLocalFS is similar to the CompleteSWGResourceProvidersViaGithubAPI, except it walks the Azure Swagger
+// repo on local FS.
+func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaLocalFS(swaggerRepoSpecBasePath string) error {
+	for rpName, rp := range swgrps {
+		for apiName, api := range rp.Apis {
+			schemaFolderPattern := regexp.MustCompile(fmt.Sprintf(`^%s(/resource-manager(/Microsoft.\w+(/(preview|stable)(/%s)?)?)?)?$`, rpName, apiName))
+			schemaPattern := regexp.MustCompile(fmt.Sprintf(`^%s/resource-manager/Microsoft.\w+/(preview|stable)/%s/\w+.json$`, rpName, apiName))
+			if err := filepath.Walk(path.Join(swaggerRepoSpecBasePath, rpName),
+				func(p string, info os.FileInfo, err error) error {
+					relPath := strings.TrimPrefix(p, swaggerRepoSpecBasePath+string(os.PathSeparator))
+					log.Printf("Searching Swaggers in %s...\n", relPath)
+					if err != nil {
+						return err
+					}
+					if info == nil {
+						return nil
+					}
+
+					// Skip directories not match the schema folder patterns
+					if info.IsDir() {
+						if !schemaFolderPattern.MatchString(relPath) {
+							log.Printf("Skip directory %s!\n", relPath)
+							return filepath.SkipDir
+						}
+						return nil
+					}
+
+					// Skip files not match the schema file patterns
+					if !schemaPattern.MatchString(relPath) {
+						log.Printf("Skip file %s!\n", relPath)
+						return nil
+					}
+
+					schemas, err := collectAllTFCandidateSchemas(swaggerRepoSpecBasePath, relPath)
+					if err != nil {
+						return err
+					}
+
+					for _, schema := range schemas {
+						if _, ok := api.Schemas[schema.Name]; !ok {
+							api.Schemas[schema.Name] = &schema
+						}
+					}
+
+					return nil
+				}); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func collectAllTFCandidateSchemas(swaggerRepoBaseURI, relPath string) ([]SWGSchema, error) {
-	coreSchemas, err := core.NewSWGSchemasMeetingCriteria(swaggerRepoBaseURI, relPath, func(swagger *openapispec.Swagger) (schemaNames []string) {
+	coreSchemas, err := core.CollectSWGSchemas(swaggerRepoBaseURI, relPath, func(swagger *openapispec.Swagger) (schemaNames []string) {
 		if swagger.Paths == nil {
 			return nil
 		}
@@ -183,7 +240,6 @@ func collectAllTFCandidateSchemas(swaggerRepoBaseURI, relPath string) ([]SWGSche
 					continue
 				}
 
-				// construct the github download url
 				refString := param.Schema.Ref.GetPointer().String()
 				refStringPattern := regexp.MustCompile(`^/definitions/([^/]+)$`)
 				matches := refStringPattern.FindStringSubmatch(refString)

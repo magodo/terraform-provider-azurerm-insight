@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 
 	"github.com/magodo/ghwalk"
@@ -27,9 +28,9 @@ func main() {
 
 	tfSchemaDir := flag.String("tf-schema-dir", "", "The path to the directory contains terraform schemas")
 	swaggerGrantBaseDir := flag.String("swagger-grant-dir", "", "The path to the base directory contains swagger grant info (e.g. azure_knowledgebase/swagger_grants)")
-	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
+	swaggerSpecPath := flag.String("swagger-spec-path", "", "The path to the swagger spec directory, either a HTTP URI or local path (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	showHelp := flag.Bool("help", false, "Display this message")
-	githubToken := flag.String("github-token", "", "Github access token used to interact with github repos (e.g. azure-rest-api-spec which holds the Azure Swagger Spec)")
+	githubToken := flag.String("github-token", "", "Github access token used to interact with github repos")
 
 	flag.Parse()
 
@@ -38,13 +39,26 @@ func main() {
 		return
 	}
 
-	swgschemas, err := core.NewSWGSchemasFromTerraformSchema(*swaggerBaseDir, *tfSchemaDir, *swaggerGrantBaseDir)
+	swgschemas, err := core.NewSWGSchemasFromTerraformSchema(*swaggerSpecPath, *tfSchemaDir, *swaggerGrantBaseDir)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	azureswgschemas := NewSWGResourceProviders(*swgschemas)
-	azureswgschemas.CompleteSWGResourceProviders(context.TODO(), &ghwalk.WalkOptions{Token: *githubToken, Reverse: true})
+
+	swaggerURL, err := url.Parse(*swaggerSpecPath)
+	if err != nil {
+		log.Println(err)
+	}
+	if swaggerURL.Scheme == "http" || swaggerURL.Scheme == "https" {
+		if err := azureswgschemas.CompleteSWGResourceProvidersViaGithubAPI(context.TODO(), &ghwalk.WalkOptions{Token: *githubToken, Reverse: true}); err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		if err := azureswgschemas.CompleteSWGResourceProvidersViaLocalFS(*swaggerSpecPath); err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	page := PageSwagger(azureswgschemas)
 

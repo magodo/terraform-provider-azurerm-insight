@@ -125,8 +125,8 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 
 type SWGSchemaCollector func(swagger *openapispec.Swagger) (schemaNames []string)
 
-// NewSWGSchemasMeetingCriteria collects the schemas from a swagger spec
-func NewSWGSchemasMeetingCriteria(swaggerBaseURL, swaggerRelPath string, collector SWGSchemaCollector) ([]SWGSchema, error) {
+// CollectSWGSchemas collects the schemas from a swagger spec
+func CollectSWGSchemas(swaggerBaseURL, swaggerRelPath string, collector SWGSchemaCollector) ([]SWGSchema, error) {
 	swaggerURI := swaggerBaseURL + "/" + swaggerRelPath
 	swagger, err := LoadSwagger(swaggerURI)
 	if err != nil {
@@ -361,10 +361,10 @@ func NewSGWSchemas() *SWGSchemas {
 }
 
 // Build SWGSchemas by processing on Terraform schema files (which resides in the tfSchemaDir)
-// and the Swagger specs (which resides in the swaggerBaseDir)
+// and the Swagger specs (which resides in the swaggerBaseDir, can be either a local path or an http URI)
 // Optionally, users can specify the swaggerGrantDir which contains the grants for those non-terraform
 // appropriate swagger schema/properties.
-func NewSWGSchemasFromTerraformSchema(swaggerBaseDir, tfSchemaDir, swaggerGrantBaseDir string) (*SWGSchemas, error) {
+func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrantBaseDir string) (*SWGSchemas, error) {
 	swgschemas := NewSGWSchemas()
 	err := filepath.Walk(tfSchemaDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -385,7 +385,7 @@ func NewSWGSchemasFromTerraformSchema(swaggerBaseDir, tfSchemaDir, swaggerGrantB
 			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
 		}
 
-		if err := tfschema.LinkSwagger(*swgschemas, swaggerBaseDir); err != nil {
+		if err := tfschema.LinkSwagger(*swgschemas, swaggerBasePath); err != nil {
 			return err
 		}
 

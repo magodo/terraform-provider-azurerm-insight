@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 
 	tfSchemaDir := flag.String("tf-schema-dir", "", "The path to the directory contains terraform schemas")
 	swaggerGrantBaseDir := flag.String("swagger-grant-dir", "", "The path to the base directory contains swagger grant info (e.g. azure_knowledgebase/swagger_grants)")
-	swaggerBaseDir := flag.String("swagger-base-dir", "", "The path to the swagger base directory (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
+	swaggerSpecPath := flag.String("swagger-spec-path", "", "The path to the swagger spec directory, either a HTTP URI or local path (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	outputPath := flag.String("output", filepath.Join(pwd, "swagger_schema.json"), "The output file")
 	showHelp := flag.Bool("help", false, "Display this message")
 
@@ -52,7 +53,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	swgschemas, err := core.NewSWGSchemasFromTerraformSchema(*swaggerBaseDir, *tfSchemaDir, *swaggerGrantBaseDir)
+	swgschemas, err := core.NewSWGSchemasFromTerraformSchema(*swaggerSpecPath, *tfSchemaDir, *swaggerGrantBaseDir)
 	if err != nil {
 		log.Fatal(err)
 	}
