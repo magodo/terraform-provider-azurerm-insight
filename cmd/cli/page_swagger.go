@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -13,12 +14,29 @@ import (
 	"github.com/rivo/tview"
 )
 
+var (
+	colorCoveredProperty    = tcell.ColorWhite
+	colorNotCoveredProperty = tcell.NewHexColor(0xff6666)
+	colorGrantedProperty    = tcell.ColorDimGrey
+	colorObjectProperty     = tcell.NewHexColor(0x3399ff)
+)
+
+var (
+	colorTextCoveredSchema    = "white"
+	colorTextNotCoveredSchema = "red"
+	colorTextGrantedSchema    = "grey"
+)
+
 type pageSwaggerItems struct {
 	rpList         *tview.List
 	apiList        *tview.List
 	schemaList     *tview.List
 	propertyTree   *tview.TreeView
 	propertyDetail *tview.TextView
+}
+
+func drawProgressBar(percentage float64) string {
+	return fmt.Sprintf("[%s%s] - %.2f%%", strings.Repeat("#", int(percentage*10)), strings.Repeat(" ", 10-int(percentage*10)), 100*percentage)
 }
 
 func refreshResourceProviderList(items pageSwaggerItems, swgrps SWGResourceProviders) {
@@ -52,7 +70,29 @@ func refreshApiVersionList(items pageSwaggerItems, swgapis SWGResourceProviderAP
 
 	for _, k := range apis {
 		v := swgapis[k]
-		items.apiList.AddItem(k, "", 0,
+
+		var covered, total int
+
+		swgschemas := v.Schemas
+		for _, v := range swgschemas {
+			if v.IsGranted {
+				continue
+			}
+			total++
+			propCovered, _ := v.SchemaCoverage()
+			if propCovered != 0 {
+				covered++
+			}
+		}
+
+		var cov float64
+		if total == 0 {
+			cov = 0
+		} else {
+			cov = float64(covered) / float64(total)
+		}
+
+		items.apiList.AddItem(k, drawProgressBar(cov), 0,
 			func() {
 				refreshSchemaList(items, v.Schemas)
 				app.SetFocus(items.schemaList)
@@ -70,34 +110,56 @@ func refreshSchemaList(items pageSwaggerItems, swgschemas SWGSchemas) {
 	}
 	sort.Strings(schemas)
 
+	var formatText = func(colorText, rawText string) string {
+		return fmt.Sprintf("[%s]%s", colorText, rawText)
+	}
+	var parseText = func(mainText string) (colorText, rawText string) {
+		matches := regexp.MustCompile(`\[(.+)](.+)`).FindStringSubmatch(mainText)
+		return matches[1], matches[2]
+	}
 	for _, k := range schemas {
 		v := swgschemas[k]
 		propCovered, propTotal := v.SchemaCoverage()
-		var cov float64
-		if propTotal == 0 {
-			cov = 0
+
+		var (
+			mainText      string
+			secondaryText string
+		)
+		if v.IsGranted {
+			mainText = formatText(colorTextGrantedSchema, k)
+		} else if propCovered == 0 {
+			mainText = formatText(colorTextNotCoveredSchema, k)
 		} else {
-			cov = 100 * float64(propCovered) / float64(propTotal)
+			var cov float64
+			if propTotal == 0 {
+				cov = 0
+			} else {
+				cov = float64(propCovered) / float64(propTotal)
+			}
+			mainText = formatText(colorTextCoveredSchema, k)
+			secondaryText = fmt.Sprintf("%s\n", drawProgressBar(cov))
 		}
-		items.schemaList.AddItem(k, fmt.Sprintf("[cov. %.2f%%]", cov), 0,
-			func() {
-				refreshPropertyTree(items, *v)
-				app.SetFocus(items.propertyTree)
-				items.propertyDetail.Clear()
-			})
+
+		items.schemaList.AddItem(mainText, secondaryText, 0, nil)
+		items.schemaList.SetChangedFunc(func(index int, mainText string, secondaryText string, shortcut rune) {
+			_, rawMainText := parseText(mainText)
+			v := swgschemas[rawMainText]
+			refreshPropertyTree(items, *v)
+			items.propertyDetail.Clear()
+		})
+		items.schemaList.SetSelectedFunc(func(index int, mainText string, secondaryText string, shortcut rune) {
+			_, rawMainText := parseText(mainText)
+			v := swgschemas[rawMainText]
+			refreshPropertyTree(items, *v)
+			app.SetFocus(items.propertyTree)
+			items.propertyDetail.Clear()
+		})
 	}
 }
 
 func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 	root := tview.NewTreeNode(".")
 	items.propertyTree.SetRoot(root).SetCurrentNode(root)
-
-	var (
-		colorCoveredLeaf    = tcell.ColorWhite
-		colorNotCoveredLeaf = tcell.NewHexColor(0xff6666)
-		colorGrantedLeaf    = tcell.ColorDimGrey
-		colorNonLeaf        = tcell.NewHexColor(0x3399ff)
-	)
 
 	propaddrs := make([]string, 0, len(swgschema.Properties))
 	for k := range swgschema.Properties {
@@ -130,14 +192,14 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 			if isLeaf {
 				cnode.SetReference(*prop)
 				if prop.IsGranted {
-					cnode.SetColor(colorGrantedLeaf)
+					cnode.SetColor(colorGrantedProperty)
 				} else if len(prop.TFLinks) == 0 {
-					cnode.SetColor(colorNotCoveredLeaf)
+					cnode.SetColor(colorNotCoveredProperty)
 				} else {
-					cnode.SetColor(colorCoveredLeaf)
+					cnode.SetColor(colorCoveredProperty)
 				}
 			} else {
-				cnode.SetColor(colorNonLeaf)
+				cnode.SetColor(colorObjectProperty)
 				curaddr = curaddr.Append(segment)
 				cov, total, ok := swgschema.FindCoverage(curaddr)
 				var coverage float64
@@ -150,15 +212,10 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 		}
 	}
 
-	items.propertyTree.SetSelectedFunc(func(node *tview.TreeNode) {
+	items.propertyTree.SetChangedFunc(func(node *tview.TreeNode) {
 		reference := node.GetReference()
 		if reference == nil {
 			return // Selecting the root node does nothing.
-		}
-		children := node.GetChildren()
-		if len(children) != 0 {
-			// Collapse if visible, expand if collapsed.
-			node.SetExpanded(!node.IsExpanded())
 		}
 
 		showNodeInfo := func(cov float64) {
@@ -194,6 +251,14 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 			showNodeInfo(ref)
 		case core.SWGSchemaProperty:
 			showLeafNodeInfo(ref)
+		}
+	})
+
+	items.propertyTree.SetSelectedFunc(func(node *tview.TreeNode) {
+		children := node.GetChildren()
+		if len(children) != 0 {
+			// Collapse if visible, expand if collapsed.
+			node.SetExpanded(!node.IsExpanded())
 		}
 	})
 
