@@ -54,7 +54,6 @@ func refreshResourceProviderList(items pageSwaggerItems, swgrps SWGResourceProvi
 			func() {
 				refreshApiVersionList(items, v.Apis)
 				app.SetFocus(items.apiList)
-				items.propertyDetail.Clear()
 			})
 	}
 }
@@ -96,13 +95,17 @@ func refreshApiVersionList(items pageSwaggerItems, swgapis SWGResourceProviderAP
 			func() {
 				refreshSchemaList(items, v.Schemas)
 				app.SetFocus(items.schemaList)
-				items.propertyDetail.Clear()
 			})
 	}
 }
 
 func refreshSchemaList(items pageSwaggerItems, swgschemas SWGSchemas) {
 	items.schemaList.Clear()
+
+	// There is a bug (potentially in tview) which will cause the "swgschemas" in SetChangedFunc closure pointing to the "wrong" one
+	// when switching RP. This causes panic since the schema specified in the mainText doesn't exist in the swgschemas.
+	// Hence, we explicitly set the changed func to be nil so that the tview framework will not incorrectly call the "old" handler with "new" item.
+	items.schemaList.SetChangedFunc(nil)
 
 	schemas := make([]string, 0, len(swgschemas))
 	for k := range swgschemas {
@@ -141,18 +144,18 @@ func refreshSchemaList(items pageSwaggerItems, swgschemas SWGSchemas) {
 		}
 
 		items.schemaList.AddItem(mainText, secondaryText, 0, nil)
+
 		items.schemaList.SetChangedFunc(func(index int, mainText string, secondaryText string, shortcut rune) {
 			_, rawMainText := parseText(mainText)
 			v := swgschemas[rawMainText]
 			refreshPropertyTree(items, *v)
-			items.propertyDetail.Clear()
 		})
+
 		items.schemaList.SetSelectedFunc(func(index int, mainText string, secondaryText string, shortcut rune) {
 			_, rawMainText := parseText(mainText)
 			v := swgschemas[rawMainText]
 			refreshPropertyTree(items, *v)
 			app.SetFocus(items.propertyTree)
-			items.propertyDetail.Clear()
 		})
 	}
 }
@@ -272,7 +275,7 @@ func PageSwagger(swgrps SWGResourceProviders) tview.Primitive {
 	apiList := tview.NewList().ShowSecondaryText(true)
 	apiList.SetTitle("API Version").SetBorder(true)
 	apiList.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		if event.Rune() == 'h' {
+		if event.Key() == tcell.KeyESC {
 			app.SetFocus(rpList)
 			return nil
 		}
@@ -282,7 +285,7 @@ func PageSwagger(swgrps SWGResourceProviders) tview.Primitive {
 	schemaList := tview.NewList().ShowSecondaryText(true)
 	schemaList.SetTitle("Schema").SetBorder(true)
 	schemaList.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		if event.Rune() == 'h' {
+		if event.Key() == tcell.KeyESC {
 			app.SetFocus(apiList)
 			return nil
 		}
@@ -292,7 +295,7 @@ func PageSwagger(swgrps SWGResourceProviders) tview.Primitive {
 	propertyTree := tview.NewTreeView()
 	propertyTree.SetTitle("Property").SetBorder(true)
 	propertyTree.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		if event.Rune() == 'h' {
+		if event.Key() == tcell.KeyESC {
 			app.SetFocus(schemaList)
 			return nil
 		}
