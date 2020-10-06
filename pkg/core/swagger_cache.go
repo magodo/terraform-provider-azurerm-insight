@@ -2,9 +2,10 @@ package core
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/go-openapi/loads"
 	openapispec "github.com/go-openapi/spec"
-	"sync"
 )
 
 type SwaggerCache struct {

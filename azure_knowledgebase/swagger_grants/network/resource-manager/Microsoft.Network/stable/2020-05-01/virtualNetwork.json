@@ -4,5 +4,8 @@
       "etag": "etag is not needed",
       "properties.subnets.properties.privateEndpointNetworkPolicies": "granted"
     }
+  },
+  "Subnet": {
+      "Comment": "subnet is not a terraform candidate resource"
   }
 }
