@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_security_center_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_id": []
+  }
+}

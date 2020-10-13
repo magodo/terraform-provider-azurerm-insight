@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_storage_account_customer_managed_key",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "key_name": [],
+    "key_vault_id": [],
+    "key_version": [],
+    "storage_account_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Name": "data_azurerm_lb_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "backend_address_pool_id": [],
+    "backend_port": [],
+    "disable_outbound_snat": [],
+    "enable_floating_ip": [],
+    "enable_tcp_reset": [],
+    "frontend_ip_configuration_name": [],
+    "frontend_port": [],
+    "id": [],
+    "idle_timeout_in_minutes": [],
+    "load_distribution": [],
+    "loadbalancer_id": [],
+    "name": [],
+    "probe_id": [],
+    "protocol": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

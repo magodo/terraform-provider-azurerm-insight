@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_managed_application",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_definition_id": [],
+    "id": [],
+    "kind": [],
+    "location": [],
+    "managed_resource_group_name": [],
+    "name": [],
+    "outputs": [],
+    "parameters": [],
+    "plan.name": [],
+    "plan.product": [],
+    "plan.promotion_code": [],
+    "plan.publisher": [],
+    "plan.version": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_servicebus_namespace",
+  "swagger": "",
+  "PropertyLinks": {
+    "capacity": [],
+    "default_primary_connection_string": [],
+    "default_primary_key": [],
+    "default_secondary_connection_string": [],
+    "default_secondary_key": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.read": [],
+    "zone_redundant": []
+  }
+}

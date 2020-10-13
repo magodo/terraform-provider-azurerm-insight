@@ -1,0 +1,22 @@
+{
+  "Name": "data_azurerm_firewall_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "base_policy_id": [],
+    "child_policies": [],
+    "dns.network_rule_fqdn_enabled": [],
+    "dns.proxy_enabled": [],
+    "dns.servers": [],
+    "firewalls": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "rule_collection_groups": [],
+    "tags": [],
+    "threat_intelligence_allowlist.fqdns": [],
+    "threat_intelligence_allowlist.ip_addresses": [],
+    "threat_intelligence_mode": [],
+    "timeouts.read": []
+  }
+}

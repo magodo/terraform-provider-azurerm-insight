@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_cdn_profile",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

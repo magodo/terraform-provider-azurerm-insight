@@ -1,0 +1,11 @@
+{
+  "Name": "data_azurerm_netapp_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

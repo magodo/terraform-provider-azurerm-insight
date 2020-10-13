@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_api_management_diagnostic",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_logger_id": [],
+    "api_management_name": [],
+    "enabled": [],
+    "id": [],
+    "identifier": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

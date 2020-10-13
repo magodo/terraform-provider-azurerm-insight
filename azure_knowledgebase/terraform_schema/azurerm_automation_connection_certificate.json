@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_automation_connection_certificate",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "automation_certificate_name": [],
+    "description": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "subscription_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

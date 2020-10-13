@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_cosmosdb_mongo_collection",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "autoscale_settings.max_throughput": [],
+    "database_name": [],
+    "default_ttl_seconds": [],
+    "id": [],
+    "index.keys": [],
+    "index.unique": [],
+    "name": [],
+    "resource_group_name": [],
+    "shard_key": [],
+    "system_indexes.keys": [],
+    "system_indexes.unique": [],
+    "throughput": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

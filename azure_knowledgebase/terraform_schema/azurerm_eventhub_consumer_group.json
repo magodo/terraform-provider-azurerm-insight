@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_eventhub_consumer_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "eventhub_name": [],
+    "id": [],
+    "name": [],
+    "namespace_name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "user_metadata": []
+  }
+}

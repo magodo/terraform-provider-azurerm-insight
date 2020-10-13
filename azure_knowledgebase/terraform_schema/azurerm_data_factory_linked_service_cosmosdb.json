@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_data_factory_linked_service_cosmosdb",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_endpoint": [],
+    "account_key": [],
+    "additional_properties": [],
+    "annotations": [],
+    "connection_string": [],
+    "data_factory_name": [],
+    "database": [],
+    "description": [],
+    "id": [],
+    "integration_runtime_name": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_cosmosdb_sql_container",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "autoscale_settings.max_throughput": [],
+    "database_name": [],
+    "default_ttl": [],
+    "id": [],
+    "indexing_policy.excluded_path.path": [],
+    "indexing_policy.included_path.path": [],
+    "indexing_policy.indexing_mode": [],
+    "name": [],
+    "partition_key_path": [],
+    "resource_group_name": [],
+    "throughput": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "unique_key.paths": []
+  }
+}

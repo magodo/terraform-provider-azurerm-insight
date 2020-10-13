@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_postgresql_virtual_network_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "ignore_missing_vnet_service_endpoint": [],
+    "name": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "subnet_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

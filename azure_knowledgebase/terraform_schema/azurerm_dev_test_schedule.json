@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_dev_test_schedule",
+  "swagger": "",
+  "PropertyLinks": {
+    "daily_recurrence.time": [],
+    "hourly_recurrence.minute": [],
+    "id": [],
+    "lab_name": [],
+    "location": [],
+    "name": [],
+    "notification_settings.status": [],
+    "notification_settings.time_in_minutes": [],
+    "notification_settings.webhook_url": [],
+    "resource_group_name": [],
+    "status": [],
+    "tags": [],
+    "task_type": [],
+    "time_zone_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "weekly_recurrence.time": [],
+    "weekly_recurrence.week_days": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_orchestrated_virtual_machine_scale_set",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "platform_fault_domain_count": [],
+    "proximity_placement_group_id": [],
+    "resource_group_name": [],
+    "single_placement_group": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "unique_id": [],
+    "zones": []
+  }
+}

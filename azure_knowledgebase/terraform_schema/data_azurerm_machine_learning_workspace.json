@@ -1,0 +1,12 @@
+{
+  "Name": "data_azurerm_machine_learning_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

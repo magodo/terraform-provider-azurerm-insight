@@ -1,0 +1,18 @@
+{
+  "Name": "data_azurerm_policy_definition",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "display_name": [],
+    "id": [],
+    "management_group_id": [],
+    "management_group_name": [],
+    "metadata": [],
+    "name": [],
+    "parameters": [],
+    "policy_rule": [],
+    "policy_type": [],
+    "timeouts.read": [],
+    "type": []
+  }
+}

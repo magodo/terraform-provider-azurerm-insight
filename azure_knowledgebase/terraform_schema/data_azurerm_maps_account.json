@@ -1,0 +1,15 @@
+{
+  "Name": "data_azurerm_maps_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "primary_access_key": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "x_ms_client_id": []
+  }
+}

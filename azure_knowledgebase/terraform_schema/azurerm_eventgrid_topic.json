@@ -1,0 +1,28 @@
+{
+  "Name": "azurerm_eventgrid_topic",
+  "swagger": "",
+  "PropertyLinks": {
+    "endpoint": [],
+    "id": [],
+    "input_mapping_default_values.data_version": [],
+    "input_mapping_default_values.event_type": [],
+    "input_mapping_default_values.subject": [],
+    "input_mapping_fields.data_version": [],
+    "input_mapping_fields.event_time": [],
+    "input_mapping_fields.event_type": [],
+    "input_mapping_fields.id": [],
+    "input_mapping_fields.subject": [],
+    "input_mapping_fields.topic": [],
+    "input_schema": [],
+    "location": [],
+    "name": [],
+    "primary_access_key": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

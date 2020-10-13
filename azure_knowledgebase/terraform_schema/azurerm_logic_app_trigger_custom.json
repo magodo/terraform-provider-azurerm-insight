@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_logic_app_trigger_custom",
+  "swagger": "",
+  "PropertyLinks": {
+    "body": [],
+    "id": [],
+    "logic_app_id": [],
+    "name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

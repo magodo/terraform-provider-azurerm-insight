@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_iot_time_series_insights_access_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "id": [],
+    "name": [],
+    "principal_object_id": [],
+    "roles": [],
+    "time_series_insights_environment_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

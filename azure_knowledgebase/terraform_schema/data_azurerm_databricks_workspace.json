@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_databricks_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "timeouts.read": [],
+    "workspace_id": [],
+    "workspace_url": []
+  }
+}

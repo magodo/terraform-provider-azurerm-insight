@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_powerbi_embedded",
+  "swagger": "",
+  "PropertyLinks": {
+    "administrators": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

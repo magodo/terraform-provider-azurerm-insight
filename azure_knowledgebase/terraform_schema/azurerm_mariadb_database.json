@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_mariadb_database",
+  "swagger": "",
+  "PropertyLinks": {
+    "charset": [],
+    "collation": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

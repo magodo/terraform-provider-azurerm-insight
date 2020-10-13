@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_dev_test_lab",
+  "swagger": "",
+  "PropertyLinks": {
+    "artifacts_storage_account_id": [],
+    "default_premium_storage_account_id": [],
+    "default_storage_account_id": [],
+    "id": [],
+    "key_vault_id": [],
+    "location": [],
+    "name": [],
+    "premium_data_disk_storage_account_id": [],
+    "resource_group_name": [],
+    "storage_type": [],
+    "tags": [],
+    "timeouts.read": [],
+    "unique_identifier": []
+  }
+}

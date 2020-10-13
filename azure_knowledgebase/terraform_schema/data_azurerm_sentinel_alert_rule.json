@@ -1,0 +1,10 @@
+{
+  "Name": "data_azurerm_sentinel_alert_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "log_analytics_workspace_id": [],
+    "name": [],
+    "timeouts.read": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_logic_app_action_http",
+  "swagger": "",
+  "PropertyLinks": {
+    "body": [],
+    "headers": [],
+    "id": [],
+    "logic_app_id": [],
+    "method": [],
+    "name": [],
+    "run_after.action_name": [],
+    "run_after.action_result": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "uri": []
+  }
+}

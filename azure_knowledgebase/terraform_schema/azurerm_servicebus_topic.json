@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_servicebus_topic",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_delete_on_idle": [],
+    "default_message_ttl": [],
+    "duplicate_detection_history_time_window": [],
+    "enable_batched_operations": [],
+    "enable_express": [],
+    "enable_partitioning": [],
+    "id": [],
+    "max_size_in_megabytes": [],
+    "name": [],
+    "namespace_name": [],
+    "requires_duplicate_detection": [],
+    "resource_group_name": [],
+    "status": [],
+    "support_ordering": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

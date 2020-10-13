@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_data_factory_linked_service_sftp",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "authentication_type": [],
+    "data_factory_name": [],
+    "description": [],
+    "host": [],
+    "id": [],
+    "integration_runtime_name": [],
+    "name": [],
+    "parameters": [],
+    "password": [],
+    "port": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "username": []
+  }
+}

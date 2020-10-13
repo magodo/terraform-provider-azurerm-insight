@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_express_route_circuit_peering",
+  "swagger": "",
+  "PropertyLinks": {
+    "azure_asn": [],
+    "express_route_circuit_name": [],
+    "id": [],
+    "microsoft_peering_config.advertised_public_prefixes": [],
+    "microsoft_peering_config.customer_asn": [],
+    "microsoft_peering_config.routing_registry_name": [],
+    "peer_asn": [],
+    "peering_type": [],
+    "primary_azure_port": [],
+    "primary_peer_address_prefix": [],
+    "resource_group_name": [],
+    "route_filter_id": [],
+    "secondary_azure_port": [],
+    "secondary_peer_address_prefix": [],
+    "shared_key": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "vlan_id": []
+  }
+}

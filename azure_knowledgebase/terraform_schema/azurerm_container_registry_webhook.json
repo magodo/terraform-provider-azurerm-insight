@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_container_registry_webhook",
+  "swagger": "",
+  "PropertyLinks": {
+    "actions": [],
+    "custom_headers": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "registry_name": [],
+    "resource_group_name": [],
+    "scope": [],
+    "service_uri": [],
+    "status": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

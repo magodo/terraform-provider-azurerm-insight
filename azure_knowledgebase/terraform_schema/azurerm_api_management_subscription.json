@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_api_management_subscription",
+  "swagger": "",
+  "PropertyLinks": {
+    "allow_tracing": [],
+    "api_management_name": [],
+    "display_name": [],
+    "id": [],
+    "primary_key": [],
+    "product_id": [],
+    "resource_group_name": [],
+    "secondary_key": [],
+    "state": [],
+    "subscription_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "user_id": []
+  }
+}

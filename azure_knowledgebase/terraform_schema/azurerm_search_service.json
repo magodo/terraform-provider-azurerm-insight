@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_search_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "allowed_ips": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "partition_count": [],
+    "primary_key": [],
+    "public_network_access_enabled": [],
+    "query_keys.key": [],
+    "query_keys.name": [],
+    "replica_count": [],
+    "resource_group_name": [],
+    "secondary_key": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

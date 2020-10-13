@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_app_service_hybrid_connection",
+  "swagger": "",
+  "PropertyLinks": {
+    "app_service_name": [],
+    "hostname": [],
+    "id": [],
+    "namespace_name": [],
+    "port": [],
+    "relay_id": [],
+    "relay_name": [],
+    "resource_group_name": [],
+    "send_key_name": [],
+    "send_key_value": [],
+    "service_bus_namespace": [],
+    "service_bus_suffix": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "Name": "data_azurerm_backup_policy_vm",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "recovery_vault_name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

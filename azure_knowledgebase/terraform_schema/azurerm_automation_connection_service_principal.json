@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_automation_connection_service_principal",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_id": [],
+    "automation_account_name": [],
+    "certificate_thumbprint": [],
+    "description": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "subscription_id": [],
+    "tenant_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

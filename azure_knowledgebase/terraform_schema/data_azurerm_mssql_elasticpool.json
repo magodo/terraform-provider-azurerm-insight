@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_mssql_elasticpool",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "license_type": [],
+    "location": [],
+    "max_size_bytes": [],
+    "max_size_gb": [],
+    "name": [],
+    "per_db_max_capacity": [],
+    "per_db_min_capacity": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "zone_redundant": []
+  }
+}

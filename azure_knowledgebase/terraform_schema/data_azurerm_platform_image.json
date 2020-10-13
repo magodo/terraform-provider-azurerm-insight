@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_platform_image",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "offer": [],
+    "publisher": [],
+    "sku": [],
+    "timeouts.read": [],
+    "version": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_integration_service_environment",
+  "swagger": "",
+  "PropertyLinks": {
+    "access_endpoint_type": [],
+    "connector_endpoint_ip_addresses": [],
+    "connector_outbound_ip_addresses": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_network_subnet_ids": [],
+    "workflow_endpoint_ip_addresses": [],
+    "workflow_outbound_ip_addresses": []
+  }
+}

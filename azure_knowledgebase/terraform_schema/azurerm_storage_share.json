@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_storage_share",
+  "swagger": "",
+  "PropertyLinks": {
+    "acl.access_policy.expiry": [],
+    "acl.access_policy.permissions": [],
+    "acl.access_policy.start": [],
+    "acl.id": [],
+    "id": [],
+    "metadata": [],
+    "name": [],
+    "quota": [],
+    "resource_manager_id": [],
+    "storage_account_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "url": []
+  }
+}

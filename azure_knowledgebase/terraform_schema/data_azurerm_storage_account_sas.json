@@ -1,0 +1,29 @@
+{
+  "Name": "data_azurerm_storage_account_sas",
+  "swagger": "",
+  "PropertyLinks": {
+    "connection_string": [],
+    "expiry": [],
+    "https_only": [],
+    "id": [],
+    "permissions.add": [],
+    "permissions.create": [],
+    "permissions.delete": [],
+    "permissions.list": [],
+    "permissions.process": [],
+    "permissions.read": [],
+    "permissions.update": [],
+    "permissions.write": [],
+    "resource_types.container": [],
+    "resource_types.object": [],
+    "resource_types.service": [],
+    "sas": [],
+    "services.blob": [],
+    "services.file": [],
+    "services.queue": [],
+    "services.table": [],
+    "signed_version": [],
+    "start": [],
+    "timeouts.read": []
+  }
+}

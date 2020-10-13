@@ -1,0 +1,11 @@
+{
+  "Name": "data_azurerm_resource_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

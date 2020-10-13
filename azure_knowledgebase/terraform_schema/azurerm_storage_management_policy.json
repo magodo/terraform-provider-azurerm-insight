@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_storage_management_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "rule.actions.base_blob.delete_after_days_since_modification_greater_than": [],
+    "rule.actions.base_blob.tier_to_archive_after_days_since_modification_greater_than": [],
+    "rule.actions.base_blob.tier_to_cool_after_days_since_modification_greater_than": [],
+    "rule.actions.snapshot.delete_after_days_since_creation_greater_than": [],
+    "rule.enabled": [],
+    "rule.filters.blob_types": [],
+    "rule.filters.prefix_match": [],
+    "rule.name": [],
+    "storage_account_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

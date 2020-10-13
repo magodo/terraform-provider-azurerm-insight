@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_api_management_identity_provider_twitter",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_key": [],
+    "api_management_name": [],
+    "api_secret_key": [],
+    "id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

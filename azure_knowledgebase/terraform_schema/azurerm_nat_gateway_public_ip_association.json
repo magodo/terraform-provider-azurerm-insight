@@ -1,0 +1,12 @@
+{
+  "Name": "azurerm_nat_gateway_public_ip_association",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "nat_gateway_id": [],
+    "public_ip_address_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": []
+  }
+}

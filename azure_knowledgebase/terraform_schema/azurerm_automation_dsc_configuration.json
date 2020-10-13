@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_automation_dsc_configuration",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "content_embedded": [],
+    "description": [],
+    "id": [],
+    "location": [],
+    "log_verbose": [],
+    "name": [],
+    "resource_group_name": [],
+    "state": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

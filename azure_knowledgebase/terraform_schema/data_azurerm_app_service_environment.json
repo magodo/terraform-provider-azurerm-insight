@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_app_service_environment",
+  "swagger": "",
+  "PropertyLinks": {
+    "front_end_scale_factor": [],
+    "id": [],
+    "internal_ip_address": [],
+    "location": [],
+    "name": [],
+    "outbound_ip_addresses": [],
+    "pricing_tier": [],
+    "resource_group_name": [],
+    "service_ip_address": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

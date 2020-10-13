@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_bot_channel_directline",
+  "swagger": "",
+  "PropertyLinks": {
+    "bot_name": [],
+    "id": [],
+    "location": [],
+    "resource_group_name": [],
+    "site.enabled": [],
+    "site.enhanced_authentication_enabled": [],
+    "site.id": [],
+    "site.key": [],
+    "site.key2": [],
+    "site.name": [],
+    "site.trusted_origins": [],
+    "site.v1_allowed": [],
+    "site.v3_allowed": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

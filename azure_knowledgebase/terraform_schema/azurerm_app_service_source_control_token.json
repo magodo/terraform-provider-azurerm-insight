@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_app_service_source_control_token",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "token": [],
+    "token_secret": [],
+    "type": []
+  }
+}

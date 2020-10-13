@@ -1,0 +1,28 @@
+{
+  "Name": "azurerm_signalr_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "cors.allowed_origins": [],
+    "features.flag": [],
+    "features.value": [],
+    "hostname": [],
+    "id": [],
+    "ip_address": [],
+    "location": [],
+    "name": [],
+    "primary_access_key": [],
+    "primary_connection_string": [],
+    "public_port": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "secondary_connection_string": [],
+    "server_port": [],
+    "sku.capacity": [],
+    "sku.name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

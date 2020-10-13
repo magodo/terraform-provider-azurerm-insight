@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_iothub_dps_shared_access_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "enrollment_read": [],
+    "enrollment_write": [],
+    "id": [],
+    "iothub_dps_name": [],
+    "name": [],
+    "primary_connection_string": [],
+    "primary_key": [],
+    "registration_read": [],
+    "registration_write": [],
+    "resource_group_name": [],
+    "secondary_connection_string": [],
+    "secondary_key": [],
+    "service_config": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

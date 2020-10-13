@@ -1,0 +1,77 @@
+{
+  "Name": "azurerm_firewall_policy",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/firewallPolicy.json",
+  "PropertyLinks": {
+    "base_policy_id": [
+        {
+            "prop": "FirewallPolicy:properties.basePolicy"
+        }
+    ],
+    "child_policies": [
+        {
+            "prop": "FirewallPolicy:properties.childPolicies"
+        }
+    ],
+    "dns.network_rule_fqdn_enabled": [
+        {
+            "prop": "FirewallPolicy:properties.dnsSettings.requireProxyForNetworkRules"
+        }
+    ],
+    "dns.proxy_enabled": [
+        {
+            "prop": "FirewallPolicy:properties.dnsSettings.enableProxy"
+        }
+    ],
+    "dns.servers": [
+        {
+            "prop": "FirewallPolicy:properties.dnsSettings.servers"
+        }
+    ],
+    "firewalls": [
+        {
+            "prop": "FirewallPolicy:properties.firewalls"
+        }
+    ],
+    "id": [
+        {
+            "prop": "FirewallPolicy:id"
+        }
+    ],
+    "location": [
+        {
+            "prop": "FirewallPolicy:location"
+        }
+    ],
+    "name": [
+        {
+            "prop": "FirewallPolicy:name"
+        }
+    ],
+    "resource_group_name": [],
+    "rule_collection_groups": [
+        {
+            "prop": "FirewallPolicy:properties.ruleCollectionGroups"
+        }
+    ],
+    "tags": [
+        {
+            "prop": "FirewallPolicy:tags"
+        }
+    ],
+    "threat_intelligence_allowlist.fqdns": [
+        {
+            "prop": "FirewallPolicy:properties.threatIntelWhitelist.fqdns"
+        }
+    ],
+    "threat_intelligence_allowlist.ip_addresses": [
+        {
+            "prop": "FirewallPolicy:properties.threatIntelWhitelist.ipAddresses"
+        }
+    ],
+    "threat_intelligence_mode": [
+        {
+            "prop": "FirewallPolicy:properties.threatIntelMode"
+        }
+    ]
+  }
+}

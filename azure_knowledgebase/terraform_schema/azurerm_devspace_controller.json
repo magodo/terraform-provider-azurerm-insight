@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_devspace_controller",
+  "swagger": "",
+  "PropertyLinks": {
+    "data_plane_fqdn": [],
+    "host_suffix": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "tags": [],
+    "target_container_host_credentials_base64": [],
+    "target_container_host_resource_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

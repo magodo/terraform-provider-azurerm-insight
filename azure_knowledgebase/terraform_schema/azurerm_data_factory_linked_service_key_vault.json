@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_data_factory_linked_service_key_vault",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "data_factory_name": [],
+    "description": [],
+    "id": [],
+    "integration_runtime_name": [],
+    "key_vault_id": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

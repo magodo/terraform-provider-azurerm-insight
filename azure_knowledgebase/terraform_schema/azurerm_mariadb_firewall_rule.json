@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_mariadb_firewall_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "end_ip_address": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "start_ip_address": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

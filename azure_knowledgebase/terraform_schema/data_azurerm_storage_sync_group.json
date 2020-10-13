@@ -1,0 +1,10 @@
+{
+  "Name": "data_azurerm_storage_sync_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "storage_sync_id": [],
+    "timeouts.read": []
+  }
+}

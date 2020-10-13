@@ -1,0 +1,15 @@
+{
+  "Name": "data_azurerm_api_management_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "description": [],
+    "display_name": [],
+    "external_id": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.read": [],
+    "type": []
+  }
+}

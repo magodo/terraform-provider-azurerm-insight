@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_automation_schedule",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "description": [],
+    "expiry_time": [],
+    "frequency": [],
+    "id": [],
+    "interval": [],
+    "month_days": [],
+    "monthly_occurrence.day": [],
+    "monthly_occurrence.occurrence": [],
+    "name": [],
+    "resource_group_name": [],
+    "start_time": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "timezone": [],
+    "week_days": []
+  }
+}

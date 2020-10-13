@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_marketplace_agreement",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "license_text_link": [],
+    "offer": [],
+    "plan": [],
+    "privacy_policy_link": [],
+    "publisher": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

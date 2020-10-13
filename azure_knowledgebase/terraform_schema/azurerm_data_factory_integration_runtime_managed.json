@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_data_factory_integration_runtime_managed",
+  "swagger": "",
+  "PropertyLinks": {
+    "catalog_info.administrator_login": [],
+    "catalog_info.administrator_password": [],
+    "catalog_info.pricing_tier": [],
+    "catalog_info.server_endpoint": [],
+    "custom_setup_script.blob_container_uri": [],
+    "custom_setup_script.sas_token": [],
+    "data_factory_name": [],
+    "description": [],
+    "edition": [],
+    "id": [],
+    "license_type": [],
+    "location": [],
+    "max_parallel_executions_per_node": [],
+    "name": [],
+    "node_size": [],
+    "number_of_nodes": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "vnet_integration.subnet_name": [],
+    "vnet_integration.vnet_id": []
+  }
+}

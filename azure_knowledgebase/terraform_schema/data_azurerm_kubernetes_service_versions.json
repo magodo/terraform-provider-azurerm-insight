@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_kubernetes_service_versions",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "include_preview": [],
+    "latest_version": [],
+    "location": [],
+    "timeouts.read": [],
+    "version_prefix": [],
+    "versions": []
+  }
+}

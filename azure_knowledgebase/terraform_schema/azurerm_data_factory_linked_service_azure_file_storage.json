@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_data_factory_linked_service_azure_file_storage",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "connection_string": [],
+    "data_factory_name": [],
+    "description": [],
+    "host": [],
+    "id": [],
+    "integration_runtime_name": [],
+    "name": [],
+    "parameters": [],
+    "password": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "user_id": []
+  }
+}

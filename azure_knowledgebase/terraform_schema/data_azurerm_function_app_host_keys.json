@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_function_app_host_keys",
+  "swagger": "",
+  "PropertyLinks": {
+    "default_function_key": [],
+    "id": [],
+    "master_key": [],
+    "name": [],
+    "primary_key": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

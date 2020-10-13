@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_logic_app_trigger_recurrence",
+  "swagger": "",
+  "PropertyLinks": {
+    "frequency": [],
+    "id": [],
+    "interval": [],
+    "logic_app_id": [],
+    "name": [],
+    "start_time": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_automation_runbook",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "content": [],
+    "description": [],
+    "id": [],
+    "job_schedule.job_schedule_id": [],
+    "job_schedule.parameters": [],
+    "job_schedule.run_on": [],
+    "job_schedule.schedule_name": [],
+    "location": [],
+    "log_progress": [],
+    "log_verbose": [],
+    "name": [],
+    "publish_content_link.hash.algorithm": [],
+    "publish_content_link.hash.value": [],
+    "publish_content_link.uri": [],
+    "publish_content_link.version": [],
+    "resource_group_name": [],
+    "runbook_type": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

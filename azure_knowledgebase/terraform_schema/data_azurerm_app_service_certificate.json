@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_app_service_certificate",
+  "swagger": "",
+  "PropertyLinks": {
+    "expiration_date": [],
+    "friendly_name": [],
+    "host_names": [],
+    "id": [],
+    "issue_date": [],
+    "issuer": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "subject_name": [],
+    "tags": [],
+    "thumbprint": [],
+    "timeouts.read": []
+  }
+}

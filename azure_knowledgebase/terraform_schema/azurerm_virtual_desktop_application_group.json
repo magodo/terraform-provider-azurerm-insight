@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_virtual_desktop_application_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "friendly_name": [],
+    "host_pool_id": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": []
+  }
+}

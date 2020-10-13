@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_kusto_eventhub_data_connection",
+  "swagger": "",
+  "PropertyLinks": {
+    "cluster_name": [],
+    "consumer_group": [],
+    "data_format": [],
+    "database_name": [],
+    "eventhub_id": [],
+    "id": [],
+    "location": [],
+    "mapping_rule_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "table_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

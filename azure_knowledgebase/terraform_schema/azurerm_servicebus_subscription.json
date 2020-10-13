@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_servicebus_subscription",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_delete_on_idle": [],
+    "dead_lettering_on_filter_evaluation_error": [],
+    "dead_lettering_on_message_expiration": [],
+    "default_message_ttl": [],
+    "enable_batched_operations": [],
+    "forward_dead_lettered_messages_to": [],
+    "forward_to": [],
+    "id": [],
+    "lock_duration": [],
+    "max_delivery_count": [],
+    "name": [],
+    "namespace_name": [],
+    "requires_session": [],
+    "resource_group_name": [],
+    "status": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "topic_name": []
+  }
+}

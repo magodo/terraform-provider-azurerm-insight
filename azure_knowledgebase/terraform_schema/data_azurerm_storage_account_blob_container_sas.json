@@ -1,0 +1,26 @@
+{
+  "Name": "data_azurerm_storage_account_blob_container_sas",
+  "swagger": "",
+  "PropertyLinks": {
+    "cache_control": [],
+    "connection_string": [],
+    "container_name": [],
+    "content_disposition": [],
+    "content_encoding": [],
+    "content_language": [],
+    "content_type": [],
+    "expiry": [],
+    "https_only": [],
+    "id": [],
+    "ip_address": [],
+    "permissions.add": [],
+    "permissions.create": [],
+    "permissions.delete": [],
+    "permissions.list": [],
+    "permissions.read": [],
+    "permissions.write": [],
+    "sas": [],
+    "start": [],
+    "timeouts.read": []
+  }
+}

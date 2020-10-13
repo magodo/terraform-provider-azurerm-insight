@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_eventhub_namespace_authorization_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "listen": [],
+    "manage": [],
+    "name": [],
+    "namespace_name": [],
+    "primary_connection_string": [],
+    "primary_connection_string_alias": [],
+    "primary_key": [],
+    "resource_group_name": [],
+    "secondary_connection_string": [],
+    "secondary_connection_string_alias": [],
+    "secondary_key": [],
+    "send": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "Name": "data_azurerm_shared_image",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "eula": [],
+    "gallery_name": [],
+    "hyper_v_generation": [],
+    "id": [],
+    "identifier.offer": [],
+    "identifier.publisher": [],
+    "identifier.sku": [],
+    "location": [],
+    "name": [],
+    "os_type": [],
+    "privacy_statement_uri": [],
+    "release_note_uri": [],
+    "resource_group_name": [],
+    "specialized": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

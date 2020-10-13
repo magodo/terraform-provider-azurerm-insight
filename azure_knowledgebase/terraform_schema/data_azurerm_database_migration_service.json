@@ -1,0 +1,14 @@
+{
+  "Name": "data_azurerm_database_migration_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "subnet_id": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

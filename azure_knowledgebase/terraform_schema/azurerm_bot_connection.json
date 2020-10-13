@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_bot_connection",
+  "swagger": "",
+  "PropertyLinks": {
+    "bot_name": [],
+    "client_id": [],
+    "client_secret": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "scopes": [],
+    "service_provider_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_key_vault_access_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_id": [],
+    "certificate_permissions": [],
+    "id": [],
+    "key_permissions": [],
+    "key_vault_id": [],
+    "object_id": [],
+    "secret_permissions": [],
+    "storage_permissions": [],
+    "tenant_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

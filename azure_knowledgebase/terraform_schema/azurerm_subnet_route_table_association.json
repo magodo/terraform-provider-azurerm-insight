@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_subnet_route_table_association",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "route_table_id": [],
+    "subnet_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

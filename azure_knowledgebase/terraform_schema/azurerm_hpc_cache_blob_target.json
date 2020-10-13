@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_hpc_cache_blob_target",
+  "swagger": "",
+  "PropertyLinks": {
+    "cache_name": [],
+    "id": [],
+    "name": [],
+    "namespace_path": [],
+    "resource_group_name": [],
+    "storage_container_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

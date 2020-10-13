@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_managed_application_definition",
+  "swagger": "",
+  "PropertyLinks": {
+    "authorization.role_definition_id": [],
+    "authorization.service_principal_id": [],
+    "create_ui_definition": [],
+    "description": [],
+    "display_name": [],
+    "id": [],
+    "location": [],
+    "lock_level": [],
+    "main_template": [],
+    "name": [],
+    "package_enabled": [],
+    "package_file_uri": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_site_recovery_replication_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_consistent_snapshot_frequency_in_minutes": [],
+    "id": [],
+    "name": [],
+    "recovery_point_retention_in_minutes": [],
+    "recovery_vault_name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

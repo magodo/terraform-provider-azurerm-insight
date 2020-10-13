@@ -1,0 +1,12 @@
+{
+  "Name": "data_azurerm_key_vault_access_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "certificate_permissions": [],
+    "id": [],
+    "key_permissions": [],
+    "name": [],
+    "secret_permissions": [],
+    "timeouts.read": []
+  }
+}

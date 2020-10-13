@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_machine_learning_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_insights_id": [],
+    "container_registry_id": [],
+    "description": [],
+    "friendly_name": [],
+    "high_business_impact": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "key_vault_id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "storage_account_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

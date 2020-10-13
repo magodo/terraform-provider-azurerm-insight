@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_data_factory_linked_service_mysql",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "connection_string": [],
+    "data_factory_name": [],
+    "description": [],
+    "id": [],
+    "integration_runtime_name": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

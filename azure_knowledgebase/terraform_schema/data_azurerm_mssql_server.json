@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_mssql_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "administrator_login": [],
+    "fully_qualified_domain_name": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "restorable_dropped_database_ids": [],
+    "tags": [],
+    "timeouts.read": [],
+    "version": []
+  }
+}

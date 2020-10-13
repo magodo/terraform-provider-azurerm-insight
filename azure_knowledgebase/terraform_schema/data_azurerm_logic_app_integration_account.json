@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_logic_app_integration_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

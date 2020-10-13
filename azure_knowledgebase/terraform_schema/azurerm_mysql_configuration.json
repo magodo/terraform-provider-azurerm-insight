@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_mysql_configuration",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "value": []
+  }
+}

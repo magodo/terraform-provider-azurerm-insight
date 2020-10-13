@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_bot_channel_slack",
+  "swagger": "",
+  "PropertyLinks": {
+    "bot_name": [],
+    "client_id": [],
+    "client_secret": [],
+    "id": [],
+    "landing_page_url": [],
+    "location": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "verification_token": []
+  }
+}

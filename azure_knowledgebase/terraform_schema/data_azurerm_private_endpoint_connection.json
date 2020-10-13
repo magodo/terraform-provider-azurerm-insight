@@ -1,0 +1,15 @@
+{
+  "Name": "data_azurerm_private_endpoint_connection",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "private_service_connection.name": [],
+    "private_service_connection.private_ip_address": [],
+    "private_service_connection.request_response": [],
+    "private_service_connection.status": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_backup_policy_vm",
+  "swagger": "",
+  "PropertyLinks": {
+    "backup.frequency": [],
+    "backup.time": [],
+    "backup.weekdays": [],
+    "id": [],
+    "name": [],
+    "recovery_vault_name": [],
+    "resource_group_name": [],
+    "retention_daily.count": [],
+    "retention_monthly.count": [],
+    "retention_monthly.weekdays": [],
+    "retention_monthly.weeks": [],
+    "retention_weekly.count": [],
+    "retention_weekly.weekdays": [],
+    "retention_yearly.count": [],
+    "retention_yearly.months": [],
+    "retention_yearly.weekdays": [],
+    "retention_yearly.weeks": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "timezone": []
+  }
+}

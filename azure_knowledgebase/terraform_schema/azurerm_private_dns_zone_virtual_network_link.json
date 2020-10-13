@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_private_dns_zone_virtual_network_link",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "private_dns_zone_name": [],
+    "registration_enabled": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_network_id": []
+  }
+}

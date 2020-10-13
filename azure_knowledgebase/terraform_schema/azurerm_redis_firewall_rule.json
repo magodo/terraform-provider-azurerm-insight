@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_redis_firewall_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "end_ip": [],
+    "id": [],
+    "name": [],
+    "redis_cache_name": [],
+    "resource_group_name": [],
+    "start_ip": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

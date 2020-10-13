@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_bot_channel_email",
+  "swagger": "",
+  "PropertyLinks": {
+    "bot_name": [],
+    "email_address": [],
+    "email_password": [],
+    "id": [],
+    "location": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_image",
+  "swagger": "",
+  "PropertyLinks": {
+    "data_disk.blob_uri": [],
+    "data_disk.caching": [],
+    "data_disk.lun": [],
+    "data_disk.managed_disk_id": [],
+    "data_disk.size_gb": [],
+    "hyper_v_generation": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "os_disk.blob_uri": [],
+    "os_disk.caching": [],
+    "os_disk.managed_disk_id": [],
+    "os_disk.os_state": [],
+    "os_disk.os_type": [],
+    "os_disk.size_gb": [],
+    "resource_group_name": [],
+    "source_virtual_machine_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zone_resilient": []
+  }
+}

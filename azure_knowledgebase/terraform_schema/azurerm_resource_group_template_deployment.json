@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_resource_group_template_deployment",
+  "swagger": "",
+  "PropertyLinks": {
+    "debug_level": [],
+    "deployment_mode": [],
+    "id": [],
+    "name": [],
+    "output_content": [],
+    "parameters_content": [],
+    "resource_group_name": [],
+    "tags": [],
+    "template_content": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

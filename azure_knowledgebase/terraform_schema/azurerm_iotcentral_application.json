@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_iotcentral_application",
+  "swagger": "",
+  "PropertyLinks": {
+    "display_name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "sub_domain": [],
+    "tags": [],
+    "template": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_user_assigned_identity",
+  "swagger": "",
+  "PropertyLinks": {
+    "client_id": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "principal_id": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

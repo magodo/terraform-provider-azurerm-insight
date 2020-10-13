@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_mssql_database",
+  "swagger": "",
+  "PropertyLinks": {
+    "collation": [],
+    "elastic_pool_id": [],
+    "id": [],
+    "license_type": [],
+    "max_size_gb": [],
+    "name": [],
+    "read_replica_count": [],
+    "read_scale": [],
+    "server_id": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "zone_redundant": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_analysis_services_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "admin_users": [],
+    "backup_blob_container_uri": [],
+    "enable_power_bi_service": [],
+    "id": [],
+    "ipv4_firewall_rule.name": [],
+    "ipv4_firewall_rule.range_end": [],
+    "ipv4_firewall_rule.range_start": [],
+    "location": [],
+    "name": [],
+    "querypool_connection_mode": [],
+    "resource_group_name": [],
+    "server_full_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

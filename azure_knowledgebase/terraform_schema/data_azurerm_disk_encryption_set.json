@@ -1,0 +1,12 @@
+{
+  "Name": "data_azurerm_disk_encryption_set",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

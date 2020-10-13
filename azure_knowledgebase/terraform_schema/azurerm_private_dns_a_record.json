@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_private_dns_a_record",
+  "swagger": "",
+  "PropertyLinks": {
+    "fqdn": [],
+    "id": [],
+    "name": [],
+    "records": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "ttl": [],
+    "zone_name": []
+  }
+}

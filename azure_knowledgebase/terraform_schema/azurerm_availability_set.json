@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_availability_set",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "managed": [],
+    "name": [],
+    "platform_fault_domain_count": [],
+    "platform_update_domain_count": [],
+    "proximity_placement_group_id": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

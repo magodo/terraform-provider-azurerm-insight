@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_virtual_wan",
+  "swagger": "",
+  "PropertyLinks": {
+    "allow_branch_to_branch_traffic": [],
+    "allow_vnet_to_vnet_traffic": [],
+    "disable_vpn_encryption": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "office365_local_breakout_category": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": []
+  }
+}

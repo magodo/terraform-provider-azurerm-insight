@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_sql_database",
+  "swagger": "",
+  "PropertyLinks": {
+    "collation": [],
+    "default_secondary_location": [],
+    "edition": [],
+    "elastic_pool_name": [],
+    "failover_group_id": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "read_scale": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_iot_time_series_insights_reference_data_set",
+  "swagger": "",
+  "PropertyLinks": {
+    "data_string_comparison_behavior": [],
+    "id": [],
+    "key_property.name": [],
+    "key_property.type": [],
+    "location": [],
+    "name": [],
+    "tags": [],
+    "time_series_insights_environment_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

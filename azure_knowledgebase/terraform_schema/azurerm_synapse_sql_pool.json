@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_synapse_sql_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "collation": [],
+    "create_mode": [],
+    "data_encrypted": [],
+    "id": [],
+    "name": [],
+    "recovery_database_id": [],
+    "restore.point_in_time": [],
+    "restore.source_database_id": [],
+    "sku_name": [],
+    "synapse_workspace_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

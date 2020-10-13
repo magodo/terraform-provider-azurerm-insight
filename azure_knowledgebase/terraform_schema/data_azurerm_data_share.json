@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_data_share",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_id": [],
+    "description": [],
+    "id": [],
+    "kind": [],
+    "name": [],
+    "snapshot_schedule.name": [],
+    "snapshot_schedule.recurrence": [],
+    "snapshot_schedule.start_time": [],
+    "terms": [],
+    "timeouts.read": []
+  }
+}

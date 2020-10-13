@@ -1,0 +1,20 @@
+{
+  "Name": "data_azurerm_shared_image_version",
+  "swagger": "",
+  "PropertyLinks": {
+    "exclude_from_latest": [],
+    "gallery_name": [],
+    "id": [],
+    "image_name": [],
+    "location": [],
+    "managed_image_id": [],
+    "name": [],
+    "os_disk_snapshot_id": [],
+    "resource_group_name": [],
+    "tags": [],
+    "target_region.name": [],
+    "target_region.regional_replica_count": [],
+    "target_region.storage_account_type": [],
+    "timeouts.read": []
+  }
+}

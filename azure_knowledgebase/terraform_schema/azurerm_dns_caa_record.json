@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_dns_caa_record",
+  "swagger": "",
+  "PropertyLinks": {
+    "fqdn": [],
+    "id": [],
+    "name": [],
+    "record.flags": [],
+    "record.tag": [],
+    "record.value": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "ttl": [],
+    "zone_name": []
+  }
+}

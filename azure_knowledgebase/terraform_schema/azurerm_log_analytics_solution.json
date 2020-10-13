@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_log_analytics_solution",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "plan.name": [],
+    "plan.product": [],
+    "plan.promotion_code": [],
+    "plan.publisher": [],
+    "resource_group_name": [],
+    "solution_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_name": [],
+    "workspace_resource_id": []
+  }
+}

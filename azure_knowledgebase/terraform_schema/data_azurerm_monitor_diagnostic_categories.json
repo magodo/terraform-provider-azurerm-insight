@@ -1,0 +1,11 @@
+{
+  "Name": "data_azurerm_monitor_diagnostic_categories",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "logs": [],
+    "metrics": [],
+    "resource_id": [],
+    "timeouts.read": []
+  }
+}

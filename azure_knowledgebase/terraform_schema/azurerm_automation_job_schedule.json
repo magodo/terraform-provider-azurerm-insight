@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_automation_job_schedule",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "id": [],
+    "job_schedule_id": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "run_on": [],
+    "runbook_name": [],
+    "schedule_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

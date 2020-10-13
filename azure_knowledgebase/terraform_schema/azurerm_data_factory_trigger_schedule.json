@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_data_factory_trigger_schedule",
+  "swagger": "",
+  "PropertyLinks": {
+    "annotations": [],
+    "data_factory_name": [],
+    "end_time": [],
+    "frequency": [],
+    "id": [],
+    "interval": [],
+    "name": [],
+    "pipeline_name": [],
+    "pipeline_parameters": [],
+    "resource_group_name": [],
+    "start_time": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

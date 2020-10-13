@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_point_to_site_vpn_gateway",
+  "swagger": "",
+  "PropertyLinks": {
+    "connection_configuration.name": [],
+    "connection_configuration.vpn_client_address_pool.address_prefixes": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "scale_unit": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_hub_id": [],
+    "vpn_server_configuration_id": []
+  }
+}

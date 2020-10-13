@@ -1,0 +1,12 @@
+{
+  "Name": "data_azurerm_client_config",
+  "swagger": "",
+  "PropertyLinks": {
+    "client_id": [],
+    "id": [],
+    "object_id": [],
+    "subscription_id": [],
+    "tenant_id": [],
+    "timeouts.read": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "Name": "azurerm_mssql_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "administrator_login": [],
+    "administrator_login_password": [],
+    "azuread_administrator.login_username": [],
+    "azuread_administrator.object_id": [],
+    "azuread_administrator.tenant_id": [],
+    "connection_policy": [],
+    "extended_auditing_policy.retention_in_days": [],
+    "extended_auditing_policy.storage_account_access_key": [],
+    "extended_auditing_policy.storage_account_access_key_is_secondary": [],
+    "extended_auditing_policy.storage_endpoint": [],
+    "fully_qualified_domain_name": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "minimum_tls_version": [],
+    "name": [],
+    "public_network_access_enabled": [],
+    "resource_group_name": [],
+    "restorable_dropped_database_ids": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "version": []
+  }
+}

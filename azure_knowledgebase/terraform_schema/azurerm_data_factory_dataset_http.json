@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_data_factory_dataset_http",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "data_factory_name": [],
+    "description": [],
+    "folder": [],
+    "id": [],
+    "linked_service_name": [],
+    "name": [],
+    "parameters": [],
+    "relative_url": [],
+    "request_body": [],
+    "request_method": [],
+    "resource_group_name": [],
+    "schema_column.description": [],
+    "schema_column.name": [],
+    "schema_column.type": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_security_center_contact",
+  "swagger": "",
+  "PropertyLinks": {
+    "alert_notifications": [],
+    "alerts_to_admins": [],
+    "email": [],
+    "id": [],
+    "phone": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

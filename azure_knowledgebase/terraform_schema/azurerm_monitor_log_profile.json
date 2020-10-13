@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_monitor_log_profile",
+  "swagger": "",
+  "PropertyLinks": {
+    "categories": [],
+    "id": [],
+    "locations": [],
+    "name": [],
+    "retention_policy.days": [],
+    "retention_policy.enabled": [],
+    "servicebus_rule_id": [],
+    "storage_account_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

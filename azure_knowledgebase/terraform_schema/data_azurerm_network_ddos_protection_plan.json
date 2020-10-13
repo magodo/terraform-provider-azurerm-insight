@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_network_ddos_protection_plan",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "virtual_network_ids": []
+  }
+}

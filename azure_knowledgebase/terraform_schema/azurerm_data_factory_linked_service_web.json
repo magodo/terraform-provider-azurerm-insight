@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_data_factory_linked_service_web",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "authentication_type": [],
+    "data_factory_name": [],
+    "description": [],
+    "id": [],
+    "integration_runtime_name": [],
+    "name": [],
+    "parameters": [],
+    "password": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "url": [],
+    "username": []
+  }
+}

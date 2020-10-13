@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_subnet",
+  "swagger": "",
+  "PropertyLinks": {
+    "address_prefix": [],
+    "address_prefixes": [],
+    "delegation.name": [],
+    "delegation.service_delegation.actions": [],
+    "delegation.service_delegation.name": [],
+    "enforce_private_link_endpoint_network_policies": [],
+    "enforce_private_link_service_network_policies": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "service_endpoints": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_network_name": []
+  }
+}

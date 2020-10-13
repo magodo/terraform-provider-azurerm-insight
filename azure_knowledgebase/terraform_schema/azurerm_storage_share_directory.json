@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_storage_share_directory",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "metadata": [],
+    "name": [],
+    "share_name": [],
+    "storage_account_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

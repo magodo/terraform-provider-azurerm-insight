@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_mssql_database_extended_auditing_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "database_id": [],
+    "id": [],
+    "retention_in_days": [],
+    "storage_account_access_key": [],
+    "storage_account_access_key_is_secondary": [],
+    "storage_endpoint": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

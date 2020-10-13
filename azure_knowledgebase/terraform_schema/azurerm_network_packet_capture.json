@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_network_packet_capture",
+  "swagger": "",
+  "PropertyLinks": {
+    "filter.local_ip_address": [],
+    "filter.local_port": [],
+    "filter.protocol": [],
+    "filter.remote_ip_address": [],
+    "filter.remote_port": [],
+    "id": [],
+    "maximum_bytes_per_packet": [],
+    "maximum_bytes_per_session": [],
+    "maximum_capture_duration": [],
+    "name": [],
+    "network_watcher_name": [],
+    "resource_group_name": [],
+    "storage_location.file_path": [],
+    "storage_location.storage_account_id": [],
+    "storage_location.storage_path": [],
+    "target_resource_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

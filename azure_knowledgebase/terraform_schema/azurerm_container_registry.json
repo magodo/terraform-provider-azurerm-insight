@@ -1,0 +1,27 @@
+{
+  "Name": "azurerm_container_registry",
+  "swagger": "",
+  "PropertyLinks": {
+    "admin_enabled": [],
+    "admin_password": [],
+    "admin_username": [],
+    "georeplication_locations": [],
+    "id": [],
+    "location": [],
+    "login_server": [],
+    "name": [],
+    "network_rule_set.default_action": [],
+    "network_rule_set.ip_rule.action": [],
+    "network_rule_set.ip_rule.ip_range": [],
+    "network_rule_set.virtual_network.action": [],
+    "network_rule_set.virtual_network.subnet_id": [],
+    "resource_group_name": [],
+    "sku": [],
+    "storage_account_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

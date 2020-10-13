@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_healthcare_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "access_policy_object_ids": [],
+    "authentication_configuration.audience": [],
+    "authentication_configuration.authority": [],
+    "authentication_configuration.smart_proxy_enabled": [],
+    "cors_configuration.allow_credentials": [],
+    "cors_configuration.allowed_headers": [],
+    "cors_configuration.allowed_methods": [],
+    "cors_configuration.allowed_origins": [],
+    "cors_configuration.max_age_in_seconds": [],
+    "cosmosdb_throughput": [],
+    "id": [],
+    "kind": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_custom_provider",
+  "swagger": "",
+  "PropertyLinks": {
+    "action.endpoint": [],
+    "action.name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "resource_type.endpoint": [],
+    "resource_type.name": [],
+    "resource_type.routing_type": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "validation.specification": []
+  }
+}

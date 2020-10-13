@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_network_profile",
+  "swagger": "",
+  "PropertyLinks": {
+    "container_network_interface.ip_configuration.name": [],
+    "container_network_interface.ip_configuration.subnet_id": [],
+    "container_network_interface.name": [],
+    "container_network_interface_ids": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_iot_time_series_insights_standard_environment",
+  "swagger": "",
+  "PropertyLinks": {
+    "data_retention_time": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "partition_key": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "storage_limit_exceeded_behavior": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

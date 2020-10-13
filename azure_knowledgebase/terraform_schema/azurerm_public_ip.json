@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_public_ip",
+  "swagger": "",
+  "PropertyLinks": {
+    "allocation_method": [],
+    "domain_name_label": [],
+    "fqdn": [],
+    "id": [],
+    "idle_timeout_in_minutes": [],
+    "ip_address": [],
+    "ip_version": [],
+    "location": [],
+    "name": [],
+    "public_ip_prefix_id": [],
+    "resource_group_name": [],
+    "reverse_fqdn": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zones": []
+  }
+}

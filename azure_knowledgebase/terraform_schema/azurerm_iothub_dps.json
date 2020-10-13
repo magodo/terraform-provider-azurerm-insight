@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_iothub_dps",
+  "swagger": "",
+  "PropertyLinks": {
+    "allocation_policy": [],
+    "device_provisioning_host_name": [],
+    "id": [],
+    "id_scope": [],
+    "linked_hub.allocation_weight": [],
+    "linked_hub.apply_allocation_policy": [],
+    "linked_hub.connection_string": [],
+    "linked_hub.hostname": [],
+    "linked_hub.location": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "service_operations_host_name": [],
+    "sku.capacity": [],
+    "sku.name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

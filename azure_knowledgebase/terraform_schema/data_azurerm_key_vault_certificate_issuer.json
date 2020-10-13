@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_key_vault_certificate_issuer",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_id": [],
+    "admin.email_address": [],
+    "admin.first_name": [],
+    "admin.last_name": [],
+    "admin.phone": [],
+    "id": [],
+    "key_vault_id": [],
+    "name": [],
+    "org_id": [],
+    "provider_name": [],
+    "timeouts.read": []
+  }
+}

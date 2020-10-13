@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_service_fabric_mesh_application",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "service.code_package.image_name": [],
+    "service.code_package.name": [],
+    "service.code_package.resources.limits.cpu": [],
+    "service.code_package.resources.limits.memory": [],
+    "service.code_package.resources.requests.cpu": [],
+    "service.code_package.resources.requests.memory": [],
+    "service.name": [],
+    "service.os_type": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

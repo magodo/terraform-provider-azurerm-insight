@@ -1,0 +1,28 @@
+{
+  "Name": "azurerm_servicebus_subscription_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "action": [],
+    "correlation_filter.content_type": [],
+    "correlation_filter.correlation_id": [],
+    "correlation_filter.label": [],
+    "correlation_filter.message_id": [],
+    "correlation_filter.properties": [],
+    "correlation_filter.reply_to": [],
+    "correlation_filter.reply_to_session_id": [],
+    "correlation_filter.session_id": [],
+    "correlation_filter.to": [],
+    "filter_type": [],
+    "id": [],
+    "name": [],
+    "namespace_name": [],
+    "resource_group_name": [],
+    "sql_filter": [],
+    "subscription_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "topic_name": []
+  }
+}

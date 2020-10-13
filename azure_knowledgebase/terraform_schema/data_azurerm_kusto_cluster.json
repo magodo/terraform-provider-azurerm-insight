@@ -1,0 +1,14 @@
+{
+  "Name": "data_azurerm_kusto_cluster",
+  "swagger": "",
+  "PropertyLinks": {
+    "data_ingestion_uri": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "uri": []
+  }
+}

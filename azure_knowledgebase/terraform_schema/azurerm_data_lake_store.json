@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_data_lake_store",
+  "swagger": "",
+  "PropertyLinks": {
+    "encryption_state": [],
+    "encryption_type": [],
+    "endpoint": [],
+    "firewall_allow_azure_ips": [],
+    "firewall_state": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "tier": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

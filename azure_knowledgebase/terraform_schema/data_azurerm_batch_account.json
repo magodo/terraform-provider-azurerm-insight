@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_batch_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_endpoint": [],
+    "id": [],
+    "key_vault_reference.id": [],
+    "key_vault_reference.url": [],
+    "location": [],
+    "name": [],
+    "pool_allocation_mode": [],
+    "primary_access_key": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "storage_account_id": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

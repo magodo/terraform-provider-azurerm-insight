@@ -1,0 +1,33 @@
+{
+  "Name": "azurerm_monitor_action_rule_action_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "action_group_id": [],
+    "condition.alert_context.operator": [],
+    "condition.alert_context.values": [],
+    "condition.alert_rule_id.operator": [],
+    "condition.alert_rule_id.values": [],
+    "condition.description.operator": [],
+    "condition.description.values": [],
+    "condition.monitor.operator": [],
+    "condition.monitor.values": [],
+    "condition.monitor_service.operator": [],
+    "condition.monitor_service.values": [],
+    "condition.severity.operator": [],
+    "condition.severity.values": [],
+    "condition.target_resource_type.operator": [],
+    "condition.target_resource_type.values": [],
+    "description": [],
+    "enabled": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "scope.resource_ids": [],
+    "scope.type": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

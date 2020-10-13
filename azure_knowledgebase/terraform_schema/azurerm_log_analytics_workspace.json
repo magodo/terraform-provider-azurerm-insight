@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_log_analytics_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "portal_url": [],
+    "primary_shared_key": [],
+    "resource_group_name": [],
+    "retention_in_days": [],
+    "secondary_shared_key": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_id": []
+  }
+}

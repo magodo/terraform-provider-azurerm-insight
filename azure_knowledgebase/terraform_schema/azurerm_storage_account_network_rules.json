@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_storage_account_network_rules",
+  "swagger": "",
+  "PropertyLinks": {
+    "bypass": [],
+    "default_action": [],
+    "id": [],
+    "ip_rules": [],
+    "resource_group_name": [],
+    "storage_account_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_network_subnet_ids": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_frontdoor_custom_https_configuration",
+  "swagger": "",
+  "PropertyLinks": {
+    "custom_https_configuration.azure_key_vault_certificate_secret_name": [],
+    "custom_https_configuration.azure_key_vault_certificate_secret_version": [],
+    "custom_https_configuration.azure_key_vault_certificate_vault_id": [],
+    "custom_https_configuration.certificate_source": [],
+    "custom_https_configuration.minimum_tls_version": [],
+    "custom_https_configuration.provisioning_state": [],
+    "custom_https_configuration.provisioning_substate": [],
+    "custom_https_provisioning_enabled": [],
+    "frontend_endpoint_id": [],
+    "id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

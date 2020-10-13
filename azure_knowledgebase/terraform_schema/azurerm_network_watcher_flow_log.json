@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_network_watcher_flow_log",
+  "swagger": "",
+  "PropertyLinks": {
+    "enabled": [],
+    "id": [],
+    "network_security_group_id": [],
+    "network_watcher_name": [],
+    "resource_group_name": [],
+    "retention_policy.days": [],
+    "retention_policy.enabled": [],
+    "storage_account_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "traffic_analytics.enabled": [],
+    "traffic_analytics.interval_in_minutes": [],
+    "traffic_analytics.workspace_id": [],
+    "traffic_analytics.workspace_region": [],
+    "traffic_analytics.workspace_resource_id": [],
+    "version": []
+  }
+}

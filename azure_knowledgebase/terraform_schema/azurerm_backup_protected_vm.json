@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_backup_protected_vm",
+  "swagger": "",
+  "PropertyLinks": {
+    "backup_policy_id": [],
+    "id": [],
+    "recovery_vault_name": [],
+    "resource_group_name": [],
+    "source_vm_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

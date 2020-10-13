@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_network_connection_monitor",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_start": [],
+    "destination.address": [],
+    "destination.port": [],
+    "destination.virtual_machine_id": [],
+    "id": [],
+    "interval_in_seconds": [],
+    "location": [],
+    "name": [],
+    "network_watcher_name": [],
+    "resource_group_name": [],
+    "source.port": [],
+    "source.virtual_machine_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

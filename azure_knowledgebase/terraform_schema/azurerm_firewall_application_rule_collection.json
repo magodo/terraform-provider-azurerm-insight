@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_firewall_application_rule_collection",
+  "swagger": "",
+  "PropertyLinks": {
+    "action": [],
+    "azure_firewall_name": [],
+    "id": [],
+    "name": [],
+    "priority": [],
+    "resource_group_name": [],
+    "rule.description": [],
+    "rule.fqdn_tags": [],
+    "rule.name": [],
+    "rule.protocol.port": [],
+    "rule.protocol.type": [],
+    "rule.source_addresses": [],
+    "rule.source_ip_groups": [],
+    "rule.target_fqdns": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_lb_nat_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "backend_ip_configuration_id": [],
+    "backend_port": [],
+    "enable_floating_ip": [],
+    "enable_tcp_reset": [],
+    "frontend_ip_configuration_id": [],
+    "frontend_ip_configuration_name": [],
+    "frontend_port": [],
+    "id": [],
+    "idle_timeout_in_minutes": [],
+    "loadbalancer_id": [],
+    "name": [],
+    "protocol": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

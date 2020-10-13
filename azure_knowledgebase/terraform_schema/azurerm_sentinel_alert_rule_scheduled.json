@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_sentinel_alert_rule_scheduled",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "display_name": [],
+    "enabled": [],
+    "id": [],
+    "log_analytics_workspace_id": [],
+    "name": [],
+    "query": [],
+    "query_frequency": [],
+    "query_period": [],
+    "severity": [],
+    "suppression_duration": [],
+    "suppression_enabled": [],
+    "tactics": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "trigger_operator": [],
+    "trigger_threshold": []
+  }
+}

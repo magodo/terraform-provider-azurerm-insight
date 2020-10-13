@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_firewall_nat_rule_collection",
+  "swagger": "",
+  "PropertyLinks": {
+    "action": [],
+    "azure_firewall_name": [],
+    "id": [],
+    "name": [],
+    "priority": [],
+    "resource_group_name": [],
+    "rule.description": [],
+    "rule.destination_addresses": [],
+    "rule.destination_ports": [],
+    "rule.name": [],
+    "rule.protocols": [],
+    "rule.source_addresses": [],
+    "rule.source_ip_groups": [],
+    "rule.translated_address": [],
+    "rule.translated_port": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_cosmosdb_mongo_database",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "autoscale_settings.max_throughput": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "throughput": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

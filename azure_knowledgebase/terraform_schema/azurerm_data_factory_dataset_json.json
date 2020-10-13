@@ -1,0 +1,30 @@
+{
+  "Name": "azurerm_data_factory_dataset_json",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "azure_blob_storage_location.container": [],
+    "azure_blob_storage_location.filename": [],
+    "azure_blob_storage_location.path": [],
+    "data_factory_name": [],
+    "description": [],
+    "encoding": [],
+    "folder": [],
+    "http_server_location.filename": [],
+    "http_server_location.path": [],
+    "http_server_location.relative_url": [],
+    "id": [],
+    "linked_service_name": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "schema_column.description": [],
+    "schema_column.name": [],
+    "schema_column.type": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

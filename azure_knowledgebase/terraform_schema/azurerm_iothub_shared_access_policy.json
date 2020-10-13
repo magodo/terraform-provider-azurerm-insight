@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_iothub_shared_access_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "device_connect": [],
+    "id": [],
+    "iothub_name": [],
+    "name": [],
+    "primary_connection_string": [],
+    "primary_key": [],
+    "registry_read": [],
+    "registry_write": [],
+    "resource_group_name": [],
+    "secondary_connection_string": [],
+    "secondary_key": [],
+    "service_connect": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

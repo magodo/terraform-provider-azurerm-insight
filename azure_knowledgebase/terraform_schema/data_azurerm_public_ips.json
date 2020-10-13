@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_public_ips",
+  "swagger": "",
+  "PropertyLinks": {
+    "allocation_type": [],
+    "attached": [],
+    "id": [],
+    "name_prefix": [],
+    "public_ips.domain_name_label": [],
+    "public_ips.fqdn": [],
+    "public_ips.id": [],
+    "public_ips.ip_address": [],
+    "public_ips.name": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

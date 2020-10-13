@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_eventgrid_domain_topic",
+  "swagger": "",
+  "PropertyLinks": {
+    "domain_name": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": []
+  }
+}

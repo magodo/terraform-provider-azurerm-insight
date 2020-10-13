@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_private_link_service_endpoint_connections",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "private_endpoint_connections.action_required": [],
+    "private_endpoint_connections.connection_id": [],
+    "private_endpoint_connections.connection_name": [],
+    "private_endpoint_connections.description": [],
+    "private_endpoint_connections.private_endpoint_id": [],
+    "private_endpoint_connections.private_endpoint_name": [],
+    "private_endpoint_connections.status": [],
+    "resource_group_name": [],
+    "service_id": [],
+    "service_name": [],
+    "timeouts.read": []
+  }
+}

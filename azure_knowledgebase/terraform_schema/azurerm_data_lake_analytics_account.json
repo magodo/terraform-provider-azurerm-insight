@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_data_lake_analytics_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "default_store_account_name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "tier": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

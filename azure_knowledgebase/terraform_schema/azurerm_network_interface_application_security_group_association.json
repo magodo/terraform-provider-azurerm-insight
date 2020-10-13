@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_network_interface_application_security_group_association",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_security_group_id": [],
+    "id": [],
+    "network_interface_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

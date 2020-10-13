@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_site_recovery_protection_container",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "recovery_fabric_name": [],
+    "recovery_vault_name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

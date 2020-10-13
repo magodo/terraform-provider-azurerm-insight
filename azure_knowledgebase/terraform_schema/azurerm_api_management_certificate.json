@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_api_management_certificate",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "data": [],
+    "expiration": [],
+    "id": [],
+    "name": [],
+    "password": [],
+    "resource_group_name": [],
+    "subject": [],
+    "thumbprint": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

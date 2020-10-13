@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_postgresql_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "administrator_login": [],
+    "fqdn": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "version": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_firewall",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "ip_configuration.internal_public_ip_address_id": [],
+    "ip_configuration.name": [],
+    "ip_configuration.private_ip_address": [],
+    "ip_configuration.public_ip_address_id": [],
+    "ip_configuration.subnet_id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

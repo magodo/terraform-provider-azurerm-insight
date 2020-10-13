@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_subscriptions",
+  "swagger": "",
+  "PropertyLinks": {
+    "display_name_contains": [],
+    "display_name_prefix": [],
+    "id": [],
+    "subscriptions.display_name": [],
+    "subscriptions.location_placement_id": [],
+    "subscriptions.quota_id": [],
+    "subscriptions.spending_limit": [],
+    "subscriptions.state": [],
+    "subscriptions.subscription_id": [],
+    "subscriptions.tenant_id": [],
+    "timeouts.read": []
+  }
+}

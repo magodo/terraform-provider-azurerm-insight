@@ -1,0 +1,31 @@
+{
+  "Name": "azurerm_netapp_volume",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "export_policy_rule.allowed_clients": [],
+    "export_policy_rule.cifs_enabled": [],
+    "export_policy_rule.nfsv3_enabled": [],
+    "export_policy_rule.nfsv4_enabled": [],
+    "export_policy_rule.protocols_enabled": [],
+    "export_policy_rule.rule_index": [],
+    "export_policy_rule.unix_read_only": [],
+    "export_policy_rule.unix_read_write": [],
+    "id": [],
+    "location": [],
+    "mount_ip_addresses": [],
+    "name": [],
+    "pool_name": [],
+    "protocols": [],
+    "resource_group_name": [],
+    "service_level": [],
+    "storage_quota_in_gb": [],
+    "subnet_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "volume_path": []
+  }
+}

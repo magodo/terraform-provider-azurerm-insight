@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_iothub_route",
+  "swagger": "",
+  "PropertyLinks": {
+    "condition": [],
+    "enabled": [],
+    "endpoint_names": [],
+    "id": [],
+    "iothub_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "source": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

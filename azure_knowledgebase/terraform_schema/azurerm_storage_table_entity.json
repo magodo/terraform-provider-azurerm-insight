@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_storage_table_entity",
+  "swagger": "",
+  "PropertyLinks": {
+    "entity": [],
+    "id": [],
+    "partition_key": [],
+    "row_key": [],
+    "storage_account_name": [],
+    "table_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

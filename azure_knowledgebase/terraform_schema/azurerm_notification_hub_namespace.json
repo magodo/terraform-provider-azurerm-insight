@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_notification_hub_namespace",
+  "swagger": "",
+  "PropertyLinks": {
+    "enabled": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "namespace_type": [],
+    "resource_group_name": [],
+    "servicebus_endpoint": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

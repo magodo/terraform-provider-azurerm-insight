@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_eventhub",
+  "swagger": "",
+  "PropertyLinks": {
+    "capture_description.destination.archive_name_format": [],
+    "capture_description.destination.blob_container_name": [],
+    "capture_description.destination.name": [],
+    "capture_description.destination.storage_account_id": [],
+    "capture_description.enabled": [],
+    "capture_description.encoding": [],
+    "capture_description.interval_in_seconds": [],
+    "capture_description.size_limit_in_bytes": [],
+    "capture_description.skip_empty_archives": [],
+    "id": [],
+    "message_retention": [],
+    "name": [],
+    "namespace_name": [],
+    "partition_count": [],
+    "partition_ids": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

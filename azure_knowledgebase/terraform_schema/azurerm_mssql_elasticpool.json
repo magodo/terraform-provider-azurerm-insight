@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_mssql_elasticpool",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "license_type": [],
+    "location": [],
+    "max_size_bytes": [],
+    "max_size_gb": [],
+    "name": [],
+    "per_database_settings.max_capacity": [],
+    "per_database_settings.min_capacity": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "sku.capacity": [],
+    "sku.family": [],
+    "sku.name": [],
+    "sku.tier": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zone_redundant": []
+  }
+}

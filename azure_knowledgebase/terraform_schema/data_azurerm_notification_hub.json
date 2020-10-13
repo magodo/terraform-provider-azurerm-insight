@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_notification_hub",
+  "swagger": "",
+  "PropertyLinks": {
+    "apns_credential.application_mode": [],
+    "apns_credential.bundle_id": [],
+    "apns_credential.key_id": [],
+    "apns_credential.team_id": [],
+    "apns_credential.token": [],
+    "gcm_credential.api_key": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "namespace_name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

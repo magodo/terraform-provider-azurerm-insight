@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_relay_hybrid_connection",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "relay_namespace_name": [],
+    "requires_client_authorization": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "user_metadata": []
+  }
+}

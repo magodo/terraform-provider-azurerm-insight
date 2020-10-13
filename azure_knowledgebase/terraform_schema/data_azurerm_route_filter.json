@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_route_filter",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "rule.access": [],
+    "rule.communities": [],
+    "rule.name": [],
+    "rule.rule_type": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

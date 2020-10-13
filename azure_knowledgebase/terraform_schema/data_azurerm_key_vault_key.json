@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_key_vault_key",
+  "swagger": "",
+  "PropertyLinks": {
+    "e": [],
+    "id": [],
+    "key_opts": [],
+    "key_size": [],
+    "key_type": [],
+    "key_vault_id": [],
+    "n": [],
+    "name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "version": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "Name": "data_azurerm_eventhub_namespace",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_inflate_enabled": [],
+    "capacity": [],
+    "dedicated_cluster_id": [],
+    "default_primary_connection_string": [],
+    "default_primary_connection_string_alias": [],
+    "default_primary_key": [],
+    "default_secondary_connection_string": [],
+    "default_secondary_connection_string_alias": [],
+    "default_secondary_key": [],
+    "id": [],
+    "kafka_enabled": [],
+    "location": [],
+    "maximum_throughput_units": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.read": [],
+    "zone_redundant": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_blueprint_definition",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "display_name": [],
+    "id": [],
+    "last_modified": [],
+    "name": [],
+    "scope_id": [],
+    "target_scope": [],
+    "time_created": [],
+    "timeouts.read": [],
+    "versions": []
+  }
+}

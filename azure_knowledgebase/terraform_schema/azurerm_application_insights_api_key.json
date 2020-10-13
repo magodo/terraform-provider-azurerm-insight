@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_application_insights_api_key",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_key": [],
+    "application_insights_id": [],
+    "id": [],
+    "name": [],
+    "read_permissions": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "write_permissions": []
+  }
+}

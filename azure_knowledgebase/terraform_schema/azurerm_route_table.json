@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_route_table",
+  "swagger": "",
+  "PropertyLinks": {
+    "disable_bgp_route_propagation": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "route.address_prefix": [],
+    "route.name": [],
+    "route.next_hop_in_ip_address": [],
+    "route.next_hop_type": [],
+    "subnets": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

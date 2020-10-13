@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_virtual_hub",
+  "swagger": "",
+  "PropertyLinks": {
+    "address_prefix": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "route.address_prefixes": [],
+    "route.next_hop_ip_address": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_wan_id": []
+  }
+}

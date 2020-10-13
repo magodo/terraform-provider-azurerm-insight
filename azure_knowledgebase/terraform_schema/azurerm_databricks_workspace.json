@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_databricks_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "custom_parameters.no_public_ip": [],
+    "custom_parameters.private_subnet_name": [],
+    "custom_parameters.public_subnet_name": [],
+    "custom_parameters.virtual_network_id": [],
+    "id": [],
+    "location": [],
+    "managed_resource_group_id": [],
+    "managed_resource_group_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_id": [],
+    "workspace_url": []
+  }
+}

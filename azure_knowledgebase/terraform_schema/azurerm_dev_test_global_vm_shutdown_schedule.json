@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_dev_test_global_vm_shutdown_schedule",
+  "swagger": "",
+  "PropertyLinks": {
+    "daily_recurrence_time": [],
+    "enabled": [],
+    "id": [],
+    "location": [],
+    "notification_settings.enabled": [],
+    "notification_settings.time_in_minutes": [],
+    "notification_settings.webhook_url": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "timezone": [],
+    "virtual_machine_id": []
+  }
+}

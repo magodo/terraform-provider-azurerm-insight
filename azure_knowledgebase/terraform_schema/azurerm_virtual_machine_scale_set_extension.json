@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_virtual_machine_scale_set_extension",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_upgrade_minor_version": [],
+    "force_update_tag": [],
+    "id": [],
+    "name": [],
+    "protected_settings": [],
+    "provision_after_extensions": [],
+    "publisher": [],
+    "settings": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": [],
+    "type_handler_version": [],
+    "virtual_machine_scale_set_id": []
+  }
+}

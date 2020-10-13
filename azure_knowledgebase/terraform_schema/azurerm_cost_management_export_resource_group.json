@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_cost_management_export_resource_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "active": [],
+    "delivery_info.container_name": [],
+    "delivery_info.root_folder_path": [],
+    "delivery_info.storage_account_id": [],
+    "id": [],
+    "name": [],
+    "query.time_frame": [],
+    "query.type": [],
+    "recurrence_period_end": [],
+    "recurrence_period_start": [],
+    "recurrence_type": [],
+    "resource_group_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_iothub_fallback_route",
+  "swagger": "",
+  "PropertyLinks": {
+    "condition": [],
+    "enabled": [],
+    "endpoint_names": [],
+    "id": [],
+    "iothub_name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

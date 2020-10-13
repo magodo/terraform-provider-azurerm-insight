@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_dev_test_virtual_network",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "id": [],
+    "lab_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "subnet.name": [],
+    "subnet.use_in_virtual_machine_creation": [],
+    "subnet.use_public_ip_address": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "unique_identifier": []
+  }
+}

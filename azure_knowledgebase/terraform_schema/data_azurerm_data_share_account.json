@@ -1,0 +1,14 @@
+{
+  "Name": "data_azurerm_data_share_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

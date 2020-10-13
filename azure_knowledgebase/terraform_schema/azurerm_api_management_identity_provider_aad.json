@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_api_management_identity_provider_aad",
+  "swagger": "",
+  "PropertyLinks": {
+    "allowed_tenants": [],
+    "api_management_name": [],
+    "client_id": [],
+    "client_secret": [],
+    "id": [],
+    "resource_group_name": [],
+    "signin_tenant": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

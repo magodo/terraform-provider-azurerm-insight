@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_application_insights",
+  "swagger": "",
+  "PropertyLinks": {
+    "app_id": [],
+    "application_type": [],
+    "connection_string": [],
+    "daily_data_cap_in_gb": [],
+    "daily_data_cap_notifications_disabled": [],
+    "disable_ip_masking": [],
+    "id": [],
+    "instrumentation_key": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "retention_in_days": [],
+    "sampling_percentage": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

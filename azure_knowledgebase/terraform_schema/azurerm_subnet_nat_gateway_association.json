@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_subnet_nat_gateway_association",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "nat_gateway_id": [],
+    "subnet_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

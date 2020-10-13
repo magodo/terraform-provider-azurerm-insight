@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_subscription_template_deployment",
+  "swagger": "",
+  "PropertyLinks": {
+    "debug_level": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "output_content": [],
+    "parameters_content": [],
+    "tags": [],
+    "template_content": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

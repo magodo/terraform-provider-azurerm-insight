@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_sentinel_alert_rule_ms_security_incident",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "display_name": [],
+    "display_name_filter": [],
+    "enabled": [],
+    "id": [],
+    "log_analytics_workspace_id": [],
+    "name": [],
+    "product_filter": [],
+    "severity_filter": [],
+    "text_whitelist": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

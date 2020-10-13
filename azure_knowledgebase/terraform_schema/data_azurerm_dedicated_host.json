@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_dedicated_host",
+  "swagger": "",
+  "PropertyLinks": {
+    "dedicated_host_group_name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

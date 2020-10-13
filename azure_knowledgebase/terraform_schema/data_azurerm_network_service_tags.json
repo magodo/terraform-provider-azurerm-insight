@@ -1,0 +1,12 @@
+{
+  "Name": "data_azurerm_network_service_tags",
+  "swagger": "",
+  "PropertyLinks": {
+    "address_prefixes": [],
+    "id": [],
+    "location": [],
+    "location_filter": [],
+    "service": [],
+    "timeouts.read": []
+  }
+}

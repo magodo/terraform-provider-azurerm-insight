@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_kusto_database",
+  "swagger": "",
+  "PropertyLinks": {
+    "cluster_name": [],
+    "hot_cache_period": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "size": [],
+    "soft_delete_period": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

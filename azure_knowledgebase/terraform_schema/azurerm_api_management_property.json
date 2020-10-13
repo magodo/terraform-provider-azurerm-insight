@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_api_management_property",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "display_name": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "secret": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "value": []
+  }
+}

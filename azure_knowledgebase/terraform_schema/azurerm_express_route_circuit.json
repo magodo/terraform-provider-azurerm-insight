@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_express_route_circuit",
+  "swagger": "",
+  "PropertyLinks": {
+    "allow_classic_operations": [],
+    "bandwidth_in_mbps": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "peering_location": [],
+    "resource_group_name": [],
+    "service_key": [],
+    "service_provider_name": [],
+    "service_provider_provisioning_state": [],
+    "sku.family": [],
+    "sku.tier": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

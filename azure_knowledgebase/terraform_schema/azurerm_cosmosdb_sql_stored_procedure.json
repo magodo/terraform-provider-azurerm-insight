@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_cosmosdb_sql_stored_procedure",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "body": [],
+    "container_name": [],
+    "database_name": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

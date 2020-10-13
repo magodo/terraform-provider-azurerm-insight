@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_servicebus_queue",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_delete_on_idle": [],
+    "dead_lettering_on_message_expiration": [],
+    "default_message_ttl": [],
+    "duplicate_detection_history_time_window": [],
+    "enable_batched_operations": [],
+    "enable_express": [],
+    "enable_partitioning": [],
+    "forward_dead_lettered_messages_to": [],
+    "forward_to": [],
+    "id": [],
+    "lock_duration": [],
+    "max_delivery_count": [],
+    "max_size_in_megabytes": [],
+    "name": [],
+    "namespace_name": [],
+    "requires_duplicate_detection": [],
+    "requires_session": [],
+    "resource_group_name": [],
+    "status": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

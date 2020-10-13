@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_maintenance_assignment_dedicated_host",
+  "swagger": "",
+  "PropertyLinks": {
+    "dedicated_host_id": [],
+    "id": [],
+    "location": [],
+    "maintenance_configuration_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "Name": "data_azurerm_app_configuration",
+  "swagger": "",
+  "PropertyLinks": {
+    "endpoint": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "primary_read_key.connection_string": [],
+    "primary_read_key.id": [],
+    "primary_read_key.secret": [],
+    "primary_write_key.connection_string": [],
+    "primary_write_key.id": [],
+    "primary_write_key.secret": [],
+    "resource_group_name": [],
+    "secondary_read_key.connection_string": [],
+    "secondary_read_key.id": [],
+    "secondary_read_key.secret": [],
+    "secondary_write_key.connection_string": [],
+    "secondary_write_key.id": [],
+    "secondary_write_key.secret": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

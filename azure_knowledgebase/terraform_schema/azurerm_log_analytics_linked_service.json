@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_log_analytics_linked_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "linked_service_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "resource_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_name": []
+  }
+}

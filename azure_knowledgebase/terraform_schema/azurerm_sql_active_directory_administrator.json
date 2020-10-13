@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_sql_active_directory_administrator",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "login": [],
+    "object_id": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "tenant_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

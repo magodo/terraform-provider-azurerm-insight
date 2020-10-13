@@ -1,0 +1,15 @@
+{
+  "Name": "data_azurerm_iothub_shared_access_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "iothub_name": [],
+    "name": [],
+    "primary_connection_string": [],
+    "primary_key": [],
+    "resource_group_name": [],
+    "secondary_connection_string": [],
+    "secondary_key": [],
+    "timeouts.read": []
+  }
+}

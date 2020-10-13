@@ -1,0 +1,18 @@
+{
+  "Name": "data_azurerm_subnet",
+  "swagger": "",
+  "PropertyLinks": {
+    "address_prefix": [],
+    "address_prefixes": [],
+    "enforce_private_link_endpoint_network_policies": [],
+    "enforce_private_link_service_network_policies": [],
+    "id": [],
+    "name": [],
+    "network_security_group_id": [],
+    "resource_group_name": [],
+    "route_table_id": [],
+    "service_endpoints": [],
+    "timeouts.read": [],
+    "virtual_network_name": []
+  }
+}

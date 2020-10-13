@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_policy_remediation",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location_filters": [],
+    "name": [],
+    "policy_assignment_id": [],
+    "policy_definition_reference_id": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Name": "data_azurerm_netapp_snapshot",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "pool_name": [],
+    "resource_group_name": [],
+    "timeouts.read": [],
+    "volume_name": []
+  }
+}

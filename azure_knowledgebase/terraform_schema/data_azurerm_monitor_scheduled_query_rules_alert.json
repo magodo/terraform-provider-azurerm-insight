@@ -1,0 +1,31 @@
+{
+  "Name": "data_azurerm_monitor_scheduled_query_rules_alert",
+  "swagger": "",
+  "PropertyLinks": {
+    "action.action_group": [],
+    "action.custom_webhook_payload": [],
+    "action.email_subject": [],
+    "authorized_resource_ids": [],
+    "data_source_id": [],
+    "description": [],
+    "enabled": [],
+    "frequency": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "query": [],
+    "query_type": [],
+    "resource_group_name": [],
+    "severity": [],
+    "tags": [],
+    "throttling": [],
+    "time_window": [],
+    "timeouts.read": [],
+    "trigger.metric_trigger.metric_column": [],
+    "trigger.metric_trigger.metric_trigger_type": [],
+    "trigger.metric_trigger.operator": [],
+    "trigger.metric_trigger.threshold": [],
+    "trigger.operator": [],
+    "trigger.threshold": []
+  }
+}

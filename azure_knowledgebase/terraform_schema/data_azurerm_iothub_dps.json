@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_iothub_dps",
+  "swagger": "",
+  "PropertyLinks": {
+    "allocation_policy": [],
+    "device_provisioning_host_name": [],
+    "id": [],
+    "id_scope": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "service_operations_host_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "Name": "data_azurerm_mariadb_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "administrator_login": [],
+    "fqdn": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "ssl_enforcement": [],
+    "storage_profile.auto_grow": [],
+    "storage_profile.backup_retention_days": [],
+    "storage_profile.geo_redundant_backup": [],
+    "storage_profile.storage_mb": [],
+    "tags": [],
+    "timeouts.read": [],
+    "version": []
+  }
+}

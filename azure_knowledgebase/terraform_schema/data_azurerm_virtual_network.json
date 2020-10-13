@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_virtual_network",
+  "swagger": "",
+  "PropertyLinks": {
+    "address_space": [],
+    "dns_servers": [],
+    "guid": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "subnets": [],
+    "timeouts.read": [],
+    "vnet_peerings": []
+  }
+}

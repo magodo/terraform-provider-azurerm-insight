@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_netapp_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "service_level": [],
+    "size_in_tb": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

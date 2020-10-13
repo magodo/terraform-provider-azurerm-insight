@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_automation_module",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "id": [],
+    "module_link.hash.algorithm": [],
+    "module_link.hash.value": [],
+    "module_link.uri": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

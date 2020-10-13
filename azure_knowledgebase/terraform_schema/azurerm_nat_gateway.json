@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_nat_gateway",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "idle_timeout_in_minutes": [],
+    "location": [],
+    "name": [],
+    "public_ip_address_ids": [],
+    "public_ip_prefix_ids": [],
+    "resource_group_name": [],
+    "resource_guid": [],
+    "sku_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zones": []
+  }
+}

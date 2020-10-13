@@ -1,0 +1,20 @@
+{
+  "Name": "data_azurerm_signalr_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "hostname": [],
+    "id": [],
+    "ip_address": [],
+    "location": [],
+    "name": [],
+    "primary_access_key": [],
+    "primary_connection_string": [],
+    "public_port": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "secondary_connection_string": [],
+    "server_port": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

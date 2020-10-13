@@ -1,0 +1,21 @@
+{
+  "Name": "data_azurerm_logic_app_workflow",
+  "swagger": "",
+  "PropertyLinks": {
+    "access_endpoint": [],
+    "connector_endpoint_ip_addresses": [],
+    "connector_outbound_ip_addresses": [],
+    "id": [],
+    "location": [],
+    "logic_app_integration_account_id": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "workflow_endpoint_ip_addresses": [],
+    "workflow_outbound_ip_addresses": [],
+    "workflow_schema": [],
+    "workflow_version": []
+  }
+}

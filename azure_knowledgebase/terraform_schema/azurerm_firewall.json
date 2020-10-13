@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_firewall",
+  "swagger": "",
+  "PropertyLinks": {
+    "firewall_policy_id": [],
+    "id": [],
+    "ip_configuration.name": [],
+    "ip_configuration.private_ip_address": [],
+    "ip_configuration.public_ip_address_id": [],
+    "ip_configuration.subnet_id": [],
+    "location": [],
+    "management_ip_configuration.name": [],
+    "management_ip_configuration.private_ip_address": [],
+    "management_ip_configuration.public_ip_address_id": [],
+    "management_ip_configuration.subnet_id": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "sku_tier": [],
+    "tags": [],
+    "threat_intel_mode": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_hub_id": [],
+    "zones": []
+  }
+}

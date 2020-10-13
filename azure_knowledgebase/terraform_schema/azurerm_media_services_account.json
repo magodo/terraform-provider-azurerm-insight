@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_media_services_account",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "storage_account.id": [],
+    "storage_account.is_primary": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

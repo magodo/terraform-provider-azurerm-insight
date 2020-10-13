@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_application_insights_web_test",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_insights_id": [],
+    "configuration": [],
+    "description": [],
+    "enabled": [],
+    "frequency": [],
+    "geo_locations": [],
+    "id": [],
+    "kind": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "retry_enabled": [],
+    "synthetic_monitor_id": [],
+    "tags": [],
+    "timeout": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

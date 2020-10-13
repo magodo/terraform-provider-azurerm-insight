@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_lighthouse_assignment",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "lighthouse_definition_id": [],
+    "name": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": []
+  }
+}

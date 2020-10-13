@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_lighthouse_definition",
+  "swagger": "",
+  "PropertyLinks": {
+    "authorization.principal_id": [],
+    "authorization.role_definition_id": [],
+    "description": [],
+    "id": [],
+    "lighthouse_definition_id": [],
+    "managing_tenant_id": [],
+    "name": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

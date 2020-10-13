@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_data_factory",
+  "swagger": "",
+  "PropertyLinks": {
+    "github_configuration.account_name": [],
+    "github_configuration.branch_name": [],
+    "github_configuration.git_url": [],
+    "github_configuration.repository_name": [],
+    "github_configuration.root_folder": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "vsts_configuration.account_name": [],
+    "vsts_configuration.branch_name": [],
+    "vsts_configuration.project_name": [],
+    "vsts_configuration.repository_name": [],
+    "vsts_configuration.root_folder": [],
+    "vsts_configuration.tenant_id": []
+  }
+}

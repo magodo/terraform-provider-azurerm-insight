@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_public_ip_prefix",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "ip_prefix": [],
+    "location": [],
+    "name": [],
+    "prefix_length": [],
+    "resource_group_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.read": [],
+    "zones": []
+  }
+}

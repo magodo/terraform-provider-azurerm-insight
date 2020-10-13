@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_spring_cloud_certificate",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "key_vault_certificate_id": [],
+    "name": [],
+    "resource_group_name": [],
+    "service_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": []
+  }
+}

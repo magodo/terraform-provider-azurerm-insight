@@ -1,0 +1,27 @@
+{
+  "Name": "azurerm_synapse_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "aad_admin.login": [],
+    "aad_admin.object_id": [],
+    "aad_admin.tenant_id": [],
+    "connectivity_endpoints": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "managed_resource_group_name": [],
+    "managed_virtual_network_enabled": [],
+    "name": [],
+    "resource_group_name": [],
+    "sql_administrator_login": [],
+    "sql_administrator_login_password": [],
+    "storage_data_lake_gen2_filesystem_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

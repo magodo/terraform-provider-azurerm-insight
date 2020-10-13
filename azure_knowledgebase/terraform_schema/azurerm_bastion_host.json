@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_bastion_host",
+  "swagger": "",
+  "PropertyLinks": {
+    "dns_name": [],
+    "id": [],
+    "ip_configuration.name": [],
+    "ip_configuration.public_ip_address_id": [],
+    "ip_configuration.subnet_id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

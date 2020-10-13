@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_data_share_dataset_blob_storage",
+  "swagger": "",
+  "PropertyLinks": {
+    "container_name": [],
+    "data_share_id": [],
+    "display_name": [],
+    "file_path": [],
+    "folder_path": [],
+    "id": [],
+    "name": [],
+    "storage_account.name": [],
+    "storage_account.resource_group_name": [],
+    "storage_account.subscription_id": [],
+    "timeouts.read": []
+  }
+}

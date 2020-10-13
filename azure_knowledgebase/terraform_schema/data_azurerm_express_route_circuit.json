@@ -1,0 +1,25 @@
+{
+  "Name": "data_azurerm_express_route_circuit",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "peerings.azure_asn": [],
+    "peerings.peer_asn": [],
+    "peerings.peering_type": [],
+    "peerings.primary_peer_address_prefix": [],
+    "peerings.secondary_peer_address_prefix": [],
+    "peerings.shared_key": [],
+    "peerings.vlan_id": [],
+    "resource_group_name": [],
+    "service_key": [],
+    "service_provider_properties.bandwidth_in_mbps": [],
+    "service_provider_properties.peering_location": [],
+    "service_provider_properties.service_provider_name": [],
+    "service_provider_provisioning_state": [],
+    "sku.family": [],
+    "sku.tier": [],
+    "timeouts.read": []
+  }
+}

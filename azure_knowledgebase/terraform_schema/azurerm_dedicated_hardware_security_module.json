@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_dedicated_hardware_security_module",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "network_profile.network_interface_private_ip_addresses": [],
+    "network_profile.subnet_id": [],
+    "resource_group_name": [],
+    "sku_name": [],
+    "stamp_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zones": []
+  }
+}

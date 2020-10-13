@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_eventhub_namespace_disaster_recovery_config",
+  "swagger": "",
+  "PropertyLinks": {
+    "alternate_name": [],
+    "id": [],
+    "name": [],
+    "namespace_name": [],
+    "partner_namespace_id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

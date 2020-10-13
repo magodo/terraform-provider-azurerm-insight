@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_batch_certificate",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "certificate": [],
+    "format": [],
+    "id": [],
+    "name": [],
+    "password": [],
+    "public_data": [],
+    "resource_group_name": [],
+    "thumbprint": [],
+    "thumbprint_algorithm": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

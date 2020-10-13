@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_management_lock",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "lock_level": [],
+    "name": [],
+    "notes": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

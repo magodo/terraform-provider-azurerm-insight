@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_data_factory_pipeline",
+  "swagger": "",
+  "PropertyLinks": {
+    "activities_json": [],
+    "annotations": [],
+    "data_factory_name": [],
+    "description": [],
+    "id": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "variables": []
+  }
+}

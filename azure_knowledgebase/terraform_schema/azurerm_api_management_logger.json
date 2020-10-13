@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_api_management_logger",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "application_insights.instrumentation_key": [],
+    "buffered": [],
+    "description": [],
+    "eventhub.connection_string": [],
+    "eventhub.name": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

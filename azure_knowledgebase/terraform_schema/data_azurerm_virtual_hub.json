@@ -1,0 +1,14 @@
+{
+  "Name": "data_azurerm_virtual_hub",
+  "swagger": "",
+  "PropertyLinks": {
+    "address_prefix": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "virtual_wan_id": []
+  }
+}

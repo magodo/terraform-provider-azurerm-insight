@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_eventhub",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "namespace_name": [],
+    "partition_count": [],
+    "partition_ids": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

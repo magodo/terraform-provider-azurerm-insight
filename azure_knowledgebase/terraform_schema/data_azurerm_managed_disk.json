@@ -1,0 +1,23 @@
+{
+  "Name": "data_azurerm_managed_disk",
+  "swagger": "",
+  "PropertyLinks": {
+    "create_option": [],
+    "disk_encryption_set_id": [],
+    "disk_iops_read_write": [],
+    "disk_mbps_read_write": [],
+    "disk_size_gb": [],
+    "id": [],
+    "image_reference_id": [],
+    "name": [],
+    "os_type": [],
+    "resource_group_name": [],
+    "source_resource_id": [],
+    "source_uri": [],
+    "storage_account_id": [],
+    "storage_account_type": [],
+    "tags": [],
+    "timeouts.read": [],
+    "zones": []
+  }
+}

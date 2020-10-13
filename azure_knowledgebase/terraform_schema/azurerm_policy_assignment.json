@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_policy_assignment",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "display_name": [],
+    "enforcement_mode": [],
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "metadata": [],
+    "name": [],
+    "not_scopes": [],
+    "parameters": [],
+    "policy_definition_id": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "data_azurerm_eventgrid_topic",
+  "swagger": "",
+  "PropertyLinks": {
+    "endpoint": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "primary_access_key": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

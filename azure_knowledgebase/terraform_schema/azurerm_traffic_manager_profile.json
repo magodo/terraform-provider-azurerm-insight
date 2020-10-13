@@ -1,0 +1,28 @@
+{
+  "Name": "azurerm_traffic_manager_profile",
+  "swagger": "",
+  "PropertyLinks": {
+    "dns_config.relative_name": [],
+    "dns_config.ttl": [],
+    "fqdn": [],
+    "id": [],
+    "monitor_config.custom_header.name": [],
+    "monitor_config.custom_header.value": [],
+    "monitor_config.expected_status_code_ranges": [],
+    "monitor_config.interval_in_seconds": [],
+    "monitor_config.path": [],
+    "monitor_config.port": [],
+    "monitor_config.protocol": [],
+    "monitor_config.timeout_in_seconds": [],
+    "monitor_config.tolerated_number_of_failures": [],
+    "name": [],
+    "profile_status": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "traffic_routing_method": []
+  }
+}

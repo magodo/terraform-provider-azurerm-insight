@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_virtual_desktop_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "friendly_name": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

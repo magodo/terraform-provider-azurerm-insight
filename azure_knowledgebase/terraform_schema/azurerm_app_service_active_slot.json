@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_app_service_active_slot",
+  "swagger": "",
+  "PropertyLinks": {
+    "app_service_name": [],
+    "app_service_slot_name": [],
+    "id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

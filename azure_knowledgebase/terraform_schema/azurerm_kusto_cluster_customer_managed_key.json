@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_kusto_cluster_customer_managed_key",
+  "swagger": "",
+  "PropertyLinks": {
+    "cluster_id": [],
+    "id": [],
+    "key_name": [],
+    "key_vault_id": [],
+    "key_version": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

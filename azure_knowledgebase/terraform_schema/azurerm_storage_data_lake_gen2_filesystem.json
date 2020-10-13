@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_storage_data_lake_gen2_filesystem",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "properties": [],
+    "storage_account_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

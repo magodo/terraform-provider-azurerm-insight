@@ -1,0 +1,20 @@
+{
+  "Name": "data_azurerm_dev_test_virtual_network",
+  "swagger": "",
+  "PropertyLinks": {
+    "allowed_subnets.allow_public_ip": [],
+    "allowed_subnets.lab_subnet_name": [],
+    "allowed_subnets.resource_id": [],
+    "id": [],
+    "lab_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "subnet_overrides.lab_subnet_name": [],
+    "subnet_overrides.resource_id": [],
+    "subnet_overrides.use_in_vm_creation_permission": [],
+    "subnet_overrides.use_public_ip_address_permission": [],
+    "subnet_overrides.virtual_network_pool_name": [],
+    "timeouts.read": [],
+    "unique_identifier": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_synapse_firewall_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "end_ip_address": [],
+    "id": [],
+    "name": [],
+    "start_ip_address": [],
+    "synapse_workspace_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

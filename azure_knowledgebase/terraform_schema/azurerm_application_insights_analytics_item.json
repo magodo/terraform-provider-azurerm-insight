@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_application_insights_analytics_item",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_insights_id": [],
+    "content": [],
+    "function_alias": [],
+    "id": [],
+    "name": [],
+    "scope": [],
+    "time_created": [],
+    "time_modified": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": [],
+    "version": []
+  }
+}

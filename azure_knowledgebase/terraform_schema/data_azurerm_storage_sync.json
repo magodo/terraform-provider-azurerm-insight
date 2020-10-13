@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_storage_sync",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "incoming_traffic_policy": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

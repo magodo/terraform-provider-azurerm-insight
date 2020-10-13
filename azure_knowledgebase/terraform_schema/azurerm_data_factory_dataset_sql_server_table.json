@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_data_factory_dataset_sql_server_table",
+  "swagger": "",
+  "PropertyLinks": {
+    "additional_properties": [],
+    "annotations": [],
+    "data_factory_name": [],
+    "description": [],
+    "folder": [],
+    "id": [],
+    "linked_service_name": [],
+    "name": [],
+    "parameters": [],
+    "resource_group_name": [],
+    "schema_column.description": [],
+    "schema_column.name": [],
+    "schema_column.type": [],
+    "table_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

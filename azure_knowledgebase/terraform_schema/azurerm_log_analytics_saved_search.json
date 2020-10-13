@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_log_analytics_saved_search",
+  "swagger": "",
+  "PropertyLinks": {
+    "category": [],
+    "display_name": [],
+    "function_alias": [],
+    "function_parameters": [],
+    "id": [],
+    "log_analytics_workspace_id": [],
+    "name": [],
+    "query": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

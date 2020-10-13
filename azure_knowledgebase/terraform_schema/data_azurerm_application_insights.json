@@ -1,0 +1,17 @@
+{
+  "Name": "data_azurerm_application_insights",
+  "swagger": "",
+  "PropertyLinks": {
+    "app_id": [],
+    "application_type": [],
+    "connection_string": [],
+    "id": [],
+    "instrumentation_key": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "retention_in_days": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

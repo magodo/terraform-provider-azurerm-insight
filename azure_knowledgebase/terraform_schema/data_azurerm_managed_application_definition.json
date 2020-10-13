@@ -1,0 +1,11 @@
+{
+  "Name": "data_azurerm_managed_application_definition",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

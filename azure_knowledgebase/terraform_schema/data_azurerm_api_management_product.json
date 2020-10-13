@@ -1,0 +1,18 @@
+{
+  "Name": "data_azurerm_api_management_product",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "approval_required": [],
+    "description": [],
+    "display_name": [],
+    "id": [],
+    "product_id": [],
+    "published": [],
+    "resource_group_name": [],
+    "subscription_required": [],
+    "subscriptions_limit": [],
+    "terms": [],
+    "timeouts.read": []
+  }
+}

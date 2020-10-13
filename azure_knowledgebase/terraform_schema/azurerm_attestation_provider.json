@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_attestation_provider",
+  "swagger": "",
+  "PropertyLinks": {
+    "attestation_uri": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "policy_signing_certificate_data": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "trust_model": []
+  }
+}

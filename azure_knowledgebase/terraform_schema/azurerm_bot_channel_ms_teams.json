@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_bot_channel_ms_teams",
+  "swagger": "",
+  "PropertyLinks": {
+    "bot_name": [],
+    "calling_web_hook": [],
+    "enable_calling": [],
+    "id": [],
+    "location": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

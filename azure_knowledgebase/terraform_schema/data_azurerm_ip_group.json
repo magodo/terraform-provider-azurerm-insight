@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_ip_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "cidrs": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

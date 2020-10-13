@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_security_center_subscription_pricing",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "resource_type": [],
+    "tier": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

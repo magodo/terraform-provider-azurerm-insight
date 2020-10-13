@@ -1,0 +1,14 @@
+{
+  "Name": "data_azurerm_virtual_machine_scale_set",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "identity.identity_ids": [],
+    "identity.principal_id": [],
+    "identity.type": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.read": []
+  }
+}

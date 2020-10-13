@@ -1,0 +1,32 @@
+{
+  "Name": "azurerm_monitor_activity_log_alert",
+  "swagger": "",
+  "PropertyLinks": {
+    "action.action_group_id": [],
+    "action.webhook_properties": [],
+    "criteria.caller": [],
+    "criteria.category": [],
+    "criteria.level": [],
+    "criteria.operation_name": [],
+    "criteria.recommendation_category": [],
+    "criteria.recommendation_impact": [],
+    "criteria.recommendation_type": [],
+    "criteria.resource_group": [],
+    "criteria.resource_id": [],
+    "criteria.resource_provider": [],
+    "criteria.resource_type": [],
+    "criteria.status": [],
+    "criteria.sub_status": [],
+    "description": [],
+    "enabled": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "scopes": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Name": "azurerm_managed_disk",
+  "swagger": "",
+  "PropertyLinks": {
+    "create_option": [],
+    "disk_encryption_set_id": [],
+    "disk_iops_read_write": [],
+    "disk_mbps_read_write": [],
+    "disk_size_gb": [],
+    "encryption_settings.disk_encryption_key.secret_url": [],
+    "encryption_settings.disk_encryption_key.source_vault_id": [],
+    "encryption_settings.enabled": [],
+    "encryption_settings.key_encryption_key.key_url": [],
+    "encryption_settings.key_encryption_key.source_vault_id": [],
+    "id": [],
+    "image_reference_id": [],
+    "location": [],
+    "name": [],
+    "os_type": [],
+    "resource_group_name": [],
+    "source_resource_id": [],
+    "source_uri": [],
+    "storage_account_id": [],
+    "storage_account_type": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zones": []
+  }
+}

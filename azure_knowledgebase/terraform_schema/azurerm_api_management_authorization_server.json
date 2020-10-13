@@ -1,0 +1,31 @@
+{
+  "Name": "azurerm_api_management_authorization_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "authorization_endpoint": [],
+    "authorization_methods": [],
+    "bearer_token_sending_methods": [],
+    "client_authentication_method": [],
+    "client_id": [],
+    "client_registration_endpoint": [],
+    "client_secret": [],
+    "default_scope": [],
+    "description": [],
+    "display_name": [],
+    "grant_types": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "resource_owner_password": [],
+    "resource_owner_username": [],
+    "support_state": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "token_body_parameter.name": [],
+    "token_body_parameter.value": [],
+    "token_endpoint": []
+  }
+}

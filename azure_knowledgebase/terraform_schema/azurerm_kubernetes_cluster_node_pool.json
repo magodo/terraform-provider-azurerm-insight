@@ -1,0 +1,32 @@
+{
+  "Name": "azurerm_kubernetes_cluster_node_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "availability_zones": [],
+    "enable_auto_scaling": [],
+    "enable_node_public_ip": [],
+    "eviction_policy": [],
+    "id": [],
+    "kubernetes_cluster_id": [],
+    "max_count": [],
+    "max_pods": [],
+    "min_count": [],
+    "mode": [],
+    "name": [],
+    "node_count": [],
+    "node_labels": [],
+    "node_taints": [],
+    "orchestrator_version": [],
+    "os_disk_size_gb": [],
+    "os_type": [],
+    "priority": [],
+    "spot_max_price": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "vm_size": [],
+    "vnet_subnet_id": []
+  }
+}

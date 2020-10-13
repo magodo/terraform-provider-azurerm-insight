@@ -1,0 +1,18 @@
+{
+  "Name": "data_azurerm_container_registry",
+  "swagger": "",
+  "PropertyLinks": {
+    "admin_enabled": [],
+    "admin_password": [],
+    "admin_username": [],
+    "id": [],
+    "location": [],
+    "login_server": [],
+    "name": [],
+    "resource_group_name": [],
+    "sku": [],
+    "storage_account_id": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

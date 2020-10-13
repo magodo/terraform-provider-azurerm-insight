@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_lb_probe",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "interval_in_seconds": [],
+    "load_balancer_rules": [],
+    "loadbalancer_id": [],
+    "name": [],
+    "number_of_probes": [],
+    "port": [],
+    "protocol": [],
+    "request_path": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

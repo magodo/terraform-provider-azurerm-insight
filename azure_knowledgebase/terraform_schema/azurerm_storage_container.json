@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_storage_container",
+  "swagger": "",
+  "PropertyLinks": {
+    "container_access_type": [],
+    "has_immutability_policy": [],
+    "has_legal_hold": [],
+    "id": [],
+    "metadata": [],
+    "name": [],
+    "resource_manager_id": [],
+    "storage_account_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

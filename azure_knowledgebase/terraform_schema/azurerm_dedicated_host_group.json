@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_dedicated_host_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "platform_fault_domain_count": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "zones": []
+  }
+}

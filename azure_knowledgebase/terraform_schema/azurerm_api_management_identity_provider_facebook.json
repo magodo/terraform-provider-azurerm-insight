@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_api_management_identity_provider_facebook",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "app_id": [],
+    "app_secret": [],
+    "id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

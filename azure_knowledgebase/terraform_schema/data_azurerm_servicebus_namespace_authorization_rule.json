@@ -1,0 +1,15 @@
+{
+  "Name": "data_azurerm_servicebus_namespace_authorization_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "namespace_name": [],
+    "primary_connection_string": [],
+    "primary_key": [],
+    "resource_group_name": [],
+    "secondary_connection_string": [],
+    "secondary_key": [],
+    "timeouts.read": []
+  }
+}

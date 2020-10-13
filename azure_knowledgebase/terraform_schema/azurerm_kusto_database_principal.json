@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_kusto_database_principal",
+  "swagger": "",
+  "PropertyLinks": {
+    "app_id": [],
+    "client_id": [],
+    "cluster_name": [],
+    "database_name": [],
+    "email": [],
+    "fully_qualified_name": [],
+    "id": [],
+    "name": [],
+    "object_id": [],
+    "resource_group_name": [],
+    "role": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": []
+  }
+}

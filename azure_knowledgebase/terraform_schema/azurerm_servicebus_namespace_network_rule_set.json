@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_servicebus_namespace_network_rule_set",
+  "swagger": "",
+  "PropertyLinks": {
+    "default_action": [],
+    "id": [],
+    "ip_rules": [],
+    "namespace_name": [],
+    "network_rules.ignore_missing_vnet_service_endpoint": [],
+    "network_rules.subnet_id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

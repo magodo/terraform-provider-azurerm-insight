@@ -1,0 +1,9 @@
+{
+  "FirewallPolicy": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties.provisioningState": "granted"
+    }
+  }
+}

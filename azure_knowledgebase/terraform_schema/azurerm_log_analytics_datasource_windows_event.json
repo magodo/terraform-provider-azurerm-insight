@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_log_analytics_datasource_windows_event",
+  "swagger": "",
+  "PropertyLinks": {
+    "event_log_name": [],
+    "event_types": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_name": []
+  }
+}

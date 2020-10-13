@@ -1,0 +1,27 @@
+{
+  "Name": "azurerm_blueprint_assignment",
+  "swagger": "",
+  "PropertyLinks": {
+    "blueprint_name": [],
+    "description": [],
+    "display_name": [],
+    "id": [],
+    "identity.identity_ids": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "location": [],
+    "lock_exclude_principals": [],
+    "lock_mode": [],
+    "name": [],
+    "parameter_values": [],
+    "resource_groups": [],
+    "target_subscription_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": [],
+    "version_id": []
+  }
+}

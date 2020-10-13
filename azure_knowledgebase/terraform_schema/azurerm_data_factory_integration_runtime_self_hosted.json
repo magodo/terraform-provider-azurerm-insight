@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_data_factory_integration_runtime_self_hosted",
+  "swagger": "",
+  "PropertyLinks": {
+    "auth_key_1": [],
+    "auth_key_2": [],
+    "data_factory_name": [],
+    "description": [],
+    "id": [],
+    "name": [],
+    "rbac_authorization.resource_id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

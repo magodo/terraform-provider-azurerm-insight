@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_network_interface_nat_rule_association",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "ip_configuration_name": [],
+    "nat_rule_id": [],
+    "network_interface_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_backup_protected_file_share",
+  "swagger": "",
+  "PropertyLinks": {
+    "backup_policy_id": [],
+    "id": [],
+    "recovery_vault_name": [],
+    "resource_group_name": [],
+    "source_file_share_name": [],
+    "source_storage_account_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_iothub_endpoint_eventhub",
+  "swagger": "",
+  "PropertyLinks": {
+    "connection_string": [],
+    "id": [],
+    "iothub_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

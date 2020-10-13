@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_synapse_spark_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "auto_pause.delay_in_minutes": [],
+    "auto_scale.max_node_count": [],
+    "auto_scale.min_node_count": [],
+    "id": [],
+    "library_requirement.content": [],
+    "library_requirement.filename": [],
+    "name": [],
+    "node_count": [],
+    "node_size": [],
+    "node_size_family": [],
+    "spark_events_folder": [],
+    "spark_log_folder": [],
+    "spark_version": [],
+    "synapse_workspace_id": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

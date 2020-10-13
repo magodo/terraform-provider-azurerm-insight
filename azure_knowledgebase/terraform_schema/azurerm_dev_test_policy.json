@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_dev_test_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "evaluator_type": [],
+    "fact_data": [],
+    "id": [],
+    "lab_name": [],
+    "name": [],
+    "policy_set_name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "threshold": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

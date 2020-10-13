@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_advanced_threat_protection",
+  "swagger": "",
+  "PropertyLinks": {
+    "enabled": [],
+    "id": [],
+    "target_resource_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_redis_linked_server",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "linked_redis_cache_id": [],
+    "linked_redis_cache_location": [],
+    "name": [],
+    "resource_group_name": [],
+    "server_role": [],
+    "target_redis_cache_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

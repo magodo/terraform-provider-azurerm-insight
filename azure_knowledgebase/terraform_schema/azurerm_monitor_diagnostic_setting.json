@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_monitor_diagnostic_setting",
+  "swagger": "",
+  "PropertyLinks": {
+    "eventhub_authorization_rule_id": [],
+    "eventhub_name": [],
+    "id": [],
+    "log.category": [],
+    "log.enabled": [],
+    "log.retention_policy.days": [],
+    "log.retention_policy.enabled": [],
+    "log_analytics_destination_type": [],
+    "log_analytics_workspace_id": [],
+    "metric.category": [],
+    "metric.enabled": [],
+    "metric.retention_policy.days": [],
+    "metric.retention_policy.enabled": [],
+    "name": [],
+    "storage_account_id": [],
+    "target_resource_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

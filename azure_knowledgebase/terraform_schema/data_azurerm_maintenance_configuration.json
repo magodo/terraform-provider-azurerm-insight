@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_maintenance_configuration",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "scope": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

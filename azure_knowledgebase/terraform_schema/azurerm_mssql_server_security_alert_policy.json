@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_mssql_server_security_alert_policy",
+  "swagger": "",
+  "PropertyLinks": {
+    "disabled_alerts": [],
+    "email_account_admins": [],
+    "email_addresses": [],
+    "id": [],
+    "resource_group_name": [],
+    "retention_days": [],
+    "server_name": [],
+    "state": [],
+    "storage_account_access_key": [],
+    "storage_endpoint": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

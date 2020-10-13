@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_notification_hub_authorization_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "listen": [],
+    "manage": [],
+    "name": [],
+    "namespace_name": [],
+    "notification_hub_name": [],
+    "primary_access_key": [],
+    "resource_group_name": [],
+    "secondary_access_key": [],
+    "send": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

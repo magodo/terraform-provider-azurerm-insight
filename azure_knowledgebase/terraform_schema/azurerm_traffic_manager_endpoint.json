@@ -1,0 +1,29 @@
+{
+  "Name": "azurerm_traffic_manager_endpoint",
+  "swagger": "",
+  "PropertyLinks": {
+    "custom_header.name": [],
+    "custom_header.value": [],
+    "endpoint_location": [],
+    "endpoint_monitor_status": [],
+    "endpoint_status": [],
+    "geo_mappings": [],
+    "id": [],
+    "min_child_endpoints": [],
+    "name": [],
+    "priority": [],
+    "profile_name": [],
+    "resource_group_name": [],
+    "subnet.first": [],
+    "subnet.last": [],
+    "subnet.scope": [],
+    "target": [],
+    "target_resource_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": [],
+    "weight": []
+  }
+}

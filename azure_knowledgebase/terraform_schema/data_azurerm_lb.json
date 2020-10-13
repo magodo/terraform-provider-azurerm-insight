@@ -1,0 +1,23 @@
+{
+  "Name": "data_azurerm_lb",
+  "swagger": "",
+  "PropertyLinks": {
+    "frontend_ip_configuration.id": [],
+    "frontend_ip_configuration.name": [],
+    "frontend_ip_configuration.private_ip_address": [],
+    "frontend_ip_configuration.private_ip_address_allocation": [],
+    "frontend_ip_configuration.private_ip_address_version": [],
+    "frontend_ip_configuration.public_ip_address_id": [],
+    "frontend_ip_configuration.subnet_id": [],
+    "frontend_ip_configuration.zones": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "private_ip_address": [],
+    "private_ip_addresses": [],
+    "resource_group_name": [],
+    "sku": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

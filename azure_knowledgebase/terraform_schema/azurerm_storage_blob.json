@@ -1,0 +1,24 @@
+{
+  "Name": "azurerm_storage_blob",
+  "swagger": "",
+  "PropertyLinks": {
+    "access_tier": [],
+    "content_type": [],
+    "id": [],
+    "metadata": [],
+    "name": [],
+    "parallelism": [],
+    "size": [],
+    "source": [],
+    "source_content": [],
+    "source_uri": [],
+    "storage_account_name": [],
+    "storage_container_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": [],
+    "url": []
+  }
+}

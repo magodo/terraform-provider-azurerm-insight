@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_shared_image_gallery",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "unique_name": []
+  }
+}

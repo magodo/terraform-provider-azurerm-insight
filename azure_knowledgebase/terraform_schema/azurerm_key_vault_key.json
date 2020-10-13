@@ -1,0 +1,25 @@
+{
+  "Name": "azurerm_key_vault_key",
+  "swagger": "",
+  "PropertyLinks": {
+    "curve": [],
+    "e": [],
+    "expiration_date": [],
+    "id": [],
+    "key_opts": [],
+    "key_size": [],
+    "key_type": [],
+    "key_vault_id": [],
+    "n": [],
+    "name": [],
+    "not_before_date": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "version": [],
+    "x": [],
+    "y": []
+  }
+}

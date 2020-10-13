@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_virtual_network_peering",
+  "swagger": "",
+  "PropertyLinks": {
+    "allow_forwarded_traffic": [],
+    "allow_gateway_transit": [],
+    "allow_virtual_network_access": [],
+    "id": [],
+    "name": [],
+    "remote_virtual_network_id": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "use_remote_gateways": [],
+    "virtual_network_name": []
+  }
+}

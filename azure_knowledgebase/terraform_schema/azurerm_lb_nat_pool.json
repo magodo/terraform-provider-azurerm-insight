@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_lb_nat_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "backend_port": [],
+    "frontend_ip_configuration_id": [],
+    "frontend_ip_configuration_name": [],
+    "frontend_port_end": [],
+    "frontend_port_start": [],
+    "id": [],
+    "loadbalancer_id": [],
+    "name": [],
+    "protocol": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

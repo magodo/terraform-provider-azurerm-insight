@@ -1,0 +1,22 @@
+{
+  "Name": "azurerm_sql_elasticpool",
+  "swagger": "",
+  "PropertyLinks": {
+    "creation_date": [],
+    "db_dtu_max": [],
+    "db_dtu_min": [],
+    "dtu": [],
+    "edition": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "pool_size": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

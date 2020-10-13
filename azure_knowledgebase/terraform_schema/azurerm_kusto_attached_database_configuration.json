@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_kusto_attached_database_configuration",
+  "swagger": "",
+  "PropertyLinks": {
+    "attached_database_names": [],
+    "cluster_name": [],
+    "cluster_resource_id": [],
+    "database_name": [],
+    "default_principal_modification_kind": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

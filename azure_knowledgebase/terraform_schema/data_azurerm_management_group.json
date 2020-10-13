@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_management_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "display_name": [],
+    "group_id": [],
+    "id": [],
+    "name": [],
+    "parent_management_group_id": [],
+    "subscription_ids": [],
+    "timeouts.read": []
+  }
+}

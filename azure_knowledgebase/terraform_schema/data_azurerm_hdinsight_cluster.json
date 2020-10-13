@@ -1,0 +1,23 @@
+{
+  "Name": "data_azurerm_hdinsight_cluster",
+  "swagger": "",
+  "PropertyLinks": {
+    "cluster_version": [],
+    "component_versions": [],
+    "edge_ssh_endpoint": [],
+    "gateway.enabled": [],
+    "gateway.password": [],
+    "gateway.username": [],
+    "https_endpoint": [],
+    "id": [],
+    "kind": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "ssh_endpoint": [],
+    "tags": [],
+    "tier": [],
+    "timeouts.read": [],
+    "tls_min_version": []
+  }
+}

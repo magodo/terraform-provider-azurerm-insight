@@ -1,0 +1,18 @@
+{
+  "Name": "azurerm_role_assignment",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "principal_id": [],
+    "principal_type": [],
+    "role_definition_id": [],
+    "role_definition_name": [],
+    "scope": [],
+    "skip_service_principal_aad_check": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

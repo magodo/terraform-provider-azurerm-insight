@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_virtual_machine_data_disk_attachment",
+  "swagger": "",
+  "PropertyLinks": {
+    "caching": [],
+    "create_option": [],
+    "id": [],
+    "lun": [],
+    "managed_disk_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_machine_id": [],
+    "write_accelerator_enabled": []
+  }
+}

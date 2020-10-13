@@ -1,0 +1,13 @@
+{
+  "Name": "azurerm_virtual_desktop_workspace_application_group_association",
+  "swagger": "",
+  "PropertyLinks": {
+    "application_group_id": [],
+    "id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "workspace_id": []
+  }
+}

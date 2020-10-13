@@ -1,0 +1,16 @@
+{
+  "Name": "data_azurerm_api_management_user",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "email": [],
+    "first_name": [],
+    "id": [],
+    "last_name": [],
+    "note": [],
+    "resource_group_name": [],
+    "state": [],
+    "timeouts.read": [],
+    "user_id": []
+  }
+}

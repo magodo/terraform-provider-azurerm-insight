@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_api_management_openid_connect_provider",
+  "swagger": "",
+  "PropertyLinks": {
+    "api_management_name": [],
+    "client_id": [],
+    "client_secret": [],
+    "description": [],
+    "display_name": [],
+    "id": [],
+    "metadata_endpoint": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

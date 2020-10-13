@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_advisor_recommendations",
+  "swagger": "",
+  "PropertyLinks": {
+    "filter_by_category": [],
+    "filter_by_resource_groups": [],
+    "id": [],
+    "recommendations.category": [],
+    "recommendations.description": [],
+    "recommendations.impact": [],
+    "recommendations.recommendation_name": [],
+    "recommendations.recommendation_type_id": [],
+    "recommendations.resource_name": [],
+    "recommendations.resource_type": [],
+    "recommendations.suppression_names": [],
+    "recommendations.updated_time": [],
+    "timeouts.read": []
+  }
+}

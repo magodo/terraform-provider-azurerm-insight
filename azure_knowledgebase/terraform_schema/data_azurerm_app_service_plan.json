@@ -1,0 +1,22 @@
+{
+  "Name": "data_azurerm_app_service_plan",
+  "swagger": "",
+  "PropertyLinks": {
+    "app_service_environment_id": [],
+    "id": [],
+    "is_xenon": [],
+    "kind": [],
+    "location": [],
+    "maximum_elastic_worker_count": [],
+    "maximum_number_of_workers": [],
+    "name": [],
+    "per_site_scaling": [],
+    "reserved": [],
+    "resource_group_name": [],
+    "sku.capacity": [],
+    "sku.size": [],
+    "sku.tier": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

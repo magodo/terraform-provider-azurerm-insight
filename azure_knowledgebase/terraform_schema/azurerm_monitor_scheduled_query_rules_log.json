@@ -1,0 +1,23 @@
+{
+  "Name": "azurerm_monitor_scheduled_query_rules_log",
+  "swagger": "",
+  "PropertyLinks": {
+    "authorized_resource_ids": [],
+    "criteria.dimension.name": [],
+    "criteria.dimension.operator": [],
+    "criteria.dimension.values": [],
+    "criteria.metric_name": [],
+    "data_source_id": [],
+    "description": [],
+    "enabled": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

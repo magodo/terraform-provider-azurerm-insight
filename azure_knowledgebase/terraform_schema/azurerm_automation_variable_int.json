@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_automation_variable_int",
+  "swagger": "",
+  "PropertyLinks": {
+    "automation_account_name": [],
+    "description": [],
+    "encrypted": [],
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "value": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_mariadb_virtual_network_rule",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "name": [],
+    "resource_group_name": [],
+    "server_name": [],
+    "subnet_id": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

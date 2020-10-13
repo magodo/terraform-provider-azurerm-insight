@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_dashboard",
+  "swagger": "",
+  "PropertyLinks": {
+    "dashboard_properties": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

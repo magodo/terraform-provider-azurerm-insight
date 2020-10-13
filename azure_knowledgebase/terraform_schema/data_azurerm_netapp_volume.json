@@ -1,0 +1,19 @@
+{
+  "Name": "data_azurerm_netapp_volume",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "id": [],
+    "location": [],
+    "mount_ip_addresses": [],
+    "name": [],
+    "pool_name": [],
+    "protocols": [],
+    "resource_group_name": [],
+    "service_level": [],
+    "storage_quota_in_gb": [],
+    "subnet_id": [],
+    "timeouts.read": [],
+    "volume_path": []
+  }
+}

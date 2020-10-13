@@ -1,0 +1,13 @@
+{
+  "Name": "data_azurerm_synapse_workspace",
+  "swagger": "",
+  "PropertyLinks": {
+    "connectivity_endpoints": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": []
+  }
+}

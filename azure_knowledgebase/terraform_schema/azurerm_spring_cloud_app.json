@@ -1,0 +1,17 @@
+{
+  "Name": "azurerm_spring_cloud_app",
+  "swagger": "",
+  "PropertyLinks": {
+    "id": [],
+    "identity.principal_id": [],
+    "identity.tenant_id": [],
+    "identity.type": [],
+    "name": [],
+    "resource_group_name": [],
+    "service_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

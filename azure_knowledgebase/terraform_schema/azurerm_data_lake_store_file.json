@@ -1,0 +1,14 @@
+{
+  "Name": "azurerm_data_lake_store_file",
+  "swagger": "",
+  "PropertyLinks": {
+    "account_name": [],
+    "id": [],
+    "local_file_path": [],
+    "remote_file_path": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

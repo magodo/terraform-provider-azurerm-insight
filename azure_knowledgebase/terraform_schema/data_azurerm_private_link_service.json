@@ -1,0 +1,22 @@
+{
+  "Name": "data_azurerm_private_link_service",
+  "swagger": "",
+  "PropertyLinks": {
+    "alias": [],
+    "auto_approval_subscription_ids": [],
+    "enable_proxy_protocol": [],
+    "id": [],
+    "load_balancer_frontend_ip_configuration_ids": [],
+    "location": [],
+    "name": [],
+    "nat_ip_configuration.name": [],
+    "nat_ip_configuration.primary": [],
+    "nat_ip_configuration.private_ip_address": [],
+    "nat_ip_configuration.private_ip_address_version": [],
+    "nat_ip_configuration.subnet_id": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.read": [],
+    "visibility_subscription_ids": []
+  }
+}

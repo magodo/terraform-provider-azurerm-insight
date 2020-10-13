@@ -1,0 +1,15 @@
+{
+  "Name": "azurerm_iothub_dps_certificate",
+  "swagger": "",
+  "PropertyLinks": {
+    "certificate_content": [],
+    "id": [],
+    "iot_dps_name": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

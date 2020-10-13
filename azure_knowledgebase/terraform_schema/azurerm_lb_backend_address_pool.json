@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_lb_backend_address_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "backend_ip_configurations": [],
+    "id": [],
+    "load_balancing_rules": [],
+    "loadbalancer_id": [],
+    "name": [],
+    "resource_group_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "azurerm_hpc_cache_nfs_target",
+  "swagger": "",
+  "PropertyLinks": {
+    "cache_name": [],
+    "id": [],
+    "name": [],
+    "namespace_junction.namespace_path": [],
+    "namespace_junction.nfs_export": [],
+    "namespace_junction.target_path": [],
+    "resource_group_name": [],
+    "target_host_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "usage_model": []
+  }
+}

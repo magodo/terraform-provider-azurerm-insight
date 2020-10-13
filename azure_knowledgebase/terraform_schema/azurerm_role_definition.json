@@ -1,0 +1,21 @@
+{
+  "Name": "azurerm_role_definition",
+  "swagger": "",
+  "PropertyLinks": {
+    "assignable_scopes": [],
+    "description": [],
+    "id": [],
+    "name": [],
+    "permissions.actions": [],
+    "permissions.data_actions": [],
+    "permissions.not_actions": [],
+    "permissions.not_data_actions": [],
+    "role_definition_id": [],
+    "role_definition_resource_id": [],
+    "scope": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

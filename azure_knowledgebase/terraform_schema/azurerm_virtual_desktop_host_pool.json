@@ -1,0 +1,26 @@
+{
+  "Name": "azurerm_virtual_desktop_host_pool",
+  "swagger": "",
+  "PropertyLinks": {
+    "description": [],
+    "friendly_name": [],
+    "id": [],
+    "load_balancer_type": [],
+    "location": [],
+    "maximum_sessions_allowed": [],
+    "name": [],
+    "personal_desktop_assignment_type": [],
+    "preferred_app_group_type": [],
+    "registration_info.expiration_date": [],
+    "registration_info.reset_token": [],
+    "registration_info.token": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "type": [],
+    "validate_environment": []
+  }
+}

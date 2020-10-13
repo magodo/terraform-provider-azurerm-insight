@@ -1,0 +1,20 @@
+{
+  "Name": "azurerm_kusto_database_principal_assignment",
+  "swagger": "",
+  "PropertyLinks": {
+    "cluster_name": [],
+    "database_name": [],
+    "id": [],
+    "name": [],
+    "principal_id": [],
+    "principal_name": [],
+    "principal_type": [],
+    "resource_group_name": [],
+    "role": [],
+    "tenant_id": [],
+    "tenant_name": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": []
+  }
+}

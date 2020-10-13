@@ -1,0 +1,16 @@
+{
+  "Name": "azurerm_ip_group",
+  "swagger": "",
+  "PropertyLinks": {
+    "cidrs": [],
+    "id": [],
+    "location": [],
+    "name": [],
+    "resource_group_name": [],
+    "tags": [],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}
