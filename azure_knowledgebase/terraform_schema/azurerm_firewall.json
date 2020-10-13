@@ -2,6 +2,41 @@
   "Name": "azurerm_firewall",
   "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/azureFirewall.json",
   "PropertyLinks": {
+    "firewall_policy_id": [
+        {
+            "prop": "AzureFirewall:properties.firewallPolicy"
+        }
+    ],
+    "sku_name": [
+        {
+            "prop": "AzureFirewall:properties.sku.name"
+        }
+    ],
+    "sku_tier": [
+        {
+            "prop": "AzureFirewall:properties.sku.tier"
+        }
+    ],
+    "virtual_hub_setting.private_ip_address": [
+        {
+            "prop": "AzureFirewall:properties.hubIPAddresses.privateIPAddress"
+        }
+    ],
+    "virtual_hub_setting.public_ip_addresses": [
+        {
+            "prop": "AzureFirewall:properties.hubIPAddresses.publicIPs.addresses"
+        }
+    ],
+    "virtual_hub_setting.public_ip_count": [
+        {
+            "prop": "AzureFirewall:properties.hubIPAddresses.publicIPs.count"
+        }
+    ],
+    "virtual_hub_setting.virtual_hub_id": [
+        {
+            "prop": "AzureFirewall:properties.virtualHub"
+        }
+    ],
     "id": [
         {
             "prop": "AzureFirewall:id"
