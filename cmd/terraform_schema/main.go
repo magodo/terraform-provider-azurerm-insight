@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core"
 )
 
 func main() {
@@ -111,24 +111,6 @@ func genFile(schemaName string, blk *core.TerraformBlock, ofileBase string) erro
 	}
 
 	ofile := ofileBase + ".json"
-	ofileBkp := ofileBase + ".json.bkp"
-
-	// backup file if exists
-	if stat, err := os.Stat(ofile); err == nil && stat.Mode().IsRegular() {
-		src, err := os.Open(ofile)
-		if err != nil {
-			return err
-		}
-
-		dst, err := os.Create(ofileBkp)
-		if err != nil {
-			return err
-		}
-
-		if _, err := io.Copy(dst, src); err != nil {
-			return err
-		}
-	}
 
 	if err := ioutil.WriteFile(ofile, b, 0644); err != nil {
 		return err
