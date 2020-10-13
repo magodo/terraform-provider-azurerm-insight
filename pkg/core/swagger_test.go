@@ -1070,6 +1070,7 @@ func TestSWGSchemas_Grant(t *testing.T) {
 		swggrant         SWGGrant
 		swgschemas       SWGSchemas
 		expectSwgSchemas SWGSchemas
+		expectError      bool
 	}{
 		// grant schema
 		{
@@ -1141,10 +1142,39 @@ func TestSWGSchemas_Grant(t *testing.T) {
 				},
 			},
 		},
+
+		// the property to be granted doesn't exist
+		{
+			swggrant: map[SWGSchemaAddr]SWGSchemaGrant{
+				NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+					Properties: map[string]string{
+						"non_exist_prop1": "granted because of some reason",
+					},
+				},
+			},
+			swgschemas: SWGSchemas{
+				m: map[SWGSchemaAddr]*SWGSchema{
+					NewSWGSchemaAddr("swaggerRelPath", "schema1"): {
+						SwaggerRelPath: "swaggerRelPath",
+						Name:           "schema1",
+						Properties: map[string]*SWGSchemaProperty{
+							"prop1": {
+								TFLinks: []TFLink{},
+							},
+						},
+					},
+				},
+			},
+			expectError: true,
+		},
 	}
 	for idx, c := range cases {
 		swgschemas := c.swgschemas
-		swgschemas.Grant(c.swggrant)
-		require.Equal(t, c.expectSwgSchemas, swgschemas, idx)
+		if !c.expectError {
+			require.NoError(t, swgschemas.Grant(c.swggrant), idx)
+			require.Equal(t, c.expectSwgSchemas, swgschemas, idx)
+		} else {
+			require.Error(t, swgschemas.Grant(c.swggrant), idx)
+		}
 	}
 }
