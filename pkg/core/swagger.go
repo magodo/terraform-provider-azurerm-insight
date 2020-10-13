@@ -401,7 +401,9 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 		if err != nil {
 			log.Fatal(err)
 		}
-		swgschemas.Grant(swggrant)
+		if err := swgschemas.Grant(swggrant); err != nil {
+			return nil, err
+		}
 	}
 
 	// calculate swagger property coverage
@@ -432,7 +434,7 @@ func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPr
 }
 
 // Grant inquiries the SWGGrant to add the granting information onto the SWGSchemas
-func (c *SWGSchemas) Grant(grant SWGGrant) {
+func (c *SWGSchemas) Grant(grant SWGGrant) error {
 	c.Lock()
 	defer c.Unlock()
 	for schemaAddr, schemaGrant := range grant {
@@ -450,12 +452,13 @@ func (c *SWGSchemas) Grant(grant SWGGrant) {
 		for propertyAddr, propertyGrantComment := range schemaGrant.Properties {
 			property, ok := schema.Properties[propertyAddr]
 			if !ok {
-				continue
+				return fmt.Errorf(`property to be granted: "%s" doesn't exist in Swagger schema: %s'`, propertyAddr, schemaAddr)
 			}
 			property.IsGranted = true
 			property.GrantComment = propertyGrantComment
 		}
 	}
+	return nil
 }
 
 // GetSWGSchema get all SWGSchema from cache.

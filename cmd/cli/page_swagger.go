@@ -299,6 +299,12 @@ func PageSwagger(swgrps SWGResourceProviders) tview.Primitive {
 			app.SetFocus(schemaList)
 			return nil
 		}
+		if event.Rune() == 'e' {
+			propertyTree.GetRoot().ExpandAll()
+		}
+		if event.Rune() == 'c' {
+			propertyTree.GetRoot().CollapseAll()
+		}
 		return event
 	})
 	propertyDetail := tview.NewTextView()
