@@ -1,29 +1,77 @@
 {
   "Name": "azurerm_firewall",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/azureFirewall.json",
   "PropertyLinks": {
-    "firewall_policy_id": [],
-    "id": [],
-    "ip_configuration.name": [],
-    "ip_configuration.private_ip_address": [],
-    "ip_configuration.public_ip_address_id": [],
-    "ip_configuration.subnet_id": [],
-    "location": [],
-    "management_ip_configuration.name": [],
-    "management_ip_configuration.private_ip_address": [],
-    "management_ip_configuration.public_ip_address_id": [],
-    "management_ip_configuration.subnet_id": [],
-    "name": [],
+    "id": [
+        {
+            "prop": "AzureFirewall:id"
+        }
+    ],
+    "ip_configuration.name": [
+        {
+            "prop": "AzureFirewall:properties.ipConfigurations.name"
+        }
+    ],
+    "ip_configuration.private_ip_address": [
+        {
+            "prop": "AzureFirewall:properties.ipConfigurations.properties.privateIPAddress"
+        }
+    ],
+    "ip_configuration.public_ip_address_id": [
+        {
+            "prop": "AzureFirewall:properties.ipConfigurations.properties.publicIPAddress.id"
+        }
+    ],
+    "ip_configuration.subnet_id": [
+        {
+            "prop": "AzureFirewall:properties.ipConfigurations.properties.subnet.id"
+        }
+    ],
+    "location": [
+        {
+            "prop": "AzureFirewall:location"
+        }
+    ],
+    "management_ip_configuration.name": [
+        {
+            "prop": "AzureFirewall:properties.managementIpConfiguration.name"
+        }
+    ],
+    "management_ip_configuration.private_ip_address": [
+        {
+            "prop": "AzureFirewall:properties.managementIpConfiguration.properties.privateIPAddress"
+        }
+    ],
+    "management_ip_configuration.public_ip_address_id": [
+        {
+            "prop": "AzureFirewall:properties.managementIpConfiguration.properties.publicIPAddress.id"
+        }
+    ],
+    "management_ip_configuration.subnet_id": [
+        {
+            "prop": "AzureFirewall:properties.managementIpConfiguration.properties.subnet.id"
+        }
+    ],
+    "name": [
+        {
+            "prop": "AzureFirewall:name"
+        }
+    ],
     "resource_group_name": [],
-    "sku_name": [],
-    "sku_tier": [],
-    "tags": [],
-    "threat_intel_mode": [],
-    "timeouts.create": [],
-    "timeouts.delete": [],
-    "timeouts.read": [],
-    "timeouts.update": [],
-    "virtual_hub_id": [],
-    "zones": []
+    "tags": [
+        {
+            "prop": "AzureFirewall:tags"
+        }
+    ],
+    "threat_intel_mode": [
+        {
+            "prop": "AzureFirewall:properties.threatIntelMode"
+        }
+    ],
+    "zones": [
+        {
+            "prop": "AzureFirewall:zones"
+        }
+    ]
   }
 }

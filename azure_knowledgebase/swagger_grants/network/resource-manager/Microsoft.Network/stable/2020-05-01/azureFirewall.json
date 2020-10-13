@@ -1,0 +1,18 @@
+{
+  "AzureFirewall": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties.additionalProperties": "granted",
+      "properties.ipConfigurations.etag": "granted",
+      "properties.ipConfigurations.id": "granted",
+      "properties.ipConfigurations.properties.provisioningState": "granted",
+      "properties.ipConfigurations.type": "granted",
+      "properties.managementIpConfiguration.etag": "granted",
+      "properties.managementIpConfiguration.id": "granted",
+      "properties.managementIpConfiguration.properties.provisioningState": "granted",
+      "properties.managementIpConfiguration.type": "granted",
+      "properties.provisioningState": "granted"
+    }
+  }
+}
