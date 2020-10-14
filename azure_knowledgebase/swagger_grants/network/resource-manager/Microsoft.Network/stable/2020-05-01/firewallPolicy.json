@@ -5,5 +5,42 @@
       "type": "granted",
       "properties.provisioningState": "granted"
     }
+  },
+  "FirewallPolicyRuleCollectionGroup": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties.provisioningState": "granted",
+      "properties.ruleCollections": "Please check on \"FirewallPolicyFilterRuleCollection\" and \"FirewallPolicyNatRuleCollection\" respectively."
+    }
+  },
+  "FirewallPolicyFilterRuleCollection": {
+      "Properties": {
+          "ruleCollectionType": "Used internally as discriminator",
+          "rules": "Please check on \"ApplicationRule\" and \"NetworkRule\" respectively."
+      }
+  },
+  "FirewallPolicyNatRuleCollection": {
+      "Properties": {
+          "ruleCollectionType": "Used internally as discriminator",
+          "rules": "Please check on \"NatRule\"."
+      }
+  },
+
+  "NatRule": {
+      "Properties": {
+          "ruleType": "Used internally as discriminator"
+      }
+  },
+  "ApplicationRule": {
+      "Properties": {
+          "ruleType": "Used internally as discriminator",
+          "destinationAddresses": "Not supported in service actually"
+      }
+  },
+  "NetworkRule": {
+      "Properties": {
+          "ruleType": "Used internally as discriminator"
+      }
   }
 }
