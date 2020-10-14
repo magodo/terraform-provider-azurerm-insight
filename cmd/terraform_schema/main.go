@@ -14,7 +14,7 @@ import (
 
 func main() {
 	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, "Generate terraform schema file for later adding links to swagger schema.\n\n")
+		fmt.Fprint(os.Stderr, "Generate terraform schema metadata files for linking to swagger schema.\n\n")
 		flag.PrintDefaults()
 		os.Exit(2)
 	}
@@ -28,6 +28,7 @@ func main() {
 	outputPath := flag.String("output", pwd, "The output directory")
 	resource := flag.String("resource", "", "The Terraform resource name which to generate its flattened schema scaffold. If not specified, will apply to all resources available.")
 	isDataSource := flag.Bool("data-source", false, "Whether applies to data source")
+	isNew := flag.Bool("-new", false, "Wehther to generate the brand new terraform schema file regardless of existing schemas.")
 	showHelp := flag.Bool("help", false, "Display this message")
 
 	flag.Parse()
@@ -76,8 +77,7 @@ func main() {
 				log.Fatalf("No such resource: %s", *resource)
 			}
 		}
-		ofile := filepath.Join(*outputPath, prefix+*resource)
-		if err := genFile(prefix+*resource, schema.Block, ofile); err != nil {
+		if err := genFile(prefix+*resource, schema.Block, *outputPath, *isNew); err != nil {
 			log.Fatal(err)
 		}
 		return
@@ -95,23 +95,41 @@ func main() {
 	}
 
 	for res, schema := range schemas {
-		ofile := filepath.Join(*outputPath, oprefix+res)
-		if err := genFile(oprefix+res, schema.Block, ofile); err != nil {
+		if err := genFile(oprefix+res, schema.Block, *outputPath, *isNew); err != nil {
 			log.Fatal(err)
 		}
 	}
 	return
 }
 
-func genFile(schemaName string, blk *core.TerraformBlock, ofileBase string) error {
-	schema := core.NewSchemaScaffoldFromTerraformBlock(schemaName, blk)
+func genFile(schemaName string, blk *core.TerraformBlock, odir string, isNew bool) error {
+
+	var schema *core.TFSchema
+	ofile := filepath.Join(odir, schemaName+".json")
+
+	// If the meta file already exists and the user doesn't specify the -new flag,
+	// we will generate the new schema by updating the existing one.
+	if stat, err := os.Stat(ofile); err == nil && stat.Mode().IsRegular() && !isNew {
+		b, err := ioutil.ReadFile(ofile)
+		if err != nil {
+			return err
+		}
+		var oldSchema core.TFSchema
+		if err := json.Unmarshal(b, &oldSchema); err != nil {
+			return fmt.Errorf("failed to unmarshal for schema %q: %v", schemaName, err)
+		}
+		schema, err = core.UpdateSchemaScaffoldFromTerraformBlock(schemaName, blk, &oldSchema)
+		if err != nil {
+			return err
+		}
+	} else {
+		schema = core.NewSchemaScaffoldFromTerraformBlock(schemaName, blk)
+	}
+
 	b, err := json.MarshalIndent(schema, "", "  ")
 	if err != nil {
 		return err
 	}
-
-	ofile := ofileBase + ".json"
-
 	if err := ioutil.WriteFile(ofile, b, 0644); err != nil {
 		return err
 	}

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/zclconf/go-cty/cty"
@@ -10,8 +11,8 @@ import (
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"swagger"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
-	SchemaProp propertyaddr.PropertyAddr `json:"prop"`    // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
+	Spec       *string                   `json:"swagger,omitempty"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
+	SchemaProp propertyaddr.PropertyAddr `json:"prop"`              // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
@@ -68,6 +69,8 @@ func (schema TFSchema) Validate() error {
 	return nil
 }
 
+// NewSchemaScaffoldFromTerraformBlock construct the TFSchema for a certain resource from the terraform resource block derived
+// from `terraform providers schema -json`.
 func NewSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock) *TFSchema {
 	schema := NewSchema(name)
 	recordAttributeWithinBlock(propertyaddr.PropertyAddr{}, schema.PropertyLinks, block)
@@ -102,4 +105,24 @@ func recordAttributeByType(parentAddr propertyaddr.PropertyAddr, attributes TFSc
 			recordAttributeByType(addr, attributes, &attrVal)
 		}
 	}
+}
+
+// UpdateSchemaScaffoldFromTerraformBlock is similart to NewSchemaScaffoldFromTerraformBlock, except it will update the constrcutred
+// TFSchema with the existing TFSchema.
+func UpdateSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock, oldSchema *TFSchema) (*TFSchema, error) {
+	newSchema := NewSchemaScaffoldFromTerraformBlock(name, block)
+	if oldSchema.Name != name {
+		return nil, fmt.Errorf("The schema name between existing (%q) and the new (%q) TFSchema is different.", newSchema.Name, oldSchema.Name)
+	}
+
+	newSchema.SwaggerSpec = oldSchema.SwaggerSpec
+
+	for propName, propLink := range oldSchema.PropertyLinks {
+		if newSchema.PropertyLinks[propName] != nil {
+			newSchema.PropertyLinks[propName] = propLink
+		} else {
+			log.Printf("Warning: The new version of schema %q removed property %q", name, propName)
+		}
+	}
+	return newSchema, nil
 }
