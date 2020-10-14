@@ -1,0 +1,61 @@
+{
+  "Name": "azurerm_firewall_policy_rule_collection_group",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/firewallPolicy.json",
+  "PropertyLinks": {
+    "application_rule_collection.action": [
+        {
+            "prop": "FirewallPolicyRuleCollectionGroup:properites.ruleCollections.action.type"
+        }
+    ],
+    "application_rule_collection.name": [],
+    "application_rule_collection.priority": [],
+    "application_rule_collection.rule.destination_fqdn_tags": [],
+    "application_rule_collection.rule.destination_fqdns": [],
+    "application_rule_collection.rule.name": [],
+    "application_rule_collection.rule.protocols.port": [],
+    "application_rule_collection.rule.protocols.type": [],
+    "application_rule_collection.rule.source_addresses": [],
+    "application_rule_collection.rule.source_ip_groups": [],
+    "firewall_policy_id": [],
+    "id": [
+        {
+            "prop": "FirewallPolicyRuleCollectionGroup:name"
+        }
+    ],
+    "name": [
+        {
+            "prop": "FirewallPolicyRuleCollectionGroup:name"
+        }
+    ],
+    "nat_rule_collection.action": [],
+    "nat_rule_collection.name": [],
+    "nat_rule_collection.priority": [],
+    "nat_rule_collection.rule.destination_address": [],
+    "nat_rule_collection.rule.destination_ports": [],
+    "nat_rule_collection.rule.name": [],
+    "nat_rule_collection.rule.protocols": [],
+    "nat_rule_collection.rule.source_addresses": [],
+    "nat_rule_collection.rule.source_ip_groups": [],
+    "nat_rule_collection.rule.translated_address": [],
+    "nat_rule_collection.rule.translated_port": [],
+    "network_rule_collection.action": [],
+    "network_rule_collection.name": [],
+    "network_rule_collection.priority": [],
+    "network_rule_collection.rule.destination_addresses": [],
+    "network_rule_collection.rule.destination_ip_groups": [],
+    "network_rule_collection.rule.destination_ports": [],
+    "network_rule_collection.rule.name": [],
+    "network_rule_collection.rule.protocols": [],
+    "network_rule_collection.rule.source_addresses": [],
+    "network_rule_collection.rule.source_ip_groups": [],
+    "priority": [
+        {
+            "prop": "FirewallPolicyRuleCollectionGroup:properites.priority"
+        }
+    ],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}
