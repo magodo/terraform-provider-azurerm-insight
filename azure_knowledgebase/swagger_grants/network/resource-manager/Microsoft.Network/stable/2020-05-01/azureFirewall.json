@@ -12,7 +12,14 @@
       "properties.managementIpConfiguration.id": "granted",
       "properties.managementIpConfiguration.properties.provisioningState": "granted",
       "properties.managementIpConfiguration.type": "granted",
-      "properties.provisioningState": "granted"
+      "properties.provisioningState": "granted",
+      "properties.applicationRuleCollections.etag": "granted",
+      "properties.applicationRuleCollections.properties.provisioningState": "granted",
+      "properties.natRuleCollections.etag": "granted",
+      "properties.natRuleCollections.properties.provisioningState": "granted",
+      "properties.natRuleCollections.properties.rules.translatedFqdn": "This is not supported in service actually",
+      "properties.networkRuleCollections.etag": "granted",
+      "properties.networkRuleCollections.properties.provisioningState": "granted"
     }
   }
 }

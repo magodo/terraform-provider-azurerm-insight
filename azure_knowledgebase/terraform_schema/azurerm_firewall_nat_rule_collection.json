@@ -1,25 +1,73 @@
 {
   "Name": "azurerm_firewall_nat_rule_collection",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/azureFirewall.json",
   "PropertyLinks": {
-    "action": [],
+    "action": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.action"
+        }
+    ],
     "azure_firewall_name": [],
-    "id": [],
-    "name": [],
-    "priority": [],
+    "id": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.id"
+        }
+    ],
+    "name": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.name"
+        }
+    ],
+    "priority": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.priority"
+        }
+    ],
     "resource_group_name": [],
-    "rule.description": [],
-    "rule.destination_addresses": [],
-    "rule.destination_ports": [],
-    "rule.name": [],
-    "rule.protocols": [],
-    "rule.source_addresses": [],
-    "rule.source_ip_groups": [],
-    "rule.translated_address": [],
-    "rule.translated_port": [],
-    "timeouts.create": [],
-    "timeouts.delete": [],
-    "timeouts.read": [],
-    "timeouts.update": []
+    "rule.description": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.description"
+        }
+    ],
+    "rule.destination_addresses": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.destinationAddresses"
+        }
+    ],
+    "rule.destination_ports": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.destinationPorts"
+        }
+    ],
+    "rule.name": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.name"
+        }
+    ],
+    "rule.protocols": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.protocols"
+        }
+    ],
+    "rule.source_addresses": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.sourceAddresses"
+        }
+    ],
+    "rule.source_ip_groups": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.sourceIpGroups"
+        }
+    ],
+    "rule.translated_address": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.translatedAddress"
+        }
+    ],
+    "rule.translated_port": [
+        {
+            "prop": "AzureFirewall:properties.natRuleCollections.properties.rules.translatedPort"
+        }
+    ]
   }
 }

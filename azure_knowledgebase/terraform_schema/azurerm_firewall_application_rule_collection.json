@@ -1,24 +1,68 @@
 {
   "Name": "azurerm_firewall_application_rule_collection",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/azureFirewall.json",
   "PropertyLinks": {
-    "action": [],
+    "action": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.action"
+        }
+    ],
     "azure_firewall_name": [],
-    "id": [],
-    "name": [],
-    "priority": [],
+    "id": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.id"
+        }
+    ],
+    "name": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.name"
+        }
+    ],
+    "priority": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.priority"
+        }
+    ],
     "resource_group_name": [],
-    "rule.description": [],
-    "rule.fqdn_tags": [],
-    "rule.name": [],
-    "rule.protocol.port": [],
-    "rule.protocol.type": [],
-    "rule.source_addresses": [],
-    "rule.source_ip_groups": [],
-    "rule.target_fqdns": [],
-    "timeouts.create": [],
-    "timeouts.delete": [],
-    "timeouts.read": [],
-    "timeouts.update": []
+    "rule.description": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.description"
+        }
+    ],
+    "rule.fqdn_tags": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.fqdnTags"
+        }
+    ],
+    "rule.name": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.name"
+        }
+    ],
+    "rule.protocol.port": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.protocols.port"
+        }
+    ],
+    "rule.protocol.type": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.protocols.protocolType"
+        }
+    ],
+    "rule.source_addresses": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.sourceAddresses"
+        }
+    ],
+    "rule.source_ip_groups": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.sourceIpGroups"
+        }
+    ],
+    "rule.target_fqdns": [
+        {
+            "prop": "AzureFirewall:properties.applicationRuleCollections.properties.rules.targetFqdns"
+        }
+    ]
   }
 }

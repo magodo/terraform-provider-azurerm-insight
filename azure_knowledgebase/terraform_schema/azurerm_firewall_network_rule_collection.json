@@ -1,24 +1,68 @@
 {
   "Name": "azurerm_firewall_network_rule_collection",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/azureFirewall.json",
   "PropertyLinks": {
-    "action": [],
+    "action": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.action"
+        }
+    ],
     "azure_firewall_name": [],
-    "id": [],
-    "name": [],
-    "priority": [],
+    "id": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.id"
+        }
+    ],
+    "name": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.name"
+        }
+    ],
+    "priority": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.priority"
+        }
+    ],
     "resource_group_name": [],
-    "rule.description": [],
-    "rule.destination_addresses": [],
-    "rule.destination_ip_groups": [],
-    "rule.destination_ports": [],
-    "rule.name": [],
-    "rule.protocols": [],
-    "rule.source_addresses": [],
-    "rule.source_ip_groups": [],
-    "timeouts.create": [],
-    "timeouts.delete": [],
-    "timeouts.read": [],
-    "timeouts.update": []
+    "rule.description": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.description"
+        }
+    ],
+    "rule.destination_addresses": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.destinationAddresses"
+        }
+    ],
+    "rule.destination_ip_groups": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.destinationIpGroups"
+        }
+    ],
+    "rule.destination_ports": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.destinationPorts"
+        }
+    ],
+    "rule.name": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.name"
+        }
+    ],
+    "rule.protocols": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.protocols"
+        }
+    ],
+    "rule.source_addresses": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.sourceAddresses"
+        }
+    ],
+    "rule.source_ip_groups": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.sourceIpGroups"
+        }
+    ]
   }
 }
