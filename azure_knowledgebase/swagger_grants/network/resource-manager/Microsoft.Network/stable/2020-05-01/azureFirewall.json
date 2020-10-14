@@ -3,7 +3,7 @@
     "Properties": {
       "etag": "granted",
       "type": "granted",
-      "properties.additionalProperties": "granted",
+      "properties.ipGroups": "This is not supported in service actually",
       "properties.ipConfigurations.etag": "granted",
       "properties.ipConfigurations.id": "granted",
       "properties.ipConfigurations.properties.provisioningState": "granted",

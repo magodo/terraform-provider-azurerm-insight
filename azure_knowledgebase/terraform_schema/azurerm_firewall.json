@@ -107,6 +107,16 @@
         {
             "prop": "AzureFirewall:zones"
         }
+    ],
+    "dns_setting.enabled": [
+        {
+            "prop": "AzureFirewall:properties.additionalProperties"
+        }
+    ],
+    "dns_setting.servers": [
+        {
+            "prop": "AzureFirewall:properties.additionalProperties"
+        }
     ]
   }
 }

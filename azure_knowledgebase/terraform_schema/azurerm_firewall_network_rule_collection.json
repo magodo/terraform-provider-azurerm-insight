@@ -44,6 +44,11 @@
             "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.destinationPorts"
         }
     ],
+    "rule.destination_fqdns": [
+        {
+            "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.destinationFqdns"
+        }
+    ],
     "rule.name": [
         {
             "prop": "AzureFirewall:properties.networkRuleCollections.properties.rules.name"
