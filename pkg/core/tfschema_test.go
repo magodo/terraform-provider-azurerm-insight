@@ -92,6 +92,94 @@ func TestNewSchemaScaffoldFromTerraformBlock(t *testing.T) {
 	assert.Equal(t, *expect, *schema)
 }
 
+func TestUpdateSchemaScaffoldFromTerraformBlock(t *testing.T) {
+	jsonInput := []byte(`
+{
+  "attributes": {
+	"foo": {},
+	"bar": {
+	  "type": [
+		"list",
+		[
+		  "object",
+		  {
+			"p1": "string",
+			"p2": [
+              "list",
+              [
+              	"object",
+              	{
+                  "p2_1": "string"
+              	}
+              ]
+			],
+			"p3": [
+			  "map",
+			  "string"
+			]
+		  }
+		]
+	  ]
+	},
+	"baz": {
+	  "type": [
+		"map",
+		"string"
+	  ]
+	}
+  },
+  "block_types": {
+    "block_a": {
+      "block": {
+        "attributes": {
+          "foo": {}
+        },
+	    "block_types": {
+		  "block_a_a": {
+		    "block": {
+			  "attributes": {
+			    "bar": {}
+			  }
+			}
+		  }
+	 	}
+      }
+    }
+  }
+}`)
+
+	existing := &TFSchema{
+		Name:        "res1",
+		SwaggerSpec: "path",
+		PropertyLinks: map[string][]SwaggerLink{
+			"foo":        {{SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:foo")}},
+			"deprecated": {{SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:deprecated")}},
+		},
+	}
+
+	expect := &TFSchema{
+		Name:        "res1",
+		SwaggerSpec: "path",
+		PropertyLinks: map[string][]SwaggerLink{
+			"foo":                   {{SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:foo")}},
+			"bar.p1":                {},
+			"bar.p2.p2_1":           {},
+			"bar.p3":                {},
+			"baz":                   {},
+			"block_a.block_a_a.bar": {},
+			"block_a.foo":           {},
+		},
+	}
+
+	var block TerraformBlock
+	if err := json.Unmarshal(jsonInput, &block); err != nil {
+		t.Fatal(err)
+	}
+	schema, err := UpdateSchemaScaffoldFromTerraformBlock("res1", &block, existing)
+	assert.NoError(t, err, *schema)
+	assert.Equal(t, *expect, *schema)
+}
+
 func TestMarshalTFSchema(t *testing.T) {
 	tfschema := TFSchema{
 		Name:        "res1",
@@ -99,7 +187,6 @@ func TestMarshalTFSchema(t *testing.T) {
 		PropertyLinks: map[string][]SwaggerLink{
 			"bar": {
 				{
-					Spec:       strPtr("xxx"),
 					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
 				},
 				{
@@ -125,8 +212,7 @@ func TestMarshalTFSchema(t *testing.T) {
     "PropertyLinks": {
         "bar": [
             {
-                "prop": "schema1:p1.p2",
-                "swagger": "xxx"
+                "prop": "schema1:p1.p2"
             },
             {
                 "prop": "schema2:p3.p4",
@@ -161,8 +247,7 @@ func TestUnmarshalTFSchema(t *testing.T) {
     "PropertyLinks": {
         "bar": [
             {
-                "prop": "schema1:p1.p2",
-                "swagger": "xxx"
+                "prop": "schema1:p1.p2"
             },
             {
                 "prop": "schema2:p3.p4",
@@ -189,7 +274,6 @@ func TestUnmarshalTFSchema(t *testing.T) {
 		PropertyLinks: map[string][]SwaggerLink{
 			"bar": {
 				{
-					Spec:       strPtr("xxx"),
 					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
 				},
 				{

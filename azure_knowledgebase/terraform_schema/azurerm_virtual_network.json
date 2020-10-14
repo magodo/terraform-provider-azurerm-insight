@@ -1,72 +1,76 @@
 {
   "Name": "azurerm_virtual_network",
-  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
+  "swagger": "",
   "PropertyLinks": {
-    "name": [
-        {
-            "prop": "VirtualNetwork:name"
-        }
-    ],
-    "location": [
-        {
-            "prop": "VirtualNetwork:location"
-        }
-    ],
-    "id": [
-        {
-            "prop": "VirtualNetwork:id"
-        }
-    ],
-    "resource_group_name": [],
     "address_space": [
-        {
-            "prop": "VirtualNetwork:properties.addressSpace"
-        }
+      {
+        "prop": "VirtualNetwork:properties.addressSpace"
+      }
     ],
     "ddos_protection_plan.enable": [
-        {
-            "prop": "VirtualNetwork:properties.enableDdosProtection"
-        }
+      {
+        "prop": "VirtualNetwork:properties.enableDdosProtection"
+      }
     ],
     "ddos_protection_plan.id": [
-        {
-            "prop": "VirtualNetwork:properties.ddosProtectionPlan"
-        }
+      {
+        "prop": "VirtualNetwork:properties.ddosProtectionPlan"
+      }
     ],
     "dns_servers": [
-        {
-            "prop": "VirtualNetwork:properties.dhcpOptions.dnsServers"
-        }
+      {
+        "prop": "VirtualNetwork:properties.dhcpOptions.dnsServers"
+      }
     ],
     "guid": [
-        {
-            "prop": "VirtualNetwork:properties.resourceGuid"
-        }
+      {
+        "prop": "VirtualNetwork:properties.resourceGuid"
+      }
     ],
+    "id": [
+      {
+        "prop": "VirtualNetwork:id"
+      }
+    ],
+    "location": [
+      {
+        "prop": "VirtualNetwork:location"
+      }
+    ],
+    "name": [
+      {
+        "prop": "VirtualNetwork:name"
+      }
+    ],
+    "resource_group_name": [],
     "subnet.address_prefix": [
-        {
-            "prop": "VirtualNetwork:properties.subnets.properties.addressPrefix"
-        }
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.addressPrefix"
+      }
     ],
     "subnet.id": [
-        {
-            "prop": "VirtualNetwork:properties.subnets.id"
-        }
+      {
+        "prop": "VirtualNetwork:properties.subnets.id"
+      }
     ],
     "subnet.name": [
-        {
-            "prop": "VirtualNetwork:properties.subnets.name"
-        }
+      {
+        "prop": "VirtualNetwork:properties.subnets.name"
+      }
     ],
     "subnet.security_group": [
-        {
-            "prop": "VirtualNetwork:properties.subnets.properties.networkSecurityGroup"
-        }
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.networkSecurityGroup"
+      }
     ],
     "tags": [
-        {
-            "prop": "VirtualNetwork:tags"
-        }
-    ]
+      {
+        "prop": "VirtualNetwork:tags"
+      }
+    ],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
   }
 }
