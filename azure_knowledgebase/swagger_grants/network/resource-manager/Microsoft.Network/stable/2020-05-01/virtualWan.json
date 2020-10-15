@@ -1,0 +1,18 @@
+{
+  "VpnSite": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties.bgpProperties": "Deprecated by API",
+      "properties.deviceProperties.linkSpeedInMbps": "API has issue: can not update this property once set",
+      "properties.ipAddress": "Deprecated by API",
+      "properties.isSecuritySite": "Deprecated by API",
+      "properties.provisioningState": "granted",
+      "properties.siteKey": "Deprecated by API",
+      "properties.vpnSiteLinks.etag": "granted",
+      "properties.vpnSiteLinks.id": "granted",
+      "properties.vpnSiteLinks.properties.provisioningState": "granted",
+      "properties.vpnSiteLinks.type": "granted"
+    }
+  }
+}

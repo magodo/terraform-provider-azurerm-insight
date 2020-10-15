@@ -1,0 +1,88 @@
+{
+  "Name": "azurerm_vpn_site",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualWan.json",
+  "PropertyLinks": {
+    "address_spaces": [
+      {
+        "prop": "VpnSite:properties.addressSpace.addressPrefixes"
+      }
+    ],
+    "device_property.link_speed_mbps": [
+    ],
+    "device_property.model": [
+      {
+        "prop": "VpnSite:properties.deviceProperties.deviceModel"
+      }
+    ],
+    "device_property.vendor": [
+      {
+        "prop": "VpnSite:properties.deviceProperties.deviceVendor"
+      }
+    ],
+    "id": [
+      {
+        "prop": "VpnSite:id"
+      }
+    ],
+    "location": [
+      {
+        "prop": "VpnSite:location"
+      }
+    ],
+    "name": [
+      {
+        "prop": "VpnSite:name"
+      }
+    ],
+    "resource_group_name": [],
+    "tags": [
+      {
+        "prop": "VpnSite:tags"
+      }
+    ],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "virtual_wan_id": [
+      {
+        "prop": "VpnSite:properties.virtualWan.id"
+      }
+    ],
+    "vpn_site_link.bgp_property.asn": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.properties.bgpProperties.asn"
+      }
+    ],
+    "vpn_site_link.bgp_property.peering_address": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.properties.bgpProperties.bgpPeeringAddress"
+      }
+    ],
+    "vpn_site_link.fqdn": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.properties.fqdn"
+      }
+    ],
+    "vpn_site_link.ip_address": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.properties.ipAddress"
+      }
+    ],
+    "vpn_site_link.link_provider_name": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.properties.linkProperties.linkProviderName"
+      }
+    ],
+    "vpn_site_link.link_speed_mbps": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.properties.linkProperties.linkSpeedInMbps"
+      }
+    ],
+    "vpn_site_link.name": [
+      {
+        "prop": "VpnSite:properties.vpnSiteLinks.name"
+      }
+    ]
+  }
+}
