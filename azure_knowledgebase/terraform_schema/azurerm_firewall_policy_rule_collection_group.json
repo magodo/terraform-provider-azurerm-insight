@@ -3,175 +3,180 @@
   "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/firewallPolicy.json",
   "PropertyLinks": {
     "application_rule_collection.action": [
-        {
-            "prop": "FirewallPolicyFilterRuleCollection:action.type"
-        }
+      {
+        "prop": "FirewallPolicyFilterRuleCollection:action.type"
+      }
     ],
     "application_rule_collection.name": [
-        {
-            "prop": "FirewallPolicyFilterRuleCollection:name"
-        }
+      {
+        "prop": "FirewallPolicyFilterRuleCollection:name"
+      }
     ],
     "application_rule_collection.priority": [
-        {
-            "prop": "FirewallPolicyFilterRuleCollection:priority"
-        }
+      {
+        "prop": "FirewallPolicyFilterRuleCollection:priority"
+      }
     ],
     "application_rule_collection.rule.destination_fqdn_tags": [
-        {
-            "prop": "ApplicationRule:fqdnTags"
-        }
+      {
+        "prop": "ApplicationRule:fqdnTags"
+      }
     ],
     "application_rule_collection.rule.destination_fqdns": [
-        {
-            "prop": "ApplicationRule:targetFqdns"
-        }
+      {
+        "prop": "ApplicationRule:targetFqdns"
+      }
     ],
     "application_rule_collection.rule.name": [
-        {
-            "prop": "ApplicationRule:name"
-        }
+      {
+        "prop": "ApplicationRule:name"
+      }
     ],
     "application_rule_collection.rule.protocols.port": [
-        {
-            "prop": "ApplicationRule:protocols.port"
-        }
+      {
+        "prop": "ApplicationRule:protocols.port"
+      }
     ],
     "application_rule_collection.rule.protocols.type": [
-        {
-            "prop": "ApplicationRule:protocols.protocolType"
-        }
+      {
+        "prop": "ApplicationRule:protocols.protocolType"
+      }
     ],
     "application_rule_collection.rule.source_addresses": [
-        {
-            "prop": "ApplicationRule:sourceAddresses"
-        }
+      {
+        "prop": "ApplicationRule:sourceAddresses"
+      }
     ],
     "application_rule_collection.rule.source_ip_groups": [
-        {
-            "prop": "ApplicationRule:sourceIpGroups"
-        }
+      {
+        "prop": "ApplicationRule:sourceIpGroups"
+      }
     ],
     "firewall_policy_id": [],
     "id": [
-        {
-            "prop": "FirewallPolicyRuleCollectionGroup:id"
-        }
+      {
+        "prop": "FirewallPolicyRuleCollectionGroup:id"
+      }
     ],
     "name": [
-        {
-            "prop": "FirewallPolicyRuleCollectionGroup:name"
-        }
+      {
+        "prop": "FirewallPolicyRuleCollectionGroup:name"
+      }
     ],
     "nat_rule_collection.action": [
-        {
-            "prop": "FirewallPolicyNatRuleCollection:action.type"
-        }
+      {
+        "prop": "FirewallPolicyNatRuleCollection:action.type"
+      }
     ],
     "nat_rule_collection.name": [
-        {
-            "prop": "FirewallPolicyNatRuleCollection:name"
-        }
+      {
+        "prop": "FirewallPolicyNatRuleCollection:name"
+      }
     ],
     "nat_rule_collection.priority": [
-        {
-            "prop": "FirewallPolicyNatRuleCollection:priority"
-        }
+      {
+        "prop": "FirewallPolicyNatRuleCollection:priority"
+      }
     ],
     "nat_rule_collection.rule.destination_address": [
-        {
-            "prop": "NatRule:destinationAddresses"
-        }
+      {
+        "prop": "NatRule:destinationAddresses"
+      }
     ],
     "nat_rule_collection.rule.destination_ports": [
-        {
-            "prop": "NatRule:destinationPorts"
-        }
+      {
+        "prop": "NatRule:destinationPorts"
+      }
     ],
     "nat_rule_collection.rule.name": [
-        {
-            "prop": "NatRule:name"
-        }
+      {
+        "prop": "NatRule:name"
+      }
     ],
     "nat_rule_collection.rule.protocols": [
-        {
-            "prop": "NatRule:ipProtocols"
-        }
+      {
+        "prop": "NatRule:ipProtocols"
+      }
     ],
     "nat_rule_collection.rule.source_addresses": [
-        {
-            "prop": "NatRule:sourceAddresses"
-        }
+      {
+        "prop": "NatRule:sourceAddresses"
+      }
     ],
     "nat_rule_collection.rule.source_ip_groups": [
-        {
-            "prop": "NatRule:sourceIpGroups"
-        }
+      {
+        "prop": "NatRule:sourceIpGroups"
+      }
     ],
     "nat_rule_collection.rule.translated_address": [
-        {
-            "prop": "NatRule:translatedAddress"
-        }
+      {
+        "prop": "NatRule:translatedAddress"
+      }
     ],
     "nat_rule_collection.rule.translated_port": [
-        {
-            "prop": "NatRule:translatedPort"
-        }
+      {
+        "prop": "NatRule:translatedPort"
+      }
     ],
     "network_rule_collection.action": [
-        {
-            "prop": "FirewallPolicyFilterRuleCollection:action.type"
-        }
+      {
+        "prop": "FirewallPolicyFilterRuleCollection:action.type"
+      }
     ],
     "network_rule_collection.name": [
-        {
-            "prop": "FirewallPolicyFilterRuleCollection:name"
-        }
+      {
+        "prop": "FirewallPolicyFilterRuleCollection:name"
+      }
     ],
     "network_rule_collection.priority": [
-        {
-            "prop": "FirewallPolicyFilterRuleCollection:priority"
-        }
+      {
+        "prop": "FirewallPolicyFilterRuleCollection:priority"
+      }
     ],
     "network_rule_collection.rule.destination_addresses": [
-        {
-            "prop": "NetworkRule:destinationAddresses"
-        }
+      {
+        "prop": "NetworkRule:destinationAddresses"
+      }
+    ],
+    "network_rule_collection.rule.destination_fqdns": [
+      {
+        "prop": "NetworkRule:destinationFqdns"
+      }
     ],
     "network_rule_collection.rule.destination_ip_groups": [
-        {
-            "prop": "NetworkRule:destinationIpGroups"
-        }
+      {
+        "prop": "NetworkRule:destinationIpGroups"
+      }
     ],
     "network_rule_collection.rule.destination_ports": [
-        {
-            "prop": "NetworkRule:destinationPorts"
-        }
+      {
+        "prop": "NetworkRule:destinationPorts"
+      }
     ],
     "network_rule_collection.rule.name": [
-        {
-            "prop": "NetworkRule:name"
-        }
+      {
+        "prop": "NetworkRule:name"
+      }
     ],
     "network_rule_collection.rule.protocols": [
-        {
-            "prop": "NetworkRule:ipProtocols"
-        }
+      {
+        "prop": "NetworkRule:ipProtocols"
+      }
     ],
     "network_rule_collection.rule.source_addresses": [
-        {
-            "prop": "NetworkRule:sourceAddresses"
-        }
+      {
+        "prop": "NetworkRule:sourceAddresses"
+      }
     ],
     "network_rule_collection.rule.source_ip_groups": [
-        {
-            "prop": "NetworkRule:sourceIpGroups"
-        }
+      {
+        "prop": "NetworkRule:sourceIpGroups"
+      }
     ],
     "priority": [
-        {
-            "prop": "FirewallPolicyRuleCollectionGroup:properties.priority"
-        }
+      {
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.priority"
+      }
     ],
     "timeouts.create": [],
     "timeouts.delete": [],

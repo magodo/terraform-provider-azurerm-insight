@@ -29,18 +29,21 @@
 
   "NatRule": {
       "Properties": {
-          "ruleType": "Used internally as discriminator"
+          "ruleType": "Used internally as discriminator",
+          "description": "Not supported in service actually"
       }
   },
   "ApplicationRule": {
       "Properties": {
           "ruleType": "Used internally as discriminator",
-          "destinationAddresses": "Not supported in service actually"
+          "destinationAddresses": "Not supported in service actually",
+          "description": "Not supported in service actually"
       }
   },
   "NetworkRule": {
       "Properties": {
-          "ruleType": "Used internally as discriminator"
+          "ruleType": "Used internally as discriminator",
+          "description": "Not supported in service actually"
       }
   }
 }
