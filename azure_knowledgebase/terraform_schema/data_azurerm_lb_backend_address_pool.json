@@ -1,11 +1,66 @@
 {
   "Name": "data_azurerm_lb_backend_address_pool",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/loadBalancer.json",
   "PropertyLinks": {
-    "backend_ip_configurations.id": [],
-    "id": [],
+    "backend_address.ip_address": [],
+    "backend_address.name": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.loadBalancerBackendAddresses.name"
+      },
+      {
+        "prop": "BackendAddressPool:properties.loadBalancerBackendAddresses.name"
+      }
+    ],
+    "backend_address.network_interface_ip_configuration": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.loadBalancerBackendAddresses.properties.networkInterfaceIPConfiguration"
+      },
+      {
+        "prop": "BackendAddressPool:properties.loadBalancerBackendAddresses.properties.networkInterfaceIPConfiguration"
+      }
+    ],
+    "backend_address.virtual_network_id": [],
+    "backend_ip_configurations.id": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.backendIPConfigurations"
+      },
+      {
+        "prop": "BackendAddressPool:properties.backendIPConfigurations"
+      }
+    ],
+    "id": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.id"
+      },
+      {
+        "prop": "BackendAddressPool:id"
+      }
+    ],
+    "load_balancing_rules": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.loadBalancingRules"
+      },
+      {
+        "prop": "BackendAddressPool:properties.loadBalancingRules"
+      }
+    ],
     "loadbalancer_id": [],
-    "name": [],
+    "name": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.name"
+      },
+      {
+        "prop": "BackendAddressPool:name"
+      }
+    ],
+    "outbound_rules": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.outboundRules"
+      },
+      {
+        "prop": "BackendAddressPool:properties.outboundRules"
+      }
+    ],
     "timeouts.read": []
   }
 }

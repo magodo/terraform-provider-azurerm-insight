@@ -1,0 +1,22 @@
+{
+  "LoadBalancer": {
+    "Properties": {
+      "properties.backendAddressPools.etag": "granted",
+      "properties.backendAddressPools.type": "granted",
+      "properties.backendAddressPools.properties.outboundRule": "Replaced by `outboundRules`",
+      "properties.backendAddressPools.properties.provisioningState": "granted",
+      "properties.backendAddressPools.properties.loadBalancerBackendAddresses.properties.ipAddress": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform.",
+      "properties.backendAddressPools.properties.loadBalancerBackendAddresses.properties.virtualNetwork": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform."
+    }
+  },
+  "BackendAddressPool": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties.outboundRule": "Replaced by `outboundRules`",
+      "properties.provisioningState": "granted",
+      "properties.loadBalancerBackendAddresses.properties.ipAddress": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform.",
+      "properties.loadBalancerBackendAddresses.properties.virtualNetwork": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform."
+    }
+  }
+}

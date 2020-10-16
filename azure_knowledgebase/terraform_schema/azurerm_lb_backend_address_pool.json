@@ -1,12 +1,33 @@
 {
   "Name": "azurerm_lb_backend_address_pool",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/loadBalancer.json",
   "PropertyLinks": {
-    "backend_ip_configurations": [],
-    "id": [],
-    "load_balancing_rules": [],
+    "backend_ip_configurations": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.backendIPConfigurations"
+      }
+    ],
+    "id": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.id"
+      }
+    ],
+    "load_balancing_rules": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.loadBalancingRules"
+      }
+    ],
     "loadbalancer_id": [],
-    "name": [],
+    "name": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.name"
+      }
+    ],
+    "outbound_rules": [
+      {
+        "prop": "LoadBalancer:properties.backendAddressPools.properties.outboundRules"
+      }
+    ],
     "resource_group_name": [],
     "timeouts.create": [],
     "timeouts.delete": [],
