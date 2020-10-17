@@ -49,10 +49,6 @@ func NewPropertyAddrFromStringWithOwner(owner, addr string) *PropertyAddr {
 	return &PropertyAddr{owner, addrs}
 }
 
-func NewPropertyAddr(owner string, addrs ...string) *PropertyAddr {
-	return &PropertyAddr{owner, addrs}
-}
-
 func (addr PropertyAddr) String() string {
 	relative := strings.Join(addr.addrs, addrSep)
 	if addr.owner == "" {

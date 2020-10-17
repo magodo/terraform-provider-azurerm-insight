@@ -58,7 +58,7 @@ func TestNewPropertyAddr(t *testing.T) {
 	require.Equal(t, &PropertyAddr{
 		owner: "res1",
 		addrs: []string{"p1", "p2"},
-	}, NewPropertyAddr("res1", "p1", "p2"))
+	}, NewPropertyAddrFromStringWithOwner("res1", "p1.p2"))
 }
 
 func TestNewPropertyAddrFromStringWithOwner(t *testing.T) {
