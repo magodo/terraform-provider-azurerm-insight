@@ -14,21 +14,80 @@ const swaggerPropertyAddrSep = "."
 const swaggerPropertyDiscriminatorStartMark = "["
 const swaggerPropertyDiscriminatorEndMark = "]"
 
-type SwaggerPropertyAddr struct {
-	Schema       string
-	PropertyAddr SwaggerRelPropertyAddr
-}
+type SwaggerRelPropertyAddr []SwaggerPropertyAddrSegment
 
-type SwaggerRelPropertyAddr []SwaggerProperty
-
-type SwaggerProperty struct {
+type SwaggerPropertyAddrSegment struct {
 	name string
 
 	// discriminatorValue is non-nil only when the property is a derived model, and is nil otherwise.
 	discriminatorValue *string
 }
 
+func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
+	if strings.Trim(addr, " ") == "" {
+		return nil, nil
+	}
+	var props SwaggerRelPropertyAddr
+	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
+	for _, prop := range strings.Split(addr, swaggerPropertyAddrSep) {
+		if !strings.HasSuffix(prop, swaggerPropertyDiscriminatorEndMark) {
+			props = append(props, SwaggerPropertyAddrSegment{
+				name: prop,
+			})
+			continue
+		}
+
+		m := discriminatorPattern.FindStringSubmatch(prop)
+		if len(m) != 3 {
+			return nil, fmt.Errorf(`invalid discriminator property notation: %q (expected format: "prop[variant]")`, prop)
+		}
+		props = append(props, SwaggerPropertyAddrSegment{
+			name:               m[1],
+			discriminatorValue: &m[2],
+		})
+	}
+	return props, nil
+}
+
+func (addr SwaggerRelPropertyAddr) String() string {
+	props := []string{}
+	for _, prop := range addr {
+		v := prop.name
+		if prop.discriminatorValue != nil {
+			v += swaggerPropertyDiscriminatorStartMark + *prop.discriminatorValue + swaggerPropertyDiscriminatorEndMark
+		}
+		props = append(props, v)
+	}
+
+	return strings.Join(props, swaggerPropertyAddrSep)
+}
+
+func (addr SwaggerRelPropertyAddr) Append(oaddr string) (SwaggerRelPropertyAddr, error) {
+	if oaddr == "" {
+		return addr, nil
+	}
+
+	oaddrs, err := ParseSwaggerRelPropertyAddr(oaddr)
+	if err != nil {
+		return SwaggerRelPropertyAddr{}, err
+	}
+
+	newaddr := make(SwaggerRelPropertyAddr, len(addr)+len(oaddrs))
+	copy(newaddr, addr)
+	copy(newaddr[len(addr):], oaddrs)
+	return newaddr, nil
+}
+
+type SwaggerPropertyAddr struct {
+	Schema       string
+	PropertyAddr SwaggerRelPropertyAddr
+}
+
 func ParseSwaggerPropertyAddr(addr string) (SwaggerPropertyAddr, error) {
+	if strings.Trim(addr, " ") == "" {
+		return SwaggerPropertyAddr{}, nil
+	}
+
 	p := strings.Split(addr, swaggerPropertySchemaSep)
 	var (
 		schemaName string
@@ -44,7 +103,7 @@ func ParseSwaggerPropertyAddr(addr string) (SwaggerPropertyAddr, error) {
 		return SwaggerPropertyAddr{}, fmt.Errorf("invalid Swagger Property Address: %s", addr)
 	}
 
-	props, err := parseSwaggerRelPropertyAddr(propAddr)
+	props, err := ParseSwaggerRelPropertyAddr(propAddr)
 	if err != nil {
 		return SwaggerPropertyAddr{}, err
 	}
@@ -55,31 +114,8 @@ func ParseSwaggerPropertyAddr(addr string) (SwaggerPropertyAddr, error) {
 	}, nil
 }
 
-func parseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
-	var props SwaggerRelPropertyAddr
-	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
-	for _, prop := range strings.Split(addr, swaggerPropertyAddrSep) {
-		if !strings.HasSuffix(prop, swaggerPropertyDiscriminatorEndMark) {
-			props = append(props, SwaggerProperty{
-				name: prop,
-			})
-			continue
-		}
-
-		m := discriminatorPattern.FindStringSubmatch(prop)
-		if len(m) != 3 {
-			return nil, fmt.Errorf(`invalid discriminator property notation: %q (expected format: "prop[variant]")`, prop)
-		}
-		props = append(props, SwaggerProperty{
-			name:               m[1],
-			discriminatorValue: &m[2],
-		})
-	}
-	return props, nil
-}
-
 func NewSwaggerPropertyAddr(schemaName string, propAddr string) (SwaggerPropertyAddr, error) {
-	props, err := parseSwaggerRelPropertyAddr(propAddr)
+	props, err := ParseSwaggerRelPropertyAddr(propAddr)
 	if err != nil {
 		return SwaggerPropertyAddr{}, err
 	}
@@ -140,8 +176,20 @@ func (addr SwaggerPropertyAddr) Equals(oaddr SwaggerPropertyAddr) bool {
 }
 
 func (addr SwaggerPropertyAddr) ToSwaggerDefinitionRef() (spec.Ref, error) {
-	// TODO: can't directly use the addr.String() as it contains special discriminator notation (foo[variant]).
-	return spec.NewRef(strings.TrimRight("#definitions/"+strings.ReplaceAll(strings.ReplaceAll(addr.String(), swaggerPropertySchemaSep, "/"), swaggerPropertyAddrSep, "/"), "/"))
+	if addr.Schema == "" {
+		return spec.Ref{}, fmt.Errorf("can't turn into swagger definition reference since the schema name is empty: %s", addr.String())
+	}
+
+	ref := "#definitions/" + addr.Schema
+
+	for _, prop := range addr.PropertyAddr {
+		if prop.discriminatorValue != nil {
+			ref += "/" + *prop.discriminatorValue
+			continue
+		}
+		ref += "/" + prop.name
+	}
+	return spec.NewRef(ref)
 }
 
 func (addr SwaggerPropertyAddr) String() string {
@@ -163,33 +211,4 @@ func (addr *SwaggerPropertyAddr) UnmarshalJSON(b []byte) error {
 	var err error
 	*addr, err = ParseSwaggerPropertyAddr(s)
 	return err
-}
-
-func (addr SwaggerRelPropertyAddr) String() string {
-	props := []string{}
-	for _, prop := range addr {
-		v := prop.name
-		if prop.discriminatorValue != nil {
-			v += swaggerPropertyDiscriminatorStartMark + *prop.discriminatorValue + swaggerPropertyDiscriminatorEndMark
-		}
-		props = append(props, v)
-	}
-
-	return strings.Join(props, swaggerPropertyAddrSep)
-}
-
-func (addr SwaggerRelPropertyAddr) Append(oaddr string) (SwaggerRelPropertyAddr, error) {
-	if oaddr == "" {
-		return addr, nil
-	}
-
-	oaddrs, err := parseSwaggerRelPropertyAddr(oaddr)
-	if err != nil {
-		return SwaggerRelPropertyAddr{}, err
-	}
-
-	newaddr := make(SwaggerRelPropertyAddr, len(addr)+len(oaddrs))
-	copy(newaddr, addr)
-	copy(newaddr[len(addr):], oaddrs)
-	return newaddr, nil
 }
