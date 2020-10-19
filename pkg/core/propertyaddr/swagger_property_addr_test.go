@@ -74,40 +74,40 @@ func TestSwaggerRelPropertyAddr_String(t *testing.T) {
 	}
 }
 
-func TestSwaggerRelPropertyAddr_Append(t *testing.T) {
+func TestSwaggerPropertyAddr_Append(t *testing.T) {
 	cases := []struct {
-		input  SwaggerRelPropertyAddr
+		input  SwaggerPropertyAddr
 		oaddr  string
-		expect SwaggerRelPropertyAddr
+		expect SwaggerPropertyAddr
 		error  bool
 	}{
 		{
-			input:  SwaggerRelPropertyAddr{},
+			input:  SwaggerPropertyAddr{},
 			oaddr:  "",
-			expect: SwaggerRelPropertyAddr{},
+			expect: SwaggerPropertyAddr{},
 		},
 		{
-			input:  SwaggerRelPropertyAddr{},
+			input:  SwaggerPropertyAddr{},
 			oaddr:  "p1",
-			expect: SwaggerRelPropertyAddr{{name: "p1"}},
+			expect: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}}},
 		},
 		{
-			input:  SwaggerRelPropertyAddr{{name: "p1"}},
+			input:  SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}}},
 			oaddr:  "p2",
-			expect: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}},
+			expect: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}}},
 		},
 		{
-			input:  SwaggerRelPropertyAddr{},
+			input:  SwaggerPropertyAddr{},
 			oaddr:  "p1.p2",
-			expect: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}},
+			expect: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}}},
 		},
 		{
-			input:  SwaggerRelPropertyAddr{{name: "p1"}},
+			input:  SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}}},
 			oaddr:  "p2[v1]",
-			expect: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}},
+			expect: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
 		},
 		{
-			input: SwaggerRelPropertyAddr{{name: "p1"}},
+			input: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}}},
 			oaddr: "p2]",
 			error: true,
 		},
@@ -221,6 +221,20 @@ func TestSwaggerPropertyAddr_Contains(t *testing.T) {
 		oaddr    SwaggerPropertyAddr
 		contains bool
 	}{
+		{
+			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: nil},
+			oaddr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1"},
+			}},
+			contains: true,
+		},
+		{
+			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{}},
+			oaddr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1"},
+			}},
+			contains: true,
+		},
 		{
 			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
 				{name: "p1"},

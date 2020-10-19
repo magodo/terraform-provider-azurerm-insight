@@ -116,7 +116,8 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 	}
 
 	// Expand the root level properties of the schemas
-	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
+	rootaddr := propertyaddr.MustNewSwaggerPropertyAddr(schemaName, "")
+	err = swgSchema.ExpandPropertyOneLevelDeep(rootaddr)
 	if err != nil {
 		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerURI, err)
 	}
@@ -146,8 +147,8 @@ func CollectSWGSchemas(swaggerBaseURL, swaggerRelPath string, collector SWGSchem
 }
 
 // ExpandPropertyOneLevelDeep expand the specified swagger schemas property one level deep, with any allOf and $ref taken into consideration.
-func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) error {
-	raddr := addr.RelativeAddrs().String()
+func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerPropertyAddr) error {
+	raddr := addr.PropertyAddr.String()
 	prop, ok := s.Properties[raddr]
 	if !ok {
 		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerURL)
@@ -166,7 +167,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 	// direct top level properties
 	for propK, propV := range prop.schema.Properties {
 		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
-		addr := addr.Append(propK)
+		addr, _ := addr.Append(propK)
 		s.addProperty(addr, *p)
 	}
 
@@ -177,7 +178,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 		if schema.Ref.String() == "" {
 			for propK, propV := range schema.Properties {
 				p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
-				addr := addr.Append(propK)
+				addr, _ := addr.Append(propK)
 				s.addProperty(addr, *p)
 			}
 			continue
@@ -201,7 +202,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 
 		for propK, propV := range tmpSwgProp.schema.Properties {
 			p := NewSWGSchemaProperty(propV, tmpSwgProp.TFLinks, tmpSwgProp.resolvedRefs)
-			addr := addr.Append(propK)
+			addr, _ := addr.Append(propK)
 			s.addProperty(addr, *p)
 		}
 	}
@@ -209,8 +210,8 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 	// We have to check whether we added any child property of this property. If this property is already the leaf property,
 	// we should keep this property from removing it from the SWGSchema property map.
 	for currentRAddr := range s.Properties {
-		currentAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, currentRAddr)
-		if addr.Contains(*currentAddr) {
+		currentAddr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, currentRAddr)
+		if addr.Contains(currentAddr) {
 			delete(s.Properties, raddr)
 			return nil
 		}
@@ -219,8 +220,8 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 }
 
 // addProperty adds a new SWGSchemaProperty to the SWGSchema.
-func (s *SWGSchema) addProperty(addr propertyaddr.PropertyAddr, prop SWGSchemaProperty) {
-	s.Properties[addr.RelativeAddrs().String()] = &prop
+func (s *SWGSchema) addProperty(addr propertyaddr.SwaggerPropertyAddr, prop SWGSchemaProperty) {
+	s.Properties[addr.PropertyAddr.String()] = &prop
 }
 
 // expandProperty expand a property itself IN-PLACE until either it is a concrete schemas (i.e. not a ref) or hit a cyclic ref.
@@ -270,9 +271,9 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 	return s.expandProperty(prop)
 }
 
-func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.PropertyAddr) error {
 	for raddr, prop := range s.Properties {
-		addr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, raddr)
+		addr, _ := propertyaddr.NewSwaggerPropertyAddr(s.Name, raddr)
 
 		if !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
 			continue
@@ -284,7 +285,7 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 		}
 
 		// The schemas property we're seeking is a direct or indirect member of the property under iteration
-		if err := s.ExpandPropertyOneLevelDeep(*addr); err != nil {
+		if err := s.ExpandPropertyOneLevelDeep(addr); err != nil {
 			return fmt.Errorf("expanding top level property for %s: %w", addr, err)
 		}
 		return s.AddTFLink(swgPropAddr, tfPropAddr)
@@ -385,7 +386,7 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
 		}
 
-		if err := tfschema.LinkSwagger(*swgschemas, swaggerBasePath); err != nil {
+		if err := tfschema.LinkSwagger(swgschemas, swaggerBasePath); err != nil {
 			return err
 		}
 
@@ -415,20 +416,20 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 	return swgschemas, nil
 }
 
-func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.PropertyAddr) error {
 	c.Lock()
 	defer c.Unlock()
 
-	swgSchema := c.Get(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Owner()))
+	swgSchema := c.Get(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Schema))
 	if swgSchema == nil {
 		var err error
-		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Owner())
+		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Schema)
 		if err != nil {
 			return err
 		}
 	}
 
-	defer c.Set(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Owner()), swgSchema)
+	defer c.Set(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Schema), swgSchema)
 
 	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
 }

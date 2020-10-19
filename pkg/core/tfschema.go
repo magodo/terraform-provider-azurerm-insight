@@ -11,8 +11,8 @@ import (
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"swagger,omitempty"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
-	SchemaProp propertyaddr.PropertyAddr `json:"prop"`              // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
+	Spec       *string                          `json:"swagger,omitempty"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
+	SchemaProp propertyaddr.SwaggerPropertyAddr `json:"prop"`              // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
@@ -30,7 +30,7 @@ func NewSchema(name string) *TFSchema {
 	}
 }
 
-func (schema TFSchema) LinkSwagger(swgSchemaCache SWGSchemas, swaggerBasePath string) error {
+func (schema TFSchema) LinkSwagger(swgSchemaCache *SWGSchemas, swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
 		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
@@ -58,7 +58,7 @@ func (schema TFSchema) Validate() error {
 			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
 		}
 		for _, link := range tfToSwaggerLinks {
-			if link.SchemaProp.Owner() == "" {
+			if link.SchemaProp.Schema == "" {
 				return fmt.Errorf("swagger property addr %s should specify owner", link.SchemaProp)
 			}
 			if link.Spec != nil && strings.HasPrefix(*link.Spec, "/") {
@@ -112,7 +112,7 @@ func recordAttributeByType(parentAddr propertyaddr.PropertyAddr, attributes TFSc
 func UpdateSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock, oldSchema *TFSchema) (*TFSchema, error) {
 	newSchema := NewSchemaScaffoldFromTerraformBlock(name, block)
 	if oldSchema.Name != name {
-		return nil, fmt.Errorf("The schema name between existing (%q) and the new (%q) TFSchema is different.", newSchema.Name, oldSchema.Name)
+		return nil, fmt.Errorf("schema name between existing (%q) and the new (%q) TFSchema is different.", newSchema.Name, oldSchema.Name)
 	}
 
 	newSchema.SwaggerSpec = oldSchema.SwaggerSpec

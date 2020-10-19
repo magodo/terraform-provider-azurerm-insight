@@ -383,16 +383,16 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 	cases := []struct {
 		swaggerRelPath string
 		schemaName     string
-		expandAddrs    []propertyaddr.PropertyAddr
+		expandAddrs    []propertyaddr.SwaggerPropertyAddr
 		err            error
 		expect         SWGSchema
 	}{
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_foo",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_foo", "prop_primitive"),
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_foo", "prop_primitive"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_foo", "prop_primitive"),
+				propertyaddr.MustNewSwaggerPropertyAddr("def_foo", "prop_primitive"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -414,9 +414,9 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_regular",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_regular", "prop_object"),
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_regular", "prop_array_of_object"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_regular", "prop_object"),
+				propertyaddr.MustNewSwaggerPropertyAddr("def_regular", "prop_array_of_object"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -460,8 +460,8 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_propInFileRef",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_propInFileRef", "prop_inFileRef"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_propInFileRef", "prop_inFileRef"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -484,8 +484,8 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_propSelfRef",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_propSelfRef", "prop_selfRef"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_propSelfRef", "prop_selfRef"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -507,8 +507,8 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_propCrossFileRef",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_propCrossFileRef", "prop_crossFileRef"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_propCrossFileRef", "prop_crossFileRef"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -531,8 +531,8 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_inFileRef",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_inFileRef", "prop_primitive"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_inFileRef", "prop_primitive"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -555,8 +555,8 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_crossFileRef",
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_crossFileRef", "prop_primitive"),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_crossFileRef", "prop_primitive"),
 			},
 			err: nil,
 			expect: SWGSchema{
@@ -580,8 +580,8 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_selfRef",
 			err:            nil,
-			expandAddrs: []propertyaddr.PropertyAddr{
-				*propertyaddr.NewPropertyAddrFromStringWithOwner("def_selfRef", ""),
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_selfRef", ""),
 			},
 			expect: SWGSchema{
 				SwaggerRelPath: "foo.json",
@@ -629,7 +629,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 	}
 
 	type step struct {
-		swgPropAddr propertyaddr.PropertyAddr
+		swgPropAddr propertyaddr.SwaggerPropertyAddr
 		tfPropAddr  propertyaddr.PropertyAddr
 		err         error
 		expect      SWGSchema
@@ -645,7 +645,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 			schemaName:     "def_a",
 			steps: []step{
 				{
-					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
 					err:         nil,
 					expect: SWGSchema{
@@ -690,7 +690,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 				// add a second tf link to the same swg property
 				{
-					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
 					err:         nil,
 					expect: SWGSchema{
@@ -735,7 +735,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 					},
 				},
 				{
-					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:p1.prop_primitive"),
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p2"),
 					err:         nil,
 					expect: SWGSchema{
@@ -790,7 +790,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 					},
 				},
 				{
-					swgPropAddr: *propertyaddr.NewPropertyAddrFromString("def_a:p3.prop_primitive"),
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p3.prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p3"),
 					err:         nil,
 					expect: SWGSchema{
@@ -924,7 +924,7 @@ func TestSWGSchema_Marshal(t *testing.T) {
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_a",
 			process: func(schema *SWGSchema) {
-				swgPropAddr := *propertyaddr.NewPropertyAddrFromString("def_a:p1.prop_primitive")
+				swgPropAddr := propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.prop_primitive")
 				tfPropAddr := *propertyaddr.NewPropertyAddrFromString("res1:p2")
 				require.NoError(t, schema.AddTFLink(swgPropAddr, tfPropAddr))
 			},

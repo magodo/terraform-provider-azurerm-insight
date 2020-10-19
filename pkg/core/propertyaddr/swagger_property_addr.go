@@ -62,25 +62,18 @@ func (addr SwaggerRelPropertyAddr) String() string {
 	return strings.Join(props, swaggerPropertyAddrSep)
 }
 
-func (addr SwaggerRelPropertyAddr) Append(oaddr string) (SwaggerRelPropertyAddr, error) {
-	if oaddr == "" {
-		return addr, nil
-	}
-
-	oaddrs, err := ParseSwaggerRelPropertyAddr(oaddr)
-	if err != nil {
-		return SwaggerRelPropertyAddr{}, err
-	}
-
-	newaddr := make(SwaggerRelPropertyAddr, len(addr)+len(oaddrs))
-	copy(newaddr, addr)
-	copy(newaddr[len(addr):], oaddrs)
-	return newaddr, nil
-}
-
 type SwaggerPropertyAddr struct {
 	Schema       string
 	PropertyAddr SwaggerRelPropertyAddr
+}
+
+func MustParseSwaggerPropertyAddr(addr string) SwaggerPropertyAddr {
+	swgPropAddr, err := ParseSwaggerPropertyAddr(addr)
+	if err != nil {
+		panic(err)
+	}
+
+	return swgPropAddr
 }
 
 func ParseSwaggerPropertyAddr(addr string) (SwaggerPropertyAddr, error) {
@@ -112,6 +105,14 @@ func ParseSwaggerPropertyAddr(addr string) (SwaggerPropertyAddr, error) {
 		Schema:       schemaName,
 		PropertyAddr: props,
 	}, nil
+}
+
+func MustNewSwaggerPropertyAddr(schemaName string, propAddr string) SwaggerPropertyAddr {
+	addr, err := NewSwaggerPropertyAddr(schemaName, propAddr)
+	if err != nil {
+		panic(err)
+	}
+	return addr
 }
 
 func NewSwaggerPropertyAddr(schemaName string, propAddr string) (SwaggerPropertyAddr, error) {
@@ -190,6 +191,25 @@ func (addr SwaggerPropertyAddr) ToSwaggerDefinitionRef() (spec.Ref, error) {
 		ref += "/" + prop.name
 	}
 	return spec.NewRef(ref)
+}
+
+func (addr SwaggerPropertyAddr) Append(oaddr string) (SwaggerPropertyAddr, error) {
+	if oaddr == "" {
+		return addr, nil
+	}
+
+	oPropAddrs, err := ParseSwaggerRelPropertyAddr(oaddr)
+	if err != nil {
+		return SwaggerPropertyAddr{}, err
+	}
+
+	newPropAddrs := make(SwaggerRelPropertyAddr, len(addr.PropertyAddr)+len(oPropAddrs))
+	copy(newPropAddrs, addr.PropertyAddr)
+	copy(newPropAddrs[len(addr.PropertyAddr):], oPropAddrs)
+	return SwaggerPropertyAddr{
+		Schema:       addr.Schema,
+		PropertyAddr: newPropAddrs,
+	}, nil
 }
 
 func (addr SwaggerPropertyAddr) String() string {

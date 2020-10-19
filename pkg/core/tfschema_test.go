@@ -152,8 +152,8 @@ func TestUpdateSchemaScaffoldFromTerraformBlock(t *testing.T) {
 		Name:        "res1",
 		SwaggerSpec: "path",
 		PropertyLinks: map[string][]SwaggerLink{
-			"foo":        {{SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:foo")}},
-			"deprecated": {{SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:deprecated")}},
+			"foo":        {{SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:foo")}},
+			"deprecated": {{SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:deprecated")}},
 		},
 	}
 
@@ -161,7 +161,7 @@ func TestUpdateSchemaScaffoldFromTerraformBlock(t *testing.T) {
 		Name:        "res1",
 		SwaggerSpec: "path",
 		PropertyLinks: map[string][]SwaggerLink{
-			"foo":                   {{SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:foo")}},
+			"foo":                   {{SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:foo")}},
 			"bar.p1":                {},
 			"bar.p2.p2_1":           {},
 			"bar.p3":                {},
@@ -187,21 +187,21 @@ func TestMarshalTFSchema(t *testing.T) {
 		PropertyLinks: map[string][]SwaggerLink{
 			"bar": {
 				{
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema2:p3.p4"),
 				},
 			},
 			"block_a.block_a_a.bar": {
 				{
 					Spec:       strPtr("xxx"),
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema2:p3.p4"),
 				},
 			},
 		},
@@ -274,21 +274,21 @@ func TestUnmarshalTFSchema(t *testing.T) {
 		PropertyLinks: map[string][]SwaggerLink{
 			"bar": {
 				{
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema2:p3.p4"),
 				},
 			},
 			"block_a::block_a_a::bar": {
 				{
 					Spec:       strPtr("xxx"),
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1.p2"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:p1.p2"),
 				},
 				{
 					Spec:       strPtr("yyy"),
-					SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema2:p3.p4"),
+					SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema2:p3.p4"),
 				},
 			},
 		},
@@ -314,7 +314,7 @@ func TestTFSchema_Validate(t *testing.T) {
 					"p1": {
 						{
 							Spec:       strPtr("spec2"),
-							SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1"),
+							SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:p1"),
 						},
 					},
 				},
@@ -329,7 +329,7 @@ func TestTFSchema_Validate(t *testing.T) {
 					"foo:p1": {
 						{
 							Spec:       strPtr("spec2"),
-							SchemaProp: *propertyaddr.NewPropertyAddrFromString("schema1:p1"),
+							SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("schema1:p1"),
 						},
 					},
 				},
@@ -344,7 +344,7 @@ func TestTFSchema_Validate(t *testing.T) {
 					"p1": {
 						{
 							Spec:       strPtr("spec2"),
-							SchemaProp: *propertyaddr.NewPropertyAddrFromString("p1.p2"),
+							SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("p1.p2"),
 						},
 					},
 				},
@@ -383,22 +383,22 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 					PropertyLinks: map[string][]SwaggerLink{
 						"p1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 							},
 						},
 						"p2.p2_1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1"),
 							},
 						},
 						"p3": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p2"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p2"),
 							},
 						},
 						"p4.p4_1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p3.prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p3.prop_primitive"),
 							},
 						},
 					},
@@ -446,18 +446,18 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 					PropertyLinks: map[string][]SwaggerLink{
 						"p1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 							},
 						},
 						"p2.p2_1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1"),
 							},
 						},
 						"p3": {
 							{
 								Spec:       strPtr("bar.json"),
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_bar:prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_bar:prop_primitive"),
 							},
 						},
 					},
@@ -510,12 +510,12 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 					PropertyLinks: map[string][]SwaggerLink{
 						"p1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 							},
 						},
 						"p2.p2_1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1"),
 							},
 						},
 					},
@@ -526,7 +526,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 					PropertyLinks: map[string][]SwaggerLink{
 						"p1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1.p1_1"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.p1_1"),
 							},
 						},
 					},
@@ -576,18 +576,18 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 					PropertyLinks: map[string][]SwaggerLink{
 						"p1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 							},
 						},
 						"p2.p2_1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1"),
 							},
 						},
 						"p3": {
 							{
 								Spec:       strPtr("bar.json"),
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_bar:prop_primitive"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_bar:prop_primitive"),
 							},
 						},
 					},
@@ -598,7 +598,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 					PropertyLinks: map[string][]SwaggerLink{
 						"p1": {
 							{
-								SchemaProp: *propertyaddr.NewPropertyAddrFromString("def_a:p1.p1_1"),
+								SchemaProp: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.p1_1"),
 							},
 						},
 					},
@@ -657,7 +657,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 	for idx, c := range cases {
 		swgschemas := NewSGWSchemas()
 		for iidx, schema := range c.schemas {
-			require.NoError(t, schema.LinkSwagger(*swgschemas, specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
+			require.NoError(t, schema.LinkSwagger(swgschemas, specBasePath), fmt.Sprintf("%d.%d", idx, iidx))
 		}
 		var actual map[string]*SWGSchema
 		b, err := json.Marshal(swgschemas.GetAll())
