@@ -131,6 +131,15 @@
         }
       }
     },
+    "def_b": {
+      "properties": {
+        "p1": {
+          "properties": {
+            "p1_1": {}
+          }
+        }
+      }
+    },
     "def_array_simple": {
       "type": "array",
       "items": {

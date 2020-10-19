@@ -154,7 +154,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerURL)
 	}
 
-	isCyclic, err := s.expandProperty(prop)
+	isCyclic, err := s.expandRefProperty(prop)
 	if err != nil {
 		return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerURL, err)
 	}
@@ -184,13 +184,13 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 			continue
 		}
 
-		// AllOf contains refs, then need to expandProperty then first.
+		// AllOf contains refs, then need to expandRefProperty then first.
 
 		// We construct a temp SWGSchemaProperty here (as it has no object/property related) to expand it into a concrete schemas.
 		// Then we will iterate that schemas's property which by concept is the top level property of this parent property.
 		tmpSwgProp := NewSWGSchemaProperty(schema, prop.TFLinks, prop.resolvedRefs)
 
-		isCyclic, err := s.expandProperty(tmpSwgProp)
+		isCyclic, err := s.expandRefProperty(tmpSwgProp)
 		if err != nil {
 			return fmt.Errorf("dereferencing property %s in SWGSchema %s (%s): %w", addr, s.Name, s.swaggerURL, err)
 		}
@@ -224,8 +224,8 @@ func (s *SWGSchema) addProperty(addr propertyaddr.SwaggerPropertyAddr, prop SWGS
 	s.Properties[addr.PropertyAddr.String()] = &prop
 }
 
-// expandProperty expand a property itself IN-PLACE until either it is a concrete schemas (i.e. not a ref) or hit a cyclic ref.
-func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err error) {
+// expandRefProperty expand a property itself IN-PLACE until either it is a concrete schemas (i.e. not a ref) or hit a cyclic ref.
+func (s *SWGSchema) expandRefProperty(prop *SWGSchemaProperty) (isCyclic bool, err error) {
 	ref := prop.schema.Ref
 	if ref.String() == "" {
 		// Specially, if current schema is an array and the items is a ref, we need to go on expand it.
@@ -268,12 +268,19 @@ func (s *SWGSchema) expandProperty(prop *SWGSchemaProperty) (isCyclic bool, err 
 	// update the stored schemas by the derefed schemas
 	prop.schema = *schema
 
-	return s.expandProperty(prop)
+	return s.expandRefProperty(prop)
 }
 
 func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+	var isExpandToChildProperties bool
 	for raddr, prop := range s.Properties {
-		addr, _ := propertyaddr.NewSwaggerPropertyAddr(s.Name, raddr)
+		addr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, raddr)
+
+		if swgPropAddr.Contains(addr) {
+			isExpandToChildProperties = true
+			prop.TFLinks = append(prop.TFLinks, TFLink{Prop: tfPropAddr})
+			continue
+		}
 
 		if !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
 			continue
@@ -289,6 +296,9 @@ func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPr
 			return fmt.Errorf("expanding top level property for %s: %w", addr, err)
 		}
 		return s.AddTFLink(swgPropAddr, tfPropAddr)
+	}
+	if isExpandToChildProperties {
+		return nil
 	}
 	return fmt.Errorf("property %s doesn't belong to schemas %s (%s)", swgPropAddr, s.Name, s.swaggerURL)
 }
@@ -387,7 +397,7 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 		}
 
 		if err := tfschema.LinkSwagger(swgschemas, swaggerBasePath); err != nil {
-			return err
+			return fmt.Errorf("Linking swagger failed in file %s: %v", info.Name(), err)
 		}
 
 		return nil

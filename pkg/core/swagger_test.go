@@ -25,7 +25,7 @@ func TestNewSWGSchema(t *testing.T) {
 	specBar, err := LoadSwagger(specBarPathLocal)
 	require.NoError(t, err)
 
-	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/ea383b1d748da23a480a68e56252f1dd432d0c7d"
+	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/a88ddb903ed96eb4651f35d35926503a1a92f4da"
 	specFooURL := specBaseURL + "/foo.json"
 
 	cases := []struct {
@@ -35,6 +35,7 @@ func TestNewSWGSchema(t *testing.T) {
 		err         error
 		expect      SWGSchema
 	}{
+		// NO.0
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -56,6 +57,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.1
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -98,6 +100,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.2
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -119,6 +122,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.3
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -140,6 +144,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.4
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -161,6 +166,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.5
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -183,6 +189,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.6
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -205,6 +212,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.7
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -226,6 +234,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.8
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -269,6 +278,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.9
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -290,6 +300,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.10
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -312,6 +323,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.11
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -335,7 +347,7 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
-		// from http swagger spec
+		// NO.12: from http swagger spec
 		{
 			specBaseURL: specBaseURL,
 			specRelPath: "foo.json",
@@ -631,7 +643,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 	type step struct {
 		swgPropAddr propertyaddr.SwaggerPropertyAddr
 		tfPropAddr  propertyaddr.PropertyAddr
-		err         error
+		err         bool
 		expect      SWGSchema
 	}
 
@@ -647,7 +659,6 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
-					err:         nil,
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
@@ -692,7 +703,6 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
-					err:         nil,
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
@@ -737,7 +747,6 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p2"),
-					err:         nil,
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
@@ -792,7 +801,6 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p3.prop_primitive"),
 					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p3"),
-					err:         nil,
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
@@ -849,6 +857,108 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 			},
 		},
+
+		// add tf link to swagger child property first, then add another tf link to swagger parent property
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_b",
+			steps: []step{
+				{
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1.p1_1"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
+					expect: SWGSchema{
+						SwaggerRelPath: "foo.json",
+						Name:           "def_b",
+						Properties: map[string]*SWGSchemaProperty{
+							"p1.p1_1": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+								},
+								schema: specFoo.Definitions["def_b"].Properties["p1"].Properties["p1_1"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_b": struct{}{},
+								},
+							},
+						},
+						swaggerURL: specFooPath,
+						swagger:    specFoo,
+					},
+				},
+				{
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
+					expect: SWGSchema{
+						SwaggerRelPath: "foo.json",
+						Name:           "def_b",
+						Properties: map[string]*SWGSchemaProperty{
+							"p1.p1_1": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+								},
+								schema: specFoo.Definitions["def_b"].Properties["p1"].Properties["p1_1"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_b": struct{}{},
+								},
+							},
+						},
+						swaggerURL: specFooPath,
+						swagger:    specFoo,
+					},
+				},
+			},
+		},
+
+		// add tf link to swagger parent property first, then add another tf link to swagger child property
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_b",
+			steps: []step{
+				{
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
+					expect: SWGSchema{
+						SwaggerRelPath: "foo.json",
+						Name:           "def_b",
+						Properties: map[string]*SWGSchemaProperty{
+							"p1": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+								},
+								schema: specFoo.Definitions["def_b"].Properties["p1"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_b": struct{}{},
+								},
+							},
+						},
+						swaggerURL: specFooPath,
+						swagger:    specFoo,
+					},
+				},
+				{
+					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1.p1_1"),
+					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
+					expect: SWGSchema{
+						SwaggerRelPath: "foo.json",
+						Name:           "def_b",
+						Properties: map[string]*SWGSchemaProperty{
+							"p1.p1_1": {
+								TFLinks: []TFLink{
+									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+								},
+								schema: specFoo.Definitions["def_b"].Properties["p1"].Properties["p1_1"],
+								resolvedRefs: map[string]interface{}{
+									specFooPath + "#/definitions/def_b": struct{}{},
+								},
+							},
+						},
+						swaggerURL: specFooPath,
+						swagger:    specFoo,
+					},
+				},
+			},
+		},
 	}
 
 	for idx, c := range cases {
@@ -856,11 +966,12 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 		require.NoError(t, err, idx)
 		if err == nil {
 			for iidx, s := range c.steps {
-				err := schema.AddTFLink(s.swgPropAddr, s.tfPropAddr)
-				require.Equal(t, s.err, err, fmt.Sprintf("%d.%d", idx, iidx))
-				if err == nil {
-					require.Equal(t, s.expect, *schema, fmt.Sprintf("%d.%d", idx, iidx))
+				if s.err {
+					require.Error(t, schema.AddTFLink(s.swgPropAddr, s.tfPropAddr), fmt.Sprintf("%d.%d", idx, iidx))
+					continue
 				}
+				require.NoError(t, schema.AddTFLink(s.swgPropAddr, s.tfPropAddr), fmt.Sprintf("%d.%d", idx, iidx))
+				require.Equal(t, s.expect, *schema, fmt.Sprintf("%d.%d", idx, iidx))
 			}
 		}
 	}
