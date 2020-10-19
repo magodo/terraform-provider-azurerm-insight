@@ -412,25 +412,25 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 								},
 							},
 						},
 						"p1": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p2.p2_1"),
 								},
 							},
 						},
 						"p2": {TFLinks: []TFLink{
 							{
-								*propertyaddr.NewPropertyAddrFromString("res1:p3"),
+								*propertyaddr.ParseTerraformPropertyAddr("res1:p3"),
 							},
 						}},
 						"p3.prop_primitive": {TFLinks: []TFLink{
 							{
-								*propertyaddr.NewPropertyAddrFromString("res1:p4.p4_1"),
+								*propertyaddr.ParseTerraformPropertyAddr("res1:p4.p4_1"),
 							},
 						}},
 					},
@@ -471,14 +471,14 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 								},
 							},
 						},
 						"p1": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p2.p2_1"),
 								},
 							},
 						},
@@ -493,7 +493,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p3"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p3"),
 								},
 							},
 						},
@@ -540,24 +540,24 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 								},
 							},
 						},
 						"p1.prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p2.p2_1"),
 								},
 							},
 						},
 						"p1.p1_1": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p2.p2_1"),
 								},
 								{
-									*propertyaddr.NewPropertyAddrFromString("res2:p1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res2:p1"),
 								},
 							},
 						},
@@ -612,24 +612,24 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 								},
 							},
 						},
 						"p1.prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p2.p2_1"),
 								},
 							},
 						},
 						"p1.p1_1": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p2.p2_1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p2.p2_1"),
 								},
 								{
-									*propertyaddr.NewPropertyAddrFromString("res2:p1"),
+									*propertyaddr.ParseTerraformPropertyAddr("res2:p1"),
 								},
 							},
 						},
@@ -644,7 +644,7 @@ func TestTFSchema_LinkSwagger(t *testing.T) {
 						"prop_primitive": {
 							TFLinks: []TFLink{
 								{
-									*propertyaddr.NewPropertyAddrFromString("res1:p3"),
+									*propertyaddr.ParseTerraformPropertyAddr("res1:p3"),
 								},
 							},
 						},

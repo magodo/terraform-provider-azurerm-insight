@@ -15,7 +15,7 @@ import (
 )
 
 type TFLink struct {
-	Prop propertyaddr.PropertyAddr
+	Prop propertyaddr.TerraformPropertyAddr
 }
 
 type TFLinks []TFLink
@@ -35,7 +35,7 @@ func (links *TFLinks) UnmarshalJSON(b []byte) error {
 	}
 	*links = []TFLink{}
 	for _, addr := range addrs {
-		*links = append(*links, TFLink{*propertyaddr.NewPropertyAddrFromString(addr)})
+		*links = append(*links, TFLink{*propertyaddr.ParseTerraformPropertyAddr(addr)})
 	}
 	return nil
 }
@@ -271,7 +271,7 @@ func (s *SWGSchema) expandRefProperty(prop *SWGSchemaProperty) (isCyclic bool, e
 	return s.expandRefProperty(prop)
 }
 
-func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.TerraformPropertyAddr) error {
 	var isExpandToChildProperties bool
 	for raddr, prop := range s.Properties {
 		addr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, raddr)
@@ -308,7 +308,7 @@ func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPr
 func (s *SWGSchema) CalcCoverage() error {
 	store := NewSWGPropertyCoverageStore()
 	for propAddr, prop := range s.Properties {
-		if err := store.Add(*propertyaddr.NewPropertyAddrFromString(propAddr), *prop); err != nil {
+		if err := store.Add(*propertyaddr.ParseTerraformPropertyAddr(propAddr), *prop); err != nil {
 			return fmt.Errorf("adding property %q: %v", propAddr, err)
 		}
 	}
@@ -320,7 +320,7 @@ func (s *SWGSchema) SchemaCoverage() (covered, total int) {
 	return s.coverageStore.SchemaCoverage()
 }
 
-func (s *SWGSchema) FindCoverage(propAddr propertyaddr.PropertyAddr) (covered, total int, ok bool) {
+func (s *SWGSchema) FindCoverage(propAddr propertyaddr.TerraformPropertyAddr) (covered, total int, ok bool) {
 	return s.coverageStore.FindCoverage(propAddr)
 }
 
@@ -426,7 +426,7 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 	return swgschemas, nil
 }
 
-func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.TerraformPropertyAddr) error {
 	c.Lock()
 	defer c.Unlock()
 

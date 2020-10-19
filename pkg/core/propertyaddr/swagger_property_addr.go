@@ -14,54 +14,6 @@ const swaggerPropertyAddrSep = "."
 const swaggerPropertyDiscriminatorStartMark = "["
 const swaggerPropertyDiscriminatorEndMark = "]"
 
-type SwaggerRelPropertyAddr []SwaggerPropertyAddrSegment
-
-type SwaggerPropertyAddrSegment struct {
-	name string
-
-	// discriminatorValue is non-nil only when the property is a derived model, and is nil otherwise.
-	discriminatorValue *string
-}
-
-func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
-	if strings.Trim(addr, " ") == "" {
-		return nil, nil
-	}
-	var props SwaggerRelPropertyAddr
-	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
-	for _, prop := range strings.Split(addr, swaggerPropertyAddrSep) {
-		if !strings.HasSuffix(prop, swaggerPropertyDiscriminatorEndMark) {
-			props = append(props, SwaggerPropertyAddrSegment{
-				name: prop,
-			})
-			continue
-		}
-
-		m := discriminatorPattern.FindStringSubmatch(prop)
-		if len(m) != 3 {
-			return nil, fmt.Errorf(`invalid discriminator property notation: %q (expected format: "prop[variant]")`, prop)
-		}
-		props = append(props, SwaggerPropertyAddrSegment{
-			name:               m[1],
-			discriminatorValue: &m[2],
-		})
-	}
-	return props, nil
-}
-
-func (addr SwaggerRelPropertyAddr) String() string {
-	props := []string{}
-	for _, prop := range addr {
-		v := prop.name
-		if prop.discriminatorValue != nil {
-			v += swaggerPropertyDiscriminatorStartMark + *prop.discriminatorValue + swaggerPropertyDiscriminatorEndMark
-		}
-		props = append(props, v)
-	}
-
-	return strings.Join(props, swaggerPropertyAddrSep)
-}
-
 type SwaggerPropertyAddr struct {
 	Schema       string
 	PropertyAddr SwaggerRelPropertyAddr
@@ -232,3 +184,52 @@ func (addr *SwaggerPropertyAddr) UnmarshalJSON(b []byte) error {
 	*addr, err = ParseSwaggerPropertyAddr(s)
 	return err
 }
+
+type SwaggerRelPropertyAddr []SwaggerPropertyAddrSegment
+
+type SwaggerPropertyAddrSegment struct {
+	name string
+
+	// discriminatorValue is non-nil only when the property is a derived model, and is nil otherwise.
+	discriminatorValue *string
+}
+
+func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
+	if strings.Trim(addr, " ") == "" {
+		return nil, nil
+	}
+	var props SwaggerRelPropertyAddr
+	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
+	for _, prop := range strings.Split(addr, swaggerPropertyAddrSep) {
+		if !strings.HasSuffix(prop, swaggerPropertyDiscriminatorEndMark) {
+			props = append(props, SwaggerPropertyAddrSegment{
+				name: prop,
+			})
+			continue
+		}
+
+		m := discriminatorPattern.FindStringSubmatch(prop)
+		if len(m) != 3 {
+			return nil, fmt.Errorf(`invalid discriminator property notation: %q (expected format: "prop[variant]")`, prop)
+		}
+		props = append(props, SwaggerPropertyAddrSegment{
+			name:               m[1],
+			discriminatorValue: &m[2],
+		})
+	}
+	return props, nil
+}
+
+func (addr SwaggerRelPropertyAddr) String() string {
+	props := []string{}
+	for _, prop := range addr {
+		v := prop.name
+		if prop.discriminatorValue != nil {
+			v += swaggerPropertyDiscriminatorStartMark + *prop.discriminatorValue + swaggerPropertyDiscriminatorEndMark
+		}
+		props = append(props, v)
+	}
+
+	return strings.Join(props, swaggerPropertyAddrSep)
+}
+

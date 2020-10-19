@@ -642,7 +642,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 
 	type step struct {
 		swgPropAddr propertyaddr.SwaggerPropertyAddr
-		tfPropAddr  propertyaddr.PropertyAddr
+		tfPropAddr  propertyaddr.TerraformPropertyAddr
 		err         bool
 		expect      SWGSchema
 	}
@@ -658,14 +658,14 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 			steps: []step{
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -702,15 +702,15 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				// add a second tf link to the same swg property
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res2:p1"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -746,15 +746,15 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p2"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res1:p2"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -764,7 +764,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 							},
 							"p1.prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p2")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p2")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -800,15 +800,15 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_a:p3.prop_primitive"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p3"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res1:p3"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_a",
 						Properties: map[string]*SWGSchemaProperty{
 							"prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -818,7 +818,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 							},
 							"p1.prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p2")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p2")},
 								},
 								schema: specBar.Definitions["def_bar"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -842,7 +842,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 							},
 							"p3.prop_primitive": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p3")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p3")},
 								},
 								schema: specBar.Definitions["def_bar"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
@@ -865,14 +865,14 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 			steps: []step{
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1.p1_1"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res2:p1"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_b",
 						Properties: map[string]*SWGSchemaProperty{
 							"p1.p1_1": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_b"].Properties["p1"].Properties["p1_1"],
 								resolvedRefs: map[string]interface{}{
@@ -886,15 +886,15 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_b",
 						Properties: map[string]*SWGSchemaProperty{
 							"p1.p1_1": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res2:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
 								},
 								schema: specFoo.Definitions["def_b"].Properties["p1"].Properties["p1_1"],
 								resolvedRefs: map[string]interface{}{
@@ -916,14 +916,14 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 			steps: []step{
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res1:p1"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res1:p1"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_b",
 						Properties: map[string]*SWGSchemaProperty{
 							"p1": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
 								},
 								schema: specFoo.Definitions["def_b"].Properties["p1"],
 								resolvedRefs: map[string]interface{}{
@@ -937,15 +937,15 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 				},
 				{
 					swgPropAddr: propertyaddr.MustParseSwaggerPropertyAddr("def_b:p1.p1_1"),
-					tfPropAddr:  *propertyaddr.NewPropertyAddrFromString("res2:p1"),
+					tfPropAddr:  *propertyaddr.ParseTerraformPropertyAddr("res2:p1"),
 					expect: SWGSchema{
 						SwaggerRelPath: "foo.json",
 						Name:           "def_b",
 						Properties: map[string]*SWGSchemaProperty{
 							"p1.p1_1": {
 								TFLinks: []TFLink{
-									{*propertyaddr.NewPropertyAddrFromString("res1:p1")},
-									{*propertyaddr.NewPropertyAddrFromString("res2:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res1:p1")},
+									{*propertyaddr.ParseTerraformPropertyAddr("res2:p1")},
 								},
 								schema: specFoo.Definitions["def_b"].Properties["p1"].Properties["p1_1"],
 								resolvedRefs: map[string]interface{}{
@@ -1036,7 +1036,7 @@ func TestSWGSchema_Marshal(t *testing.T) {
 			schemaName:     "def_a",
 			process: func(schema *SWGSchema) {
 				swgPropAddr := propertyaddr.MustParseSwaggerPropertyAddr("def_a:p1.prop_primitive")
-				tfPropAddr := *propertyaddr.NewPropertyAddrFromString("res1:p2")
+				tfPropAddr := *propertyaddr.ParseTerraformPropertyAddr("res1:p2")
 				require.NoError(t, schema.AddTFLink(swgPropAddr, tfPropAddr))
 			},
 			expect: fmt.Sprintf(`{
@@ -1093,7 +1093,7 @@ func TestSWGSchema_Unmarshal(t *testing.T) {
 				Name:           "def_a",
 				Properties: SWGSchemaProperties{
 					"p1.prop_primitive": &SWGSchemaProperty{TFLinks: []TFLink{
-						{*propertyaddr.NewPropertyAddrFromString("res1:p2")},
+						{*propertyaddr.ParseTerraformPropertyAddr("res1:p2")},
 					}},
 					"p1.p1_1":        &SWGSchemaProperty{TFLinks: []TFLink{}},
 					"prop_primitive": &SWGSchemaProperty{TFLinks: []TFLink{}},

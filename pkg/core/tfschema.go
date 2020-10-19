@@ -32,7 +32,7 @@ func NewSchema(name string) *TFSchema {
 
 func (schema TFSchema) LinkSwagger(swgSchemaCache *SWGSchemas, swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
-		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
+		tfPropAddr := propertyaddr.NewTerraformPropertyAddr(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
 			swaggerRelPath := schema.SwaggerSpec
 			if link.Spec != nil {
@@ -54,7 +54,7 @@ func (schema TFSchema) Validate() error {
 		return fmt.Errorf(`swagger spec path should be relative (not starting with "/")`)
 	}
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
-		if addr := propertyaddr.NewPropertyAddrFromString(tfProp); addr.Owner() != "" {
+		if addr := propertyaddr.ParseTerraformPropertyAddr(tfProp); addr.ResourceName != "" {
 			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
 		}
 		for _, link := range tfToSwaggerLinks {
@@ -73,11 +73,11 @@ func (schema TFSchema) Validate() error {
 // from `terraform providers schema -json`.
 func NewSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock) *TFSchema {
 	schema := NewSchema(name)
-	recordAttributeWithinBlock(propertyaddr.PropertyAddr{}, schema.PropertyLinks, block)
+	recordAttributeWithinBlock(propertyaddr.TerraformPropertyAddr{}, schema.PropertyLinks, block)
 	return schema
 }
 
-func recordAttributeWithinBlock(parentBlockAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
+func recordAttributeWithinBlock(parentBlockAddr propertyaddr.TerraformPropertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
 	for attrKey, attrVal := range block.Attributes {
 		addr := parentBlockAddr.Append(attrKey)
 		recordAttributeByType(addr, attributes, attrVal.Type)
@@ -88,7 +88,7 @@ func recordAttributeWithinBlock(parentBlockAddr propertyaddr.PropertyAddr, attri
 	}
 }
 
-func recordAttributeByType(parentAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, elementType *cty.Type) {
+func recordAttributeByType(parentAddr propertyaddr.TerraformPropertyAddr, attributes TFSchemaPropertyLinks, elementType *cty.Type) {
 	switch {
 	case elementType == nil,
 		elementType.IsPrimitiveType():
