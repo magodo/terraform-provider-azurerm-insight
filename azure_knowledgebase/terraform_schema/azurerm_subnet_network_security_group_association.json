@@ -1,9 +1,16 @@
 {
   "Name": "azurerm_subnet_network_security_group_association",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
   "PropertyLinks": {
     "id": [],
-    "network_security_group_id": [],
+    "network_security_group_id": [
+      {
+        "prop": "Subnet:properties.networkSecurityGroup.id"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.networkSecurityGroup.id"
+      }
+    ],
     "subnet_id": [],
     "timeouts.create": [],
     "timeouts.delete": [],

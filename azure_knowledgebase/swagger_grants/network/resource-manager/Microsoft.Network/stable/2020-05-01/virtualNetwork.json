@@ -1,11 +1,63 @@
 {
   "VirtualNetwork": {
     "Properties": {
-      "etag": "etag is not needed",
-      "properties.subnets.properties.privateEndpointNetworkPolicies": "granted"
+      "etag": "granted",
+      "type": "granted",
+      "properties.provisioningState": "granted",
+      "properties.subnets.properties.provisioningState": "granted",
+      "properties.subnets.properties.delegations.etag": "granted",
+      "properties.subnets.properties.delegations.id": "granted",
+      "properties.subnets.properties.delegations.properties.provisioningState": "granted",
+      "properties.subnets.properties.serviceEndpoints.provisioningState": "granted",
+      "properties.subnets.properties.serviceEndpoints.locations": "This is an array of the locations that this service endpoint supports, which is useless in context of Terraform",
+      "properties.subnets.properties.ipAllocations": "This is an array of IpAllocation which reference this subnet, which is useless in context of Terraform",
+      "properties.subnets.properties.ipConfigurations": "This is an array of references to the network interface IP configurations using subnet, which is useless in context of Terraform",
+      "properties.subnets.properties.ipConfigurationProfiles": "This is an array of IP configuration profiles which reference this subnet, which is useless in context of Terraform",
+      "properties.subnets.properties.resourceNavigationLinks": "This is an an array of references to the external resources using subnet, which is useless in context of Terraform",
+      "properties.subnets.properties.purpose": "This is a read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties, which is useless in context of Terraform",
+      "properties.subnets.properties.serviceAssociationLinks": "This is an array of references to services injecting into this subnet, which is useless in context of Terraform",
+      "properties.subnets.properties.networkSecurityGroup.etag": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.subnets.properties.networkSecurityGroup.location": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.subnets.properties.networkSecurityGroup.name": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.subnets.properties.networkSecurityGroup.properties": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.subnets.properties.networkSecurityGroup.tags": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.subnets.properties.networkSecurityGroup.type": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.subnets.properties.routeTable.etag": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.subnets.properties.routeTable.location": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.subnets.properties.routeTable.name": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.subnets.properties.routeTable.properties": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.subnets.properties.routeTable.tags": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.subnets.properties.routeTable.type": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.subnets.etag": "granted"
     }
   },
   "Subnet": {
-      "Comment": "subnet is not a terraform candidate resource"
+    "Properties": {
+      "etag": "granted",
+      "properties.delegations.etag": "granted",
+      "properties.delegations.id": "granted",
+      "properties.delegations.properties.provisioningState": "granted",
+      "properties.provisioningState": "granted",
+      "properties.serviceEndpoints.provisioningState": "granted",
+      "properties.serviceEndpoints.locations": "This is an array of the locations that this service endpoint supports, which is useless in context of Terraform",
+      "properties.ipAllocations": "This is an array of IpAllocation which reference this subnet, which is useless in context of Terraform",
+      "properties.ipConfigurations": "This is an array of references to the network interface IP configurations using subnet, which is useless in context of Terraform",
+      "properties.ipConfigurationProfiles": "This is an array of IP configuration profiles which reference this subnet, which is useless in context of Terraform",
+      "properties.resourceNavigationLinks": "This is an an array of references to the external resources using subnet, which is useless in context of Terraform",
+      "properties.purpose": "This is a read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties, which is useless in context of Terraform",
+      "properties.serviceAssociationLinks": "This is an array of references to services injecting into this subnet, which is useless in context of Terraform",
+      "properties.networkSecurityGroup.etag": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.networkSecurityGroup.location": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.networkSecurityGroup.name": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.networkSecurityGroup.properties": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.networkSecurityGroup.tags": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.networkSecurityGroup.type": "The NSG is pre-provisioned, only ID is needed here to reference an NSG",
+      "properties.routeTable.etag": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.routeTable.location": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.routeTable.name": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.routeTable.properties": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.routeTable.tags": "The route table is pre-provisioned, only ID is needed here to reference route table",
+      "properties.routeTable.type": "The route table is pre-provisioned, only ID is needed here to reference route table"
+    }
   }
 }

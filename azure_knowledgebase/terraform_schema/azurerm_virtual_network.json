@@ -1,21 +1,73 @@
 {
   "Name": "azurerm_virtual_network",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
   "PropertyLinks": {
-    "address_space": [],
-    "ddos_protection_plan.enable": [],
-    "ddos_protection_plan.id": [],
-    "dns_servers": [],
-    "guid": [],
-    "id": [],
-    "location": [],
-    "name": [],
+    "address_space": [
+      {
+        "prop": "VirtualNetwork:properties.addressSpace.addressPrefixes"
+      }
+    ],
+    "ddos_protection_plan.enable": [
+      {
+        "prop": "VirtualNetwork:properties.enableDdosProtection"
+      }
+    ],
+    "ddos_protection_plan.id": [
+      {
+        "prop": "VirtualNetwork:properties.ddosProtectionPlan.id"
+      }
+    ],
+    "dns_servers": [
+      {
+        "prop": "VirtualNetwork:properties.dhcpOptions.dnsServers"
+      }
+    ],
+    "guid": [
+      {
+        "prop": "VirtualNetwork:properties.resourceGuid"
+      }
+    ],
+    "id": [
+      {
+        "prop": "VirtualNetwork:id"
+      }
+    ],
+    "location": [
+      {
+        "prop": "VirtualNetwork:location"
+      }
+    ],
+    "name": [
+      {
+        "prop": "VirtualNetwork:name"
+      }
+    ],
     "resource_group_name": [],
-    "subnet.address_prefix": [],
-    "subnet.id": [],
-    "subnet.name": [],
-    "subnet.security_group": [],
-    "tags": [],
+    "subnet.address_prefix": [
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.addressPrefix"
+      }
+    ],
+    "subnet.id": [
+      {
+        "prop": "VirtualNetwork:properties.subnets.id"
+      }
+    ],
+    "subnet.name": [
+      {
+        "prop": "VirtualNetwork:properties.subnets.name"
+      }
+    ],
+    "subnet.security_group": [
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.networkSecurityGroup.id"
+      }
+    ],
+    "tags": [
+      {
+        "prop": "VirtualNetwork:tags"
+      }
+    ],
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],

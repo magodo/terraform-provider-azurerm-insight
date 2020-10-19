@@ -1,18 +1,88 @@
 {
   "Name": "azurerm_subnet",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
   "PropertyLinks": {
-    "address_prefix": [],
-    "address_prefixes": [],
-    "delegation.name": [],
-    "delegation.service_delegation.actions": [],
-    "delegation.service_delegation.name": [],
-    "enforce_private_link_endpoint_network_policies": [],
-    "enforce_private_link_service_network_policies": [],
-    "id": [],
-    "name": [],
+    "address_prefix": [
+      {
+        "prop": "Subnet:properties.addressPrefix"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.addressPrefix"
+      }
+    ],
+    "address_prefixes": [
+      {
+        "prop": "Subnet:properties.addressPrefixes"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.addressPrefixes"
+      }
+    ],
+    "delegation.name": [
+      {
+        "prop": "Subnet:properties.delegations.name"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.delegations.name"
+      }
+    ],
+    "delegation.service_delegation.actions": [
+      {
+        "prop": "Subnet:properties.delegations.properties.actions"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.delegations.properties.actions"
+      }
+    ],
+    "delegation.service_delegation.name": [
+      {
+        "prop": "Subnet:properties.delegations.properties.serviceName"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.delegations.properties.serviceName"
+      }
+    ],
+    "enforce_private_link_endpoint_network_policies": [
+      {
+        "prop": "Subnet:properties.privateEndpointNetworkPolicies"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.privateEndpointNetworkPolicies"
+      }
+    ],
+    "enforce_private_link_service_network_policies": [
+      {
+        "prop": "Subnet:properties.privateLinkServiceNetworkPolicies"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.privateLinkServiceNetworkPolicies"
+      }
+    ],
+    "id": [
+      {
+        "prop": "Subnet:id"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.id"
+      }
+    ],
+    "name": [
+      {
+        "prop": "Subnet:name"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.name"
+      }
+    ],
     "resource_group_name": [],
-    "service_endpoints": [],
+    "service_endpoints": [
+      {
+        "prop": "Subnet:properties.serviceEndpoints.service"
+      },
+      {
+        "prop": "VirtualNetwork:properties.subnets.properties.serviceEndpoints.service"
+      }
+    ],
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],
