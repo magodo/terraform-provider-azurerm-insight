@@ -386,7 +386,7 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 		}
 
 		if err := tfschema.LinkSwagger(*swgschemas, swaggerBasePath); err != nil {
-			return err
+			return fmt.Errorf("Linking swagger failed in file %s: %v", info.Name(), err)
 		}
 
 		return nil
