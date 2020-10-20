@@ -381,14 +381,14 @@ func TestNewSWGSchema(t *testing.T) {
 				SwaggerRelPath: "foo.json",
 				Name:           "def_base",
 				Properties: map[string]*SWGSchemaProperty{
-					"[def_variant1]": {
+					"{def_variant1}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant1"],
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_variant1": struct{}{},
 						},
 					},
-					"[def_variant2]": {
+					"{def_variant2}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant2"],
 						resolvedRefs: map[string]interface{}{
@@ -687,7 +687,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				SwaggerRelPath: "foo.json",
 				Name:           "def_c",
 				Properties: map[string]*SWGSchemaProperty{
-					"p1[def_variant1]": {
+					"p1{def_variant1}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant1"],
 						resolvedRefs: map[string]interface{}{
@@ -695,7 +695,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_variant1": struct{}{},
 						},
 					},
-					"p1[def_variant2]": {
+					"p1{def_variant2}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant2"],
 						resolvedRefs: map[string]interface{}{
@@ -715,13 +715,13 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 			err:            nil,
 			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
 				propertyaddr.MustNewSwaggerPropertyAddr("def_c", "p1"),
-				propertyaddr.MustNewSwaggerPropertyAddr("def_c", "p1[def_variant1]"),
+				propertyaddr.MustNewSwaggerPropertyAddr("def_c", "p1{def_variant1}"),
 			},
 			expect: SWGSchema{
 				SwaggerRelPath: "foo.json",
 				Name:           "def_c",
 				Properties: map[string]*SWGSchemaProperty{
-					"p1[def_variant1].type": {
+					"p1{def_variant1}.type": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_base"].Properties["type"],
 						resolvedRefs: map[string]interface{}{
@@ -729,7 +729,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_variant1": struct{}{},
 						},
 					},
-					"p1[def_variant2]": {
+					"p1{def_variant2}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant2"],
 						resolvedRefs: map[string]interface{}{
@@ -754,7 +754,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				SwaggerRelPath: "foo.json",
 				Name:           "ruleCollectionGroup",
 				Properties: map[string]*SWGSchemaProperty{
-					"ruleCollections[natRuleCollection]": {
+					"ruleCollections{natRuleCollection}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["natRuleCollection"],
 						resolvedRefs: map[string]interface{}{
@@ -762,7 +762,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
 					},
-					"ruleCollections[filterRuleCollection]": {
+					"ruleCollections{filterRuleCollection}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["filterRuleCollection"],
 						resolvedRefs: map[string]interface{}{
@@ -782,13 +782,13 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 			err:            nil,
 			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
 				propertyaddr.MustNewSwaggerPropertyAddr("ruleCollectionGroup", "ruleCollections"),
-				propertyaddr.MustNewSwaggerPropertyAddr("ruleCollectionGroup", "ruleCollections[natRuleCollection]"),
+				propertyaddr.MustNewSwaggerPropertyAddr("ruleCollectionGroup", "ruleCollections{natRuleCollection}"),
 			},
 			expect: SWGSchema{
 				SwaggerRelPath: "foo.json",
 				Name:           "ruleCollectionGroup",
 				Properties: map[string]*SWGSchemaProperty{
-					"ruleCollections[natRuleCollection].action": {
+					"ruleCollections{natRuleCollection}.action": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["natRuleCollection"].Properties["action"],
 						resolvedRefs: map[string]interface{}{
@@ -796,7 +796,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
 					},
-					"ruleCollections[natRuleCollection].ruleCollectionType": {
+					"ruleCollections{natRuleCollection}.ruleCollectionType": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["ruleCollection"].Properties["ruleCollectionType"],
 						resolvedRefs: map[string]interface{}{
@@ -804,7 +804,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
 					},
-					"ruleCollections[natRuleCollection].name": {
+					"ruleCollections{natRuleCollection}.name": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["ruleCollection"].Properties["name"],
 						resolvedRefs: map[string]interface{}{
@@ -812,7 +812,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
 					},
-					"ruleCollections[filterRuleCollection]": {
+					"ruleCollections{filterRuleCollection}": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["filterRuleCollection"],
 						resolvedRefs: map[string]interface{}{
