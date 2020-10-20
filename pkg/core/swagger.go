@@ -357,7 +357,7 @@ func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPr
 func (s *SWGSchema) CalcCoverage() error {
 	store := NewSWGPropertyCoverageStore()
 	for propAddr, prop := range s.Properties {
-		if err := store.Add(*propertyaddr.ParseTerraformPropertyAddr(propAddr), *prop); err != nil {
+		if err := store.Add(propertyaddr.MustParseSwaggerPropertyAddr(propAddr), *prop); err != nil {
 			return fmt.Errorf("adding property %q: %v", propAddr, err)
 		}
 	}
@@ -369,7 +369,7 @@ func (s *SWGSchema) SchemaCoverage() (covered, total int) {
 	return s.coverageStore.SchemaCoverage()
 }
 
-func (s *SWGSchema) FindCoverage(propAddr propertyaddr.TerraformPropertyAddr) (covered, total int, ok bool) {
+func (s *SWGSchema) FindCoverage(propAddr propertyaddr.SwaggerPropertyAddr) (covered, total int, ok bool) {
 	return s.coverageStore.FindCoverage(propAddr)
 }
 

@@ -27,11 +27,11 @@ func TestParseSwaggerRelPropertyAddr(t *testing.T) {
 			expect: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}},
 		},
 		{
-			input:  "p1.p2[v1]",
+			input:  "p1.p2{v1}",
 			expect: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}},
 		},
 		{
-			input: "p1.p2]",
+			input: "p1.p2}",
 			error: true,
 		},
 	}
@@ -66,7 +66,7 @@ func TestSwaggerRelPropertyAddr_String(t *testing.T) {
 		},
 		{
 			input:  SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}},
-			expect: "p1.p2[v1]",
+			expect: "p1.p2{v1}",
 		},
 	}
 	for idx, c := range cases {
@@ -103,12 +103,12 @@ func TestSwaggerPropertyAddr_Append(t *testing.T) {
 		},
 		{
 			input:  SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}}},
-			oaddr:  "p2[v1]",
+			oaddr:  "p2{v1}",
 			expect: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
 		},
 		{
 			input: SwaggerPropertyAddr{PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}}},
-			oaddr: "p2]",
+			oaddr: "p2}",
 			error: true,
 		},
 	}
@@ -151,15 +151,15 @@ func TestParseSwaggerPropertyAddr(t *testing.T) {
 			expect: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}}},
 		},
 		{
-			input:  "schema1:p1.p2[v1]",
+			input:  "schema1:p1.p2{v1}",
 			expect: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
 		},
 		{
-			input:  "schema1:p1.p2[v1]",
+			input:  "schema1:p1.p2{v1}",
 			expect: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
 		},
 		{
-			input: "schema1:p1.p2]",
+			input: "schema1:p1.p2}",
 			error: true,
 		},
 		{
@@ -192,7 +192,7 @@ func TestNewSwaggerPropertyAddr(t *testing.T) {
 		},
 		{
 			schemaName: "schema1",
-			propAddr:   "p1.p2[v1]",
+			propAddr:   "p1.p2{v1}",
 			expect: SwaggerPropertyAddr{
 				Schema:       "schema1",
 				PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}},
@@ -200,7 +200,7 @@ func TestNewSwaggerPropertyAddr(t *testing.T) {
 		},
 		{
 			schemaName: "schema1",
-			propAddr:   "p1.p2]",
+			propAddr:   "p1.p2}",
 			error:      true,
 		},
 	}
@@ -403,7 +403,7 @@ func TestSwaggerPropertyAddr_String(t *testing.T) {
 		},
 		{
 			addr:   SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
-			expect: "schema1:p1.p2[v1]",
+			expect: "schema1:p1.p2{v1}",
 		},
 	}
 
@@ -431,7 +431,7 @@ func TestSwaggerPropertyAddr_MarshalJSON(t *testing.T) {
 		},
 		{
 			addr:   SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
-			expect: `"schema1:p1.p2[v1]"`,
+			expect: `"schema1:p1.p2{v1}"`,
 		},
 	}
 
@@ -464,7 +464,7 @@ func TestSwaggerPropertyAddr_UnmarshalJSON(t *testing.T) {
 			expect: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2"}}},
 		},
 		{
-			input:  `"schema1:p1.p2[v1]"`,
+			input:  `"schema1:p1.p2{v1}"`,
 			expect: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{{name: "p1"}, {name: "p2", discriminatorValue: utils.String("v1")}}},
 		},
 	}

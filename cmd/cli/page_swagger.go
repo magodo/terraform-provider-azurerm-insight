@@ -174,12 +174,12 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 		prop := swgschema.Properties[addr]
 		node := root
 
-		curaddr := *propertyaddr.ParseTerraformPropertyAddr("")
-		addrs := propertyaddr.ParseTerraformPropertyAddr(addr).PropertyAddr
+		curaddr := propertyaddr.MustParseSwaggerPropertyAddr("")
+		addrs := propertyaddr.MustParseSwaggerPropertyAddr(addr).PropertyAddr
 		for idx, segment := range addrs {
 			var cnode *tview.TreeNode
 			for _, c := range node.GetChildren() {
-				if c.GetText() == segment {
+				if c.GetText() == segment.String() {
 					cnode = c
 					break
 				}
@@ -187,7 +187,7 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 			isLeaf := idx == len(addrs)-1
 
 			if cnode == nil {
-				nodeText := segment
+				nodeText := segment.String()
 				cnode = tview.NewTreeNode(nodeText).SetExpanded(false)
 				node.AddChild(cnode)
 			}
@@ -203,7 +203,7 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 				}
 			} else {
 				cnode.SetColor(colorObjectProperty)
-				curaddr = curaddr.Append(segment)
+				curaddr, _ = curaddr.Append(segment.String())
 				cov, total, ok := swgschema.FindCoverage(curaddr)
 				var coverage float64
 				if ok {

@@ -13,8 +13,8 @@ import (
 
 const swaggerPropertySchemaSep = ":"
 const swaggerPropertyAddrSep = "."
-const swaggerPropertyDiscriminatorStartMark = "["
-const swaggerPropertyDiscriminatorEndMark = "]"
+const swaggerPropertyDiscriminatorStartMark = "{"
+const swaggerPropertyDiscriminatorEndMark = "}"
 
 type SwaggerPropertyAddr struct {
 	Schema       string
@@ -244,7 +244,7 @@ func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
 
 		m := discriminatorPattern.FindStringSubmatch(prop)
 		if len(m) != 3 {
-			return nil, fmt.Errorf(`invalid discriminator property notation: %q (expected format: "prop[variant]")`, prop)
+			return nil, fmt.Errorf(`invalid discriminator property notation: %q (expected format: "prop%svariant%s")`, prop, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark)
 		}
 		props = append(props, SwaggerPropertyAddrSegment{
 			name:               m[1],
