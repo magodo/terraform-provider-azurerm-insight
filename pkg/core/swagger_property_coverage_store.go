@@ -21,12 +21,12 @@ func NewSWGPropertyCoverageStore() SWGPropertyCoverageStore {
 // Add adds a SWGSchemaProperty and record the coverage state in each property level.
 // If a property is added more than once, an error will be returned.
 // NOTE: The granted property will be ignored
-func (store *SWGPropertyCoverageStore) Add(propAddr propertyaddr.PropertyAddr, prop SWGSchemaProperty) error {
+func (store *SWGPropertyCoverageStore) Add(propAddr propertyaddr.SwaggerPropertyAddr, prop SWGSchemaProperty) error {
 	if prop.IsGranted {
 		return nil
 	}
 
-	addrs := propAddr.RelativeAddrs()
+	addrs := propAddr.PropertyAddr
 	isCovered := len(prop.TFLinks) != 0
 
 	if _, _, ok := store.FindCoverage(propAddr); ok {
@@ -45,11 +45,11 @@ func (store *SWGPropertyCoverageStore) SchemaCoverage() (covered, total int) {
 	return store.node.CoveredAmount, store.node.TotalAmount
 }
 
-func (store *SWGPropertyCoverageStore) FindCoverage(propAddr propertyaddr.PropertyAddr) (covered, total int, ok bool) {
-	addrs := propAddr.RelativeAddrs()
+func (store *SWGPropertyCoverageStore) FindCoverage(propAddr propertyaddr.SwaggerPropertyAddr) (covered, total int, ok bool) {
+	addrs := propAddr.PropertyAddr
 	node := store.node
 	for _, addr := range addrs {
-		tmpNode, ok := node.Children[addr]
+		tmpNode, ok := node.Children[addr.String()]
 		if !ok {
 			return 0, 0, false
 		}
@@ -65,7 +65,7 @@ type swgPropertyCoverageNode struct {
 	Children      map[string]*swgPropertyCoverageNode
 }
 
-func (node *swgPropertyCoverageNode) add(addrs propertyaddr.RelativeAddrs, isCovered bool) {
+func (node *swgPropertyCoverageNode) add(addrs propertyaddr.SwaggerRelPropertyAddr, isCovered bool) {
 	node.TotalAmount++
 	if isCovered {
 		node.CoveredAmount++
@@ -75,12 +75,12 @@ func (node *swgPropertyCoverageNode) add(addrs propertyaddr.RelativeAddrs, isCov
 		return
 	}
 
-	child, ok := node.Children[addrs[0]]
+	child, ok := node.Children[addrs[0].String()]
 	if !ok {
-		node.Children[addrs[0]] = &swgPropertyCoverageNode{
+		node.Children[addrs[0].String()] = &swgPropertyCoverageNode{
 			Children: map[string]*swgPropertyCoverageNode{},
 		}
-		child = node.Children[addrs[0]]
+		child = node.Children[addrs[0].String()]
 	}
 	child.add(addrs[1:], isCovered)
 

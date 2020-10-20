@@ -2,14 +2,15 @@ package core
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestNewSWGPropertyCoverageStore_Add(t *testing.T) {
 	type swgproperty struct {
-		addr propertyaddr.PropertyAddr
+		addr propertyaddr.SwaggerPropertyAddr
 		prop SWGSchemaProperty
 	}
 	cases := []struct {
@@ -19,25 +20,25 @@ func TestNewSWGPropertyCoverageStore_Add(t *testing.T) {
 		{
 			propertiesToAdd: []swgproperty{
 				{
-					addr: *propertyaddr.NewPropertyAddrFromString("prop1.not_covered"),
+					addr: propertyaddr.MustParseSwaggerPropertyAddr("prop1.not_covered"),
 					prop: SWGSchemaProperty{
 						TFLinks: []TFLink{},
 					},
 				},
 				{
-					addr: *propertyaddr.NewPropertyAddrFromString("prop1.covered"),
+					addr: propertyaddr.MustParseSwaggerPropertyAddr("prop1.covered"),
 					prop: SWGSchemaProperty{
 						TFLinks: []TFLink{{}},
 					},
 				},
 				{
-					addr: *propertyaddr.NewPropertyAddrFromString("prop2.covered"),
+					addr: propertyaddr.MustParseSwaggerPropertyAddr("prop2.covered"),
 					prop: SWGSchemaProperty{
 						TFLinks: []TFLink{{}},
 					},
 				},
 				{
-					addr: *propertyaddr.NewPropertyAddrFromString("prop_granted"),
+					addr: propertyaddr.MustParseSwaggerPropertyAddr("prop_granted"),
 					prop: SWGSchemaProperty{
 						TFLinks:   []TFLink{},
 						IsGranted: true,
@@ -201,7 +202,7 @@ func TestNewSWGPropertyCoverageStore_FindCoverage(t *testing.T) {
 
 	for idx, c := range cases {
 		for idx2, subtest := range c.subtest {
-			covered, total, ok := c.store.FindCoverage(*propertyaddr.NewPropertyAddrFromString(subtest.propAddr))
+			covered, total, ok := c.store.FindCoverage(propertyaddr.MustParseSwaggerPropertyAddr(subtest.propAddr))
 			result := result{
 				total:   total,
 				covered: covered,

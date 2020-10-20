@@ -154,6 +154,93 @@
     },
     "def_array_ref_ref": {
       "$ref": "#/definitions/def_array_ref"
+    },
+
+    "def_c": {
+      "properties": {
+        "p1": {
+          "$ref": "#/definitions/def_base"
+        }
+      }
+    },
+
+    "def_base": {
+      "discriminator" : "type",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "def_variant1",
+            "def_variant2"
+          ]
+        }
+      }
+    },
+    "def_variant1": {
+      "x-ms-discriminator-value":"def_variant1",
+      "properties": {},
+      "allOf": [
+        {
+          "$ref": "#/definitions/def_base"
+        }
+      ]
+    },
+    "def_variant2": {
+      "x-ms-discriminator-value":"def_variant2",
+      "properties": {},
+      "allOf": [
+        {
+          "$ref": "#/definitions/def_base"
+        }
+      ]
+    },
+
+    "ruleCollectionGroup": {
+      "properties" : {
+        "ruleCollections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ruleCollection"
+          }
+        }
+      }
+    },
+
+    "ruleCollection": {
+      "discriminator": "ruleCollectionType",
+      "properties": {
+        "ruleCollectionType": {
+          "enum": [
+            "natRuleCollection",
+            "filterRuleCollection"
+          ]
+        },
+        "name": {}
+      }
+    },
+
+    "natRuleCollection": {
+      "x-ms-discriminator-value": "natRuleCollection",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ruleCollection"
+        }
+      ],
+      "properties": {
+        "action": {}
+      }
+    },
+
+    "filterRuleCollection": {
+      "x-ms-discriminator-value": "filterRuleCollection",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ruleCollection"
+        }
+      ],
+      "properties": {
+        "action": {}
+      }
     }
   }
 }
