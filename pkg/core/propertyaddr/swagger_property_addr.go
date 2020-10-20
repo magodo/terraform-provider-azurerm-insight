@@ -83,8 +83,20 @@ func (addr SwaggerPropertyAddr) Contains(oaddr SwaggerPropertyAddr) bool {
 		return false
 	}
 
-	if len(addr.PropertyAddr) >= len(oaddr.PropertyAddr) {
+	if len(addr.PropertyAddr) > len(oaddr.PropertyAddr) {
 		return false
+	}
+
+	if len(addr.PropertyAddr) == len(oaddr.PropertyAddr) {
+		lastIdx := len(addr.PropertyAddr) - 1
+		if lastIdx == -1 {
+			return false
+		}
+		addrLastProp := addr.PropertyAddr[lastIdx]
+		oaddrLastProp := oaddr.PropertyAddr[lastIdx]
+		if addrLastProp.discriminatorValue != nil || oaddrLastProp.discriminatorValue == nil {
+			return false
+		}
 	}
 
 	for i := range addr.PropertyAddr {
@@ -93,8 +105,8 @@ func (addr SwaggerPropertyAddr) Contains(oaddr SwaggerPropertyAddr) bool {
 		if addrProp.name != oaddrProp.name {
 			return false
 		}
-		if addrProp.discriminatorValue == nil && oaddrProp.discriminatorValue != nil ||
-			addrProp.discriminatorValue != nil && oaddrProp.discriminatorValue == nil ||
+
+		if addrProp.discriminatorValue != nil && oaddrProp.discriminatorValue == nil ||
 			addrProp.discriminatorValue != nil && oaddrProp.discriminatorValue != nil && *addrProp.discriminatorValue != *oaddrProp.discriminatorValue {
 			return false
 		}
@@ -164,6 +176,11 @@ func (addr SwaggerPropertyAddr) Append(oaddr string) (SwaggerPropertyAddr, error
 	}, nil
 }
 
+func (addr SwaggerPropertyAddr) SetDiscriminator(variant string) {
+	addr.PropertyAddr[len(addr.PropertyAddr)-1].discriminatorValue = &variant
+	return
+}
+
 func (addr SwaggerPropertyAddr) String() string {
 	if addr.Schema == "" {
 		return addr.PropertyAddr.String()
@@ -194,12 +211,27 @@ type SwaggerPropertyAddrSegment struct {
 	discriminatorValue *string
 }
 
+func NewSwaggerPropertyAddrSegment(name string, discriminator *string) SwaggerPropertyAddrSegment {
+	return SwaggerPropertyAddrSegment{
+		name:               name,
+		discriminatorValue: discriminator,
+	}
+}
+
+func (prop SwaggerPropertyAddrSegment) String() string {
+	v := prop.name
+	if prop.discriminatorValue != nil {
+		v += swaggerPropertyDiscriminatorStartMark + *prop.discriminatorValue + swaggerPropertyDiscriminatorEndMark
+	}
+	return v
+}
+
 func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
 	if strings.Trim(addr, " ") == "" {
 		return nil, nil
 	}
 	var props SwaggerRelPropertyAddr
-	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
+	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)?\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
 	for _, prop := range strings.Split(addr, swaggerPropertyAddrSep) {
 		if !strings.HasSuffix(prop, swaggerPropertyDiscriminatorEndMark) {
 			props = append(props, SwaggerPropertyAddrSegment{
@@ -223,13 +255,41 @@ func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
 func (addr SwaggerRelPropertyAddr) String() string {
 	props := []string{}
 	for _, prop := range addr {
-		v := prop.name
-		if prop.discriminatorValue != nil {
-			v += swaggerPropertyDiscriminatorStartMark + *prop.discriminatorValue + swaggerPropertyDiscriminatorEndMark
-		}
-		props = append(props, v)
+		props = append(props, prop.String())
 	}
 
 	return strings.Join(props, swaggerPropertyAddrSep)
 }
 
+func (addr SwaggerPropertyAddr) AsVariant(v string) SwaggerPropertyAddr {
+	newAddr := addr.Copy()
+	if len(newAddr.PropertyAddr) == 0 {
+		newAddr.PropertyAddr = SwaggerRelPropertyAddr{
+			{
+				discriminatorValue: &v,
+			},
+		}
+		return newAddr
+	}
+	newAddr.PropertyAddr[len(newAddr.PropertyAddr)-1].discriminatorValue = &v
+	return newAddr
+}
+
+func (addr SwaggerPropertyAddr) Copy() SwaggerPropertyAddr {
+	newAddr := SwaggerPropertyAddr{
+		Schema:       addr.Schema,
+		PropertyAddr: SwaggerRelPropertyAddr{},
+	}
+
+	for _, segment := range addr.PropertyAddr {
+		discriminator := ""
+		if segment.discriminatorValue != nil {
+			discriminator = *segment.discriminatorValue
+		}
+		newAddr.PropertyAddr = append(newAddr.PropertyAddr, SwaggerPropertyAddrSegment{
+			name:               segment.name,
+			discriminatorValue: &discriminator,
+		})
+	}
+	return newAddr
+}

@@ -149,6 +149,20 @@ func CollectSWGSchemas(swaggerBaseURL, swaggerRelPath string, collector SWGSchem
 // ExpandPropertyOneLevelDeep expand the specified swagger schemas property one level deep, with any allOf and $ref taken into consideration.
 func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerPropertyAddr) error {
 	raddr := addr.PropertyAddr.String()
+
+	defer func() {
+		// We have to check whether we added any child property of this property.
+		// If yes, then we need to remove this property from the SWGSchema property map.
+		// Note that it is possible we are expanding some property that is already expanded.
+		for currentRAddr := range s.Properties {
+			currentAddr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, currentRAddr)
+			if addr.Contains(currentAddr) {
+				delete(s.Properties, raddr)
+				return
+			}
+		}
+	}()
+
 	prop, ok := s.Properties[raddr]
 	if !ok {
 		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerURL)
@@ -164,23 +178,40 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 		return nil
 	}
 
-	// direct top level properties
-	for propK, propV := range prop.schema.Properties {
-		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
-		addr, _ := addr.Append(propK)
-		s.addProperty(addr, *p)
+	// If the property to be expanded is a discriminator, we will expand it into its variants
+	// NOTE: this is a MS specific Swagger extension on discriminator.
+	if discriminator := prop.schema.Discriminator; discriminator != "" {
+		if discriminatorProp := prop.schema.Properties[discriminator]; discriminatorProp.Enum != nil {
+		outLoop:
+			// TODO: optimize to using map
+			for _, variantRaw := range discriminatorProp.Enum {
+				variant, ok := variantRaw.(string)
+				if !ok {
+					panic(fmt.Sprintf("failed to find variant dscSchema who implements discriminator %q in %q", discriminator, addr.String()))
+				}
+				for dscSchemaName, dscSchema := range s.swagger.Definitions {
+					if v, ok := dscSchema.Extensions["x-ms-discriminator-value"].(string); ok && v == variant {
+						p := NewSWGSchemaProperty(dscSchema, prop.TFLinks, prop.resolvedRefs)
+						addr := addr.AsVariant(dscSchemaName)
+						s.addProperty(addr, *p)
+						continue outLoop
+					}
+				}
+			}
+
+			return nil
+		}
 	}
+
+	// direct top level properties
+	s.expandSubProperties(addr, prop, prop.schema.Properties)
 
 	// expand AllOf properties
 	for _, schema := range prop.schema.AllOf {
 
 		// AllOf contains concrete schemas, then directly add the property.
 		if schema.Ref.String() == "" {
-			for propK, propV := range schema.Properties {
-				p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
-				addr, _ := addr.Append(propK)
-				s.addProperty(addr, *p)
-			}
+			s.expandSubProperties(addr, prop, schema.Properties)
 			continue
 		}
 
@@ -200,23 +231,18 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 			continue
 		}
 
-		for propK, propV := range tmpSwgProp.schema.Properties {
-			p := NewSWGSchemaProperty(propV, tmpSwgProp.TFLinks, tmpSwgProp.resolvedRefs)
-			addr, _ := addr.Append(propK)
-			s.addProperty(addr, *p)
-		}
+		s.expandSubProperties(addr, tmpSwgProp, tmpSwgProp.schema.Properties)
 	}
 
-	// We have to check whether we added any child property of this property. If this property is already the leaf property,
-	// we should keep this property from removing it from the SWGSchema property map.
-	for currentRAddr := range s.Properties {
-		currentAddr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, currentRAddr)
-		if addr.Contains(currentAddr) {
-			delete(s.Properties, raddr)
-			return nil
-		}
-	}
 	return nil
+}
+
+func (s *SWGSchema) expandSubProperties(addr propertyaddr.SwaggerPropertyAddr, prop *SWGSchemaProperty, subProps map[string]openapispec.Schema) {
+	for propK, propV := range subProps {
+		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
+		addr, _ := addr.Append(propK)
+		s.addProperty(addr, *p)
+	}
 }
 
 // addProperty adds a new SWGSchemaProperty to the SWGSchema.
@@ -276,13 +302,13 @@ func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPr
 	for raddr, prop := range s.Properties {
 		addr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, raddr)
 
-		if swgPropAddr.Contains(addr) {
-			isExpandToChildProperties = true
-			prop.TFLinks = append(prop.TFLinks, TFLink{Prop: tfPropAddr})
+		if !swgPropAddr.Contains(addr) && !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
 			continue
 		}
 
-		if !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
+		if swgPropAddr.Contains(addr) {
+			isExpandToChildProperties = true
+			prop.TFLinks = append(prop.TFLinks, TFLink{Prop: tfPropAddr})
 			continue
 		}
 

@@ -23,10 +23,12 @@ func TestNewSWGSchema(t *testing.T) {
 	specFoo, err := LoadSwagger(specFooPathLocal)
 	require.NoError(t, err)
 	specBar, err := LoadSwagger(specBarPathLocal)
+	_ = specBar
 	require.NoError(t, err)
 
-	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/a88ddb903ed96eb4651f35d35926503a1a92f4da"
+	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/c8df71b214616b5889729ec18368f60cc1c8822b"
 	specFooURL := specBaseURL + "/foo.json"
+	_ = specFooURL
 
 	cases := []struct {
 		specBaseURL string
@@ -369,6 +371,35 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.13: discriminator
+		{
+			specBaseURL: specBasePathLocal,
+			specRelPath: "foo.json",
+			schemaName:  "def_base",
+			err:         nil,
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "def_base",
+				Properties: map[string]*SWGSchemaProperty{
+					"[def_variant1]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_variant1"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/def_base": struct{}{},
+						},
+					},
+					"[def_variant2]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_variant2"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/def_base": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPathLocal,
+				swagger:    specFoo,
+			},
+		},
 	}
 
 	for idx, c := range cases {
@@ -388,6 +419,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 	specBarPath := filepath.Join(specBasePath, "bar.json")
 	specFoo, err := LoadSwagger(specFooPath)
 	specBar, err := LoadSwagger(specBarPath)
+	_ = specBar
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -604,6 +636,38 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						schema:  specFoo.Definitions["def_selfRef"],
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_selfRef": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_c",
+			err:            nil,
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_c", "p1"),
+			},
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "def_c",
+				Properties: map[string]*SWGSchemaProperty{
+					"p1[def_variant1]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_variant1"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_c":    struct{}{},
+							specFooPath + "#/definitions/def_base": struct{}{},
+						},
+					},
+					"p1[def_variant2]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_variant2"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_c":    struct{}{},
+							specFooPath + "#/definitions/def_base": struct{}{},
 						},
 					},
 				},

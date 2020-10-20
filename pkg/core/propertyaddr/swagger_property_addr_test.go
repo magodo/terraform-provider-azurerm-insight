@@ -265,6 +265,43 @@ func TestSwaggerPropertyAddr_Contains(t *testing.T) {
 			}},
 			contains: false,
 		},
+		{
+			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1"},
+			}},
+			oaddr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1", discriminatorValue: utils.String("v1")},
+			}},
+			contains: true,
+		},
+		{
+			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1", discriminatorValue: utils.String("v1")},
+			}},
+			oaddr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1", discriminatorValue: utils.String("v1")},
+			}},
+			contains: false,
+		},
+		{
+			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1", discriminatorValue: utils.String("v1")},
+			}},
+			oaddr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1", discriminatorValue: utils.String("v2")},
+			}},
+			contains: false,
+		},
+		{
+			addr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1"},
+			}},
+			oaddr: SwaggerPropertyAddr{Schema: "schema1", PropertyAddr: SwaggerRelPropertyAddr{
+				{name: "p1", discriminatorValue: utils.String("v2")},
+				{name: "p2"},
+			}},
+			contains: true,
+		},
 	}
 	for idx, c := range cases {
 		require.Equal(t, c.contains, c.addr.Contains(c.oaddr), idx)

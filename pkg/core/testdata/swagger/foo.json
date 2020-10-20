@@ -154,6 +154,34 @@
     },
     "def_array_ref_ref": {
       "$ref": "#/definitions/def_array_ref"
+    },
+
+    "def_c": {
+      "properties": {
+        "p1": {
+          "$ref": "#/definitions/def_base"
+        }
+      }
+    },
+    "def_base": {
+      "discriminator" : "type",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "def_variant1",
+            "def_variant2"
+          ]
+        }
+      }
+    },
+    "def_variant1": {
+      "x-ms-discriminator-value":"def_variant1",
+      "properties": {}
+    },
+    "def_variant2": {
+      "x-ms-discriminator-value":"def_variant2",
+      "properties": {}
     }
   }
 }
