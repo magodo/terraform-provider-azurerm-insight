@@ -11,8 +11,8 @@ import (
 )
 
 type SwaggerLink struct {
-	Spec       *string                   `json:"swagger,omitempty"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
-	SchemaProp propertyaddr.PropertyAddr `json:"prop"`              // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
+	Spec       *string                          `json:"swagger,omitempty"` // swagger spec relative path that this propertyaddr resides in, this overrides the global swagger scope
+	SchemaProp propertyaddr.SwaggerPropertyAddr `json:"prop"`              // dot-separated swagger schemas propertyaddr, starting from the schemas used as the PUT body parameter
 }
 
 type TFSchemaPropertyLinks map[string][]SwaggerLink
@@ -30,9 +30,9 @@ func NewSchema(name string) *TFSchema {
 	}
 }
 
-func (schema TFSchema) LinkSwagger(swgSchemaCache SWGSchemas, swaggerBasePath string) error {
+func (schema TFSchema) LinkSwagger(swgSchemaCache *SWGSchemas, swaggerBasePath string) error {
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
-		tfPropAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(schema.Name, tfProp)
+		tfPropAddr := propertyaddr.NewTerraformPropertyAddr(schema.Name, tfProp)
 		for _, link := range tfToSwaggerLinks {
 			swaggerRelPath := schema.SwaggerSpec
 			if link.Spec != nil {
@@ -54,11 +54,11 @@ func (schema TFSchema) Validate() error {
 		return fmt.Errorf(`swagger spec path should be relative (not starting with "/")`)
 	}
 	for tfProp, tfToSwaggerLinks := range schema.PropertyLinks {
-		if addr := propertyaddr.NewPropertyAddrFromString(tfProp); addr.Owner() != "" {
+		if addr := propertyaddr.ParseTerraformPropertyAddr(tfProp); addr.ResourceName != "" {
 			return fmt.Errorf("terraform property addr %s should not specify owner", addr)
 		}
 		for _, link := range tfToSwaggerLinks {
-			if link.SchemaProp.Owner() == "" {
+			if link.SchemaProp.Schema == "" {
 				return fmt.Errorf("swagger property addr %s should specify owner", link.SchemaProp)
 			}
 			if link.Spec != nil && strings.HasPrefix(*link.Spec, "/") {
@@ -73,11 +73,11 @@ func (schema TFSchema) Validate() error {
 // from `terraform providers schema -json`.
 func NewSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock) *TFSchema {
 	schema := NewSchema(name)
-	recordAttributeWithinBlock(propertyaddr.PropertyAddr{}, schema.PropertyLinks, block)
+	recordAttributeWithinBlock(propertyaddr.TerraformPropertyAddr{}, schema.PropertyLinks, block)
 	return schema
 }
 
-func recordAttributeWithinBlock(parentBlockAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
+func recordAttributeWithinBlock(parentBlockAddr propertyaddr.TerraformPropertyAddr, attributes TFSchemaPropertyLinks, block *TerraformBlock) {
 	for attrKey, attrVal := range block.Attributes {
 		addr := parentBlockAddr.Append(attrKey)
 		recordAttributeByType(addr, attributes, attrVal.Type)
@@ -88,7 +88,7 @@ func recordAttributeWithinBlock(parentBlockAddr propertyaddr.PropertyAddr, attri
 	}
 }
 
-func recordAttributeByType(parentAddr propertyaddr.PropertyAddr, attributes TFSchemaPropertyLinks, elementType *cty.Type) {
+func recordAttributeByType(parentAddr propertyaddr.TerraformPropertyAddr, attributes TFSchemaPropertyLinks, elementType *cty.Type) {
 	switch {
 	case elementType == nil,
 		elementType.IsPrimitiveType():
@@ -112,7 +112,7 @@ func recordAttributeByType(parentAddr propertyaddr.PropertyAddr, attributes TFSc
 func UpdateSchemaScaffoldFromTerraformBlock(name string, block *TerraformBlock, oldSchema *TFSchema) (*TFSchema, error) {
 	newSchema := NewSchemaScaffoldFromTerraformBlock(name, block)
 	if oldSchema.Name != name {
-		return nil, fmt.Errorf("The schema name between existing (%q) and the new (%q) TFSchema is different.", newSchema.Name, oldSchema.Name)
+		return nil, fmt.Errorf("schema name between existing (%q) and the new (%q) TFSchema is different.", newSchema.Name, oldSchema.Name)
 	}
 
 	newSchema.SwaggerSpec = oldSchema.SwaggerSpec

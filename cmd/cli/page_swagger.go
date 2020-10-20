@@ -174,8 +174,8 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 		prop := swgschema.Properties[addr]
 		node := root
 
-		curaddr := *propertyaddr.NewPropertyAddrFromString("")
-		addrs := propertyaddr.NewPropertyAddrFromString(addr).RelativeAddrs()
+		curaddr := *propertyaddr.ParseTerraformPropertyAddr("")
+		addrs := propertyaddr.ParseTerraformPropertyAddr(addr).PropertyAddr
 		for idx, segment := range addrs {
 			var cnode *tview.TreeNode
 			for _, c := range node.GetChildren() {
@@ -236,7 +236,7 @@ func refreshPropertyTree(items pageSwaggerItems, swgschema SWGSchema) {
 			tfproperties := make([]string, 0, len(prop.TFLinks))
 			for _, tflink := range prop.TFLinks {
 				prop := tflink.Prop
-				tfproperties = append(tfproperties, fmt.Sprintf("- %s: %s", prop.Owner(), prop.RelativeAddrs().String()))
+				tfproperties = append(tfproperties, fmt.Sprintf("- %s: %s", prop.ResourceName, prop.PropertyAddr.String()))
 			}
 
 			if len(tfproperties) == 0 {

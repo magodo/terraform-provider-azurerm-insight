@@ -14,8 +14,10 @@ import (
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
+const swaggerExtensionMSDiscriminatorValue = "x-ms-discriminator-value"
+
 type TFLink struct {
-	Prop propertyaddr.PropertyAddr
+	Prop propertyaddr.TerraformPropertyAddr
 }
 
 type TFLinks []TFLink
@@ -35,7 +37,7 @@ func (links *TFLinks) UnmarshalJSON(b []byte) error {
 	}
 	*links = []TFLink{}
 	for _, addr := range addrs {
-		*links = append(*links, TFLink{*propertyaddr.NewPropertyAddrFromString(addr)})
+		*links = append(*links, TFLink{*propertyaddr.ParseTerraformPropertyAddr(addr)})
 	}
 	return nil
 }
@@ -98,25 +100,35 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 		return nil, err
 	}
 
+	schema := swagger.Definitions[schemaName]
+
 	swgSchema := &SWGSchema{
 		SwaggerRelPath: swaggerRelPath,
 		Name:           schemaName,
 		Properties: map[string]*SWGSchemaProperty{
 			"": {
 				TFLinks: []TFLink{},
-				schema:  swagger.Definitions[schemaName],
-				resolvedRefs: map[string]interface{}{
-					// Consider this schemas itself as resolved reference
-					normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
-				},
+				schema:  schema,
+				//resolvedRefs: map[string]interface{}{
+				//	// Consider this schemas itself as resolved reference
+				//	normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
+				//},
 			},
 		},
 		swaggerURL: swaggerURI,
 		swagger:    swagger,
 	}
 
+	// Consider this schemas itself as resolved reference only when it is not a discriminator schema
+	if schema.Discriminator == "" {
+		swgSchema.Properties[""].resolvedRefs = map[string]interface{}{
+			normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
+		}
+	}
+
 	// Expand the root level properties of the schemas
-	err = swgSchema.ExpandPropertyOneLevelDeep(*propertyaddr.NewPropertyAddrFromStringWithOwner(schemaName, ""))
+	rootaddr := propertyaddr.MustNewSwaggerPropertyAddr(schemaName, "")
+	err = swgSchema.ExpandPropertyOneLevelDeep(rootaddr)
 	if err != nil {
 		return nil, fmt.Errorf("expanding schemas %s (%s): %w", schemaName, swaggerURI, err)
 	}
@@ -146,8 +158,22 @@ func CollectSWGSchemas(swaggerBaseURL, swaggerRelPath string, collector SWGSchem
 }
 
 // ExpandPropertyOneLevelDeep expand the specified swagger schemas property one level deep, with any allOf and $ref taken into consideration.
-func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) error {
-	raddr := addr.RelativeAddrs().String()
+func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerPropertyAddr) error {
+	raddr := addr.PropertyAddr.String()
+
+	defer func() {
+		// We have to check whether we added any child property of this property.
+		// If yes, then we need to remove this property from the SWGSchema property map.
+		// Note that it is possible we are expanding some property that is already expanded.
+		for currentRAddr := range s.Properties {
+			currentAddr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, currentRAddr)
+			if addr.Contains(currentAddr) {
+				delete(s.Properties, raddr)
+				return
+			}
+		}
+	}()
+
 	prop, ok := s.Properties[raddr]
 	if !ok {
 		return fmt.Errorf("property %s does not exist in SWGSchema %s (%s)", addr, s.Name, s.swaggerURL)
@@ -163,23 +189,47 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 		return nil
 	}
 
-	// direct top level properties
-	for propK, propV := range prop.schema.Properties {
-		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
-		addr := addr.Append(propK)
-		s.addProperty(addr, *p)
+	// If the property to be expanded is a discriminator, we will expand it into its variants
+	// NOTE: this is a MS specific Swagger extension on discriminator.
+	if discriminator := prop.schema.Discriminator; discriminator != "" {
+		if discriminatorProp := prop.schema.Properties[discriminator]; discriminatorProp.Enum != nil {
+		outLoop:
+			// TODO: optimize to using map
+			for _, variantRaw := range discriminatorProp.Enum {
+				variant, ok := variantRaw.(string)
+				if !ok {
+					panic(fmt.Sprintf("failed to find variant dscSchema who implements discriminator %q in %q", discriminator, addr.String()))
+				}
+				for dscSchemaName, dscSchema := range s.swagger.Definitions {
+					if v, ok := dscSchema.Extensions[swaggerExtensionMSDiscriminatorValue].(string); ok && v == variant {
+						// Since we removed the discriminator base schema before, we should in turn add the exact variant schema expanded to the "resolvedRefs".
+						resolvedRefs := map[string]interface{}{}
+						for k, v := range prop.resolvedRefs {
+							resolvedRefs[k] = v
+						}
+						resolvedRefs[normalizePaths("#/definitions/"+dscSchemaName, s.swaggerURL)] = struct{}{}
+
+						p := NewSWGSchemaProperty(dscSchema, prop.TFLinks, resolvedRefs)
+						addr := addr.AsVariant(dscSchemaName)
+						s.addProperty(addr, *p)
+						continue outLoop
+					}
+				}
+			}
+
+			return nil
+		}
 	}
+
+	// direct top level properties
+	s.expandSubProperties(addr, prop, prop.schema.Properties)
 
 	// expand AllOf properties
 	for _, schema := range prop.schema.AllOf {
 
 		// AllOf contains concrete schemas, then directly add the property.
 		if schema.Ref.String() == "" {
-			for propK, propV := range schema.Properties {
-				p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
-				addr := addr.Append(propK)
-				s.addProperty(addr, *p)
-			}
+			s.expandSubProperties(addr, prop, schema.Properties)
 			continue
 		}
 
@@ -199,28 +249,23 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.PropertyAddr) e
 			continue
 		}
 
-		for propK, propV := range tmpSwgProp.schema.Properties {
-			p := NewSWGSchemaProperty(propV, tmpSwgProp.TFLinks, tmpSwgProp.resolvedRefs)
-			addr := addr.Append(propK)
-			s.addProperty(addr, *p)
-		}
+		s.expandSubProperties(addr, tmpSwgProp, tmpSwgProp.schema.Properties)
 	}
 
-	// We have to check whether we added any child property of this property. If this property is already the leaf property,
-	// we should keep this property from removing it from the SWGSchema property map.
-	for currentRAddr := range s.Properties {
-		currentAddr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, currentRAddr)
-		if addr.Contains(*currentAddr) {
-			delete(s.Properties, raddr)
-			return nil
-		}
-	}
 	return nil
 }
 
+func (s *SWGSchema) expandSubProperties(addr propertyaddr.SwaggerPropertyAddr, prop *SWGSchemaProperty, subProps map[string]openapispec.Schema) {
+	for propK, propV := range subProps {
+		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
+		addr, _ := addr.Append(propK)
+		s.addProperty(addr, *p)
+	}
+}
+
 // addProperty adds a new SWGSchemaProperty to the SWGSchema.
-func (s *SWGSchema) addProperty(addr propertyaddr.PropertyAddr, prop SWGSchemaProperty) {
-	s.Properties[addr.RelativeAddrs().String()] = &prop
+func (s *SWGSchema) addProperty(addr propertyaddr.SwaggerPropertyAddr, prop SWGSchemaProperty) {
+	s.Properties[addr.PropertyAddr.String()] = &prop
 }
 
 // expandRefProperty expand a property itself IN-PLACE until either it is a concrete schemas (i.e. not a ref) or hit a cyclic ref.
@@ -256,12 +301,17 @@ func (s *SWGSchema) expandRefProperty(prop *SWGSchemaProperty) (isCyclic bool, e
 		return true, nil
 	}
 
-	// Keep track of the resolved reference to avoid cyclic ref
-	prop.resolvedRefs[normalizedRefURI] = struct{}{}
-
 	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.swaggerURL})
 	if err != nil {
 		return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
+	}
+
+	// Keep track of the resolved reference to avoid cyclic ref.
+	// Specifically, we need to avoid track the discriminator schemas as they will not be exactly referenced
+	// (only its variants are referenced). This allows us to reference the base schema's properties in the
+	// `allOf` from the variant's schema.
+	if schema.Discriminator == "" {
+		prop.resolvedRefs[normalizedRefURI] = struct{}{}
 	}
 
 	// update the stored schemas by the derefed schemas
@@ -270,18 +320,18 @@ func (s *SWGSchema) expandRefProperty(prop *SWGSchemaProperty) (isCyclic bool, e
 	return s.expandRefProperty(prop)
 }
 
-func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (s *SWGSchema) AddTFLink(swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.TerraformPropertyAddr) error {
 	var isExpandToChildProperties bool
 	for raddr, prop := range s.Properties {
-		addr := propertyaddr.NewPropertyAddrFromStringWithOwner(s.Name, raddr)
+		addr := propertyaddr.MustNewSwaggerPropertyAddr(s.Name, raddr)
 
-		if swgPropAddr.Contains(*addr) {
-			isExpandToChildProperties = true
-			prop.TFLinks = append(prop.TFLinks, TFLink{Prop: tfPropAddr})
+		if !swgPropAddr.Contains(addr) && !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
 			continue
 		}
 
-		if !addr.Contains(swgPropAddr) && !addr.Equals(swgPropAddr) {
+		if swgPropAddr.Contains(addr) {
+			isExpandToChildProperties = true
+			prop.TFLinks = append(prop.TFLinks, TFLink{Prop: tfPropAddr})
 			continue
 		}
 
@@ -291,7 +341,7 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 		}
 
 		// The schemas property we're seeking is a direct or indirect member of the property under iteration
-		if err := s.ExpandPropertyOneLevelDeep(*addr); err != nil {
+		if err := s.ExpandPropertyOneLevelDeep(addr); err != nil {
 			return fmt.Errorf("expanding top level property for %s: %w", addr, err)
 		}
 		return s.AddTFLink(swgPropAddr, tfPropAddr)
@@ -307,7 +357,7 @@ func (s *SWGSchema) AddTFLink(swgPropAddr, tfPropAddr propertyaddr.PropertyAddr)
 func (s *SWGSchema) CalcCoverage() error {
 	store := NewSWGPropertyCoverageStore()
 	for propAddr, prop := range s.Properties {
-		if err := store.Add(*propertyaddr.NewPropertyAddrFromString(propAddr), *prop); err != nil {
+		if err := store.Add(*propertyaddr.ParseTerraformPropertyAddr(propAddr), *prop); err != nil {
 			return fmt.Errorf("adding property %q: %v", propAddr, err)
 		}
 	}
@@ -319,7 +369,7 @@ func (s *SWGSchema) SchemaCoverage() (covered, total int) {
 	return s.coverageStore.SchemaCoverage()
 }
 
-func (s *SWGSchema) FindCoverage(propAddr propertyaddr.PropertyAddr) (covered, total int, ok bool) {
+func (s *SWGSchema) FindCoverage(propAddr propertyaddr.TerraformPropertyAddr) (covered, total int, ok bool) {
 	return s.coverageStore.FindCoverage(propAddr)
 }
 
@@ -395,7 +445,7 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 			return fmt.Errorf("validating tf schema %s: %v", tfschema.Name, err)
 		}
 
-		if err := tfschema.LinkSwagger(*swgschemas, swaggerBasePath); err != nil {
+		if err := tfschema.LinkSwagger(swgschemas, swaggerBasePath); err != nil {
 			return fmt.Errorf("Linking swagger failed in file %s: %v", info.Name(), err)
 		}
 
@@ -425,20 +475,20 @@ func NewSWGSchemasFromTerraformSchema(swaggerBasePath, tfSchemaDir, swaggerGrant
 	return swgschemas, nil
 }
 
-func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr, tfPropAddr propertyaddr.PropertyAddr) error {
+func (c *SWGSchemas) LinkSWGSchema(swaggerBasePath, swaggerRelPath string, swgPropAddr propertyaddr.SwaggerPropertyAddr, tfPropAddr propertyaddr.TerraformPropertyAddr) error {
 	c.Lock()
 	defer c.Unlock()
 
-	swgSchema := c.Get(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Owner()))
+	swgSchema := c.Get(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Schema))
 	if swgSchema == nil {
 		var err error
-		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Owner())
+		swgSchema, err = NewSWGSchema(swaggerBasePath, swaggerRelPath, swgPropAddr.Schema)
 		if err != nil {
 			return err
 		}
 	}
 
-	defer c.Set(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Owner()), swgSchema)
+	defer c.Set(NewSWGSchemaAddr(swaggerRelPath, swgPropAddr.Schema), swgSchema)
 
 	return swgSchema.AddTFLink(swgPropAddr, tfPropAddr)
 }
