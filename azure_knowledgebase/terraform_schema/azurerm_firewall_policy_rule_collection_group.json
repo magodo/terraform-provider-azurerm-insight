@@ -4,52 +4,52 @@
   "PropertyLinks": {
     "application_rule_collection.action": [
       {
-        "prop": "FirewallPolicyFilterRuleCollection:action.type"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.action.type"
       }
     ],
     "application_rule_collection.name": [
       {
-        "prop": "FirewallPolicyFilterRuleCollection:name"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.name"
       }
     ],
     "application_rule_collection.priority": [
       {
-        "prop": "FirewallPolicyFilterRuleCollection:priority"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.priority"
       }
     ],
     "application_rule_collection.rule.destination_fqdn_tags": [
       {
-        "prop": "ApplicationRule:fqdnTags"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.fqdnTags"
       }
     ],
     "application_rule_collection.rule.destination_fqdns": [
       {
-        "prop": "ApplicationRule:targetFqdns"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.targetFqdns"
       }
     ],
     "application_rule_collection.rule.name": [
       {
-        "prop": "ApplicationRule:name"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.name"
       }
     ],
     "application_rule_collection.rule.protocols.port": [
       {
-        "prop": "ApplicationRule:protocols.port"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.protocols.port"
       }
     ],
     "application_rule_collection.rule.protocols.type": [
       {
-        "prop": "ApplicationRule:protocols.protocolType"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.protocols.protocolType"
       }
     ],
     "application_rule_collection.rule.source_addresses": [
       {
-        "prop": "ApplicationRule:sourceAddresses"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.sourceAddresses"
       }
     ],
     "application_rule_collection.rule.source_ip_groups": [
       {
-        "prop": "ApplicationRule:sourceIpGroups"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.sourceIpGroups"
       }
     ],
     "firewall_policy_id": [],
@@ -65,112 +65,112 @@
     ],
     "nat_rule_collection.action": [
       {
-        "prop": "FirewallPolicyNatRuleCollection:action.type"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.action.type"
       }
     ],
     "nat_rule_collection.name": [
       {
-        "prop": "FirewallPolicyNatRuleCollection:name"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.name"
       }
     ],
     "nat_rule_collection.priority": [
       {
-        "prop": "FirewallPolicyNatRuleCollection:priority"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.priority"
       }
     ],
     "nat_rule_collection.rule.destination_address": [
       {
-        "prop": "NatRule:destinationAddresses"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.destinationAddresses"
       }
     ],
     "nat_rule_collection.rule.destination_ports": [
       {
-        "prop": "NatRule:destinationPorts"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.destinationPorts"
       }
     ],
     "nat_rule_collection.rule.name": [
       {
-        "prop": "NatRule:name"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.name"
       }
     ],
     "nat_rule_collection.rule.protocols": [
       {
-        "prop": "NatRule:ipProtocols"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.ipProtocols"
       }
     ],
     "nat_rule_collection.rule.source_addresses": [
       {
-        "prop": "NatRule:sourceAddresses"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.sourceAddresses"
       }
     ],
     "nat_rule_collection.rule.source_ip_groups": [
       {
-        "prop": "NatRule:sourceIpGroups"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.sourceIpGroups"
       }
     ],
     "nat_rule_collection.rule.translated_address": [
       {
-        "prop": "NatRule:translatedAddress"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.translatedAddress"
       }
     ],
     "nat_rule_collection.rule.translated_port": [
       {
-        "prop": "NatRule:translatedPort"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.translatedPort"
       }
     ],
     "network_rule_collection.action": [
       {
-        "prop": "FirewallPolicyFilterRuleCollection:action.type"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.action.type"
       }
     ],
     "network_rule_collection.name": [
       {
-        "prop": "FirewallPolicyFilterRuleCollection:name"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.name"
       }
     ],
     "network_rule_collection.priority": [
       {
-        "prop": "FirewallPolicyFilterRuleCollection:priority"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.priority"
       }
     ],
     "network_rule_collection.rule.destination_addresses": [
       {
-        "prop": "NetworkRule:destinationAddresses"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.destinationAddresses"
       }
     ],
     "network_rule_collection.rule.destination_fqdns": [
       {
-        "prop": "NetworkRule:destinationFqdns"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.destinationFqdns"
       }
     ],
     "network_rule_collection.rule.destination_ip_groups": [
       {
-        "prop": "NetworkRule:destinationIpGroups"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.destinationIpGroups"
       }
     ],
     "network_rule_collection.rule.destination_ports": [
       {
-        "prop": "NetworkRule:destinationPorts"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.destinationPorts"
       }
     ],
     "network_rule_collection.rule.name": [
       {
-        "prop": "NetworkRule:name"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.name"
       }
     ],
     "network_rule_collection.rule.protocols": [
       {
-        "prop": "NetworkRule:ipProtocols"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.ipProtocols"
       }
     ],
     "network_rule_collection.rule.source_addresses": [
       {
-        "prop": "NetworkRule:sourceAddresses"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.sourceAddresses"
       }
     ],
     "network_rule_collection.rule.source_ip_groups": [
       {
-        "prop": "NetworkRule:sourceIpGroups"
+        "prop": "FirewallPolicyRuleCollectionGroup:properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.sourceIpGroups"
       }
     ],
     "priority": [

@@ -11,39 +11,18 @@
       "etag": "granted",
       "type": "granted",
       "properties.provisioningState": "granted",
-      "properties.ruleCollections": "Please check on \"FirewallPolicyFilterRuleCollection\" and \"FirewallPolicyNatRuleCollection\" respectively."
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.ruleCollectionType": "Used internally as discriminator",
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.ruleType": "Used internally as discriminator",
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.description": "Not supported in service actually",
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{ApplicationRule}.destinationAddresses": "Not supported in service actually",
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NatRule}": "This variant only applies to FirewallPolicyNatRuleCollection",
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.description": "Not supported in service actually",
+      "properties.ruleCollections{FirewallPolicyFilterRuleCollection}.rules{NetworkRule}.ruleType": "Used internally as discriminator",
+      "properties.ruleCollections{FirewallPolicyNatRuleCollection}.ruleCollectionType": "Used internally as discriminator",
+      "properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{ApplicationRule}": "This variant only applies to FirewallPolicyFilterRuleCollection",
+      "properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NetworkRule}": "This variant only applies to FirewallPolicyFilterRuleCollection",
+      "properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.description": "Not supported in service actually",
+      "properties.ruleCollections{FirewallPolicyNatRuleCollection}.rules{NatRule}.ruleType": "Used internally as discriminator"
     }
-  },
-  "FirewallPolicyFilterRuleCollection": {
-      "Properties": {
-          "ruleCollectionType": "Used internally as discriminator",
-          "rules": "Please check on \"ApplicationRule\" and \"NetworkRule\" respectively."
-      }
-  },
-  "FirewallPolicyNatRuleCollection": {
-      "Properties": {
-          "ruleCollectionType": "Used internally as discriminator",
-          "rules": "Please check on \"NatRule\"."
-      }
-  },
-
-  "NatRule": {
-      "Properties": {
-          "ruleType": "Used internally as discriminator",
-          "description": "Not supported in service actually"
-      }
-  },
-  "ApplicationRule": {
-      "Properties": {
-          "ruleType": "Used internally as discriminator",
-          "destinationAddresses": "Not supported in service actually",
-          "description": "Not supported in service actually"
-      }
-  },
-  "NetworkRule": {
-      "Properties": {
-          "ruleType": "Used internally as discriminator",
-          "description": "Not supported in service actually"
-      }
   }
 }
