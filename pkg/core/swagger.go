@@ -14,6 +14,8 @@ import (
 	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/propertyaddr"
 )
 
+const swaggerExtensionMSDiscriminatorValue = "x-ms-discriminator-value"
+
 type TFLink struct {
 	Prop propertyaddr.TerraformPropertyAddr
 }
@@ -98,21 +100,30 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 		return nil, err
 	}
 
+	schema := swagger.Definitions[schemaName]
+
 	swgSchema := &SWGSchema{
 		SwaggerRelPath: swaggerRelPath,
 		Name:           schemaName,
 		Properties: map[string]*SWGSchemaProperty{
 			"": {
 				TFLinks: []TFLink{},
-				schema:  swagger.Definitions[schemaName],
-				resolvedRefs: map[string]interface{}{
-					// Consider this schemas itself as resolved reference
-					normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
-				},
+				schema:  schema,
+				//resolvedRefs: map[string]interface{}{
+				//	// Consider this schemas itself as resolved reference
+				//	normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
+				//},
 			},
 		},
 		swaggerURL: swaggerURI,
 		swagger:    swagger,
+	}
+
+	// Consider this schemas itself as resolved reference only when it is not a discriminator schema
+	if schema.Discriminator == "" {
+		swgSchema.Properties[""].resolvedRefs = map[string]interface{}{
+			normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
+		}
 	}
 
 	// Expand the root level properties of the schemas
@@ -190,8 +201,15 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 					panic(fmt.Sprintf("failed to find variant dscSchema who implements discriminator %q in %q", discriminator, addr.String()))
 				}
 				for dscSchemaName, dscSchema := range s.swagger.Definitions {
-					if v, ok := dscSchema.Extensions["x-ms-discriminator-value"].(string); ok && v == variant {
-						p := NewSWGSchemaProperty(dscSchema, prop.TFLinks, prop.resolvedRefs)
+					if v, ok := dscSchema.Extensions[swaggerExtensionMSDiscriminatorValue].(string); ok && v == variant {
+						// Since we removed the discriminator base schema before, we should in turn add the exact variant schema expanded to the "resolvedRefs".
+						resolvedRefs := map[string]interface{}{}
+						for k, v := range prop.resolvedRefs {
+							resolvedRefs[k] = v
+						}
+						resolvedRefs[normalizePaths("#/definitions/"+dscSchemaName, s.swaggerURL)] = struct{}{}
+
+						p := NewSWGSchemaProperty(dscSchema, prop.TFLinks, resolvedRefs)
 						addr := addr.AsVariant(dscSchemaName)
 						s.addProperty(addr, *p)
 						continue outLoop
@@ -283,12 +301,17 @@ func (s *SWGSchema) expandRefProperty(prop *SWGSchemaProperty) (isCyclic bool, e
 		return true, nil
 	}
 
-	// Keep track of the resolved reference to avoid cyclic ref
-	prop.resolvedRefs[normalizedRefURI] = struct{}{}
-
 	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.swaggerURL})
 	if err != nil {
 		return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
+	}
+
+	// Keep track of the resolved reference to avoid cyclic ref.
+	// Specifically, we need to avoid track the discriminator schemas as they will not be exactly referenced
+	// (only its variants are referenced). This allows us to reference the base schema's properties in the
+	// `allOf` from the variant's schema.
+	if schema.Discriminator == "" {
+		prop.resolvedRefs[normalizedRefURI] = struct{}{}
 	}
 
 	// update the stored schemas by the derefed schemas

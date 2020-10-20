@@ -26,7 +26,7 @@ func TestNewSWGSchema(t *testing.T) {
 	_ = specBar
 	require.NoError(t, err)
 
-	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/c8df71b214616b5889729ec18368f60cc1c8822b"
+	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/c1e7508ce27c985390353d7d5f32655028536a13"
 	specFooURL := specBaseURL + "/foo.json"
 	_ = specFooURL
 
@@ -385,14 +385,14 @@ func TestNewSWGSchema(t *testing.T) {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant1"],
 						resolvedRefs: map[string]interface{}{
-							specFooPathLocal + "#/definitions/def_base": struct{}{},
+							specFooPathLocal + "#/definitions/def_variant1": struct{}{},
 						},
 					},
 					"[def_variant2]": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant2"],
 						resolvedRefs: map[string]interface{}{
-							specFooPathLocal + "#/definitions/def_base": struct{}{},
+							specFooPathLocal + "#/definitions/def_variant2": struct{}{},
 						},
 					},
 				},
@@ -431,6 +431,31 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 		err            error
 		expect         SWGSchema
 	}{
+		// NO.0
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_foo",
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_foo", "prop_primitive"),
+			},
+			err: nil,
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "def_foo",
+				Properties: map[string]*SWGSchemaProperty{
+					"prop_primitive": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_foo": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		// NO.1
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_foo",
@@ -455,6 +480,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.2
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_regular",
@@ -501,6 +527,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.3
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_propInFileRef",
@@ -525,6 +552,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.4
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_propSelfRef",
@@ -548,6 +576,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.5
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_propCrossFileRef",
@@ -572,6 +601,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.6
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_inFileRef",
@@ -596,6 +626,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.7
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_crossFileRef",
@@ -620,6 +651,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.8
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_selfRef",
@@ -643,6 +675,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.9
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "def_c",
@@ -658,16 +691,133 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant1"],
 						resolvedRefs: map[string]interface{}{
-							specFooPath + "#/definitions/def_c":    struct{}{},
-							specFooPath + "#/definitions/def_base": struct{}{},
+							specFooPath + "#/definitions/def_c":        struct{}{},
+							specFooPath + "#/definitions/def_variant1": struct{}{},
 						},
 					},
 					"p1[def_variant2]": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_variant2"],
 						resolvedRefs: map[string]interface{}{
-							specFooPath + "#/definitions/def_c":    struct{}{},
-							specFooPath + "#/definitions/def_base": struct{}{},
+							specFooPath + "#/definitions/def_c":        struct{}{},
+							specFooPath + "#/definitions/def_variant2": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		// NO.10
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_c",
+			err:            nil,
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_c", "p1"),
+				propertyaddr.MustNewSwaggerPropertyAddr("def_c", "p1[def_variant1]"),
+			},
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "def_c",
+				Properties: map[string]*SWGSchemaProperty{
+					"p1[def_variant1].type": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_base"].Properties["type"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_c":        struct{}{},
+							specFooPath + "#/definitions/def_variant1": struct{}{},
+						},
+					},
+					"p1[def_variant2]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_variant2"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_c":        struct{}{},
+							specFooPath + "#/definitions/def_variant2": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		// NO.11
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "ruleCollectionGroup",
+			err:            nil,
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("ruleCollectionGroup", "ruleCollections"),
+			},
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "ruleCollectionGroup",
+				Properties: map[string]*SWGSchemaProperty{
+					"ruleCollections[natRuleCollection]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["natRuleCollection"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
+							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
+						},
+					},
+					"ruleCollections[filterRuleCollection]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["filterRuleCollection"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/ruleCollectionGroup":  struct{}{},
+							specFooPath + "#/definitions/filterRuleCollection": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		// NO.12
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "ruleCollectionGroup",
+			err:            nil,
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("ruleCollectionGroup", "ruleCollections"),
+				propertyaddr.MustNewSwaggerPropertyAddr("ruleCollectionGroup", "ruleCollections[natRuleCollection]"),
+			},
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "ruleCollectionGroup",
+				Properties: map[string]*SWGSchemaProperty{
+					"ruleCollections[natRuleCollection].action": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["natRuleCollection"].Properties["action"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
+							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
+						},
+					},
+					"ruleCollections[natRuleCollection].ruleCollectionType": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["ruleCollection"].Properties["ruleCollectionType"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
+							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
+						},
+					},
+					"ruleCollections[natRuleCollection].name": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["ruleCollection"].Properties["name"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
+							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
+						},
+					},
+					"ruleCollections[filterRuleCollection]": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["filterRuleCollection"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/ruleCollectionGroup":  struct{}{},
+							specFooPath + "#/definitions/filterRuleCollection": struct{}{},
 						},
 					},
 				},
