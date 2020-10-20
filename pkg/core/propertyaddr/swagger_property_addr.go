@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/magodo/terraform-provider-azurerm-insight/pkg/core/utils"
+
 	"github.com/go-openapi/spec"
 )
 
@@ -282,14 +284,13 @@ func (addr SwaggerPropertyAddr) Copy() SwaggerPropertyAddr {
 	}
 
 	for _, segment := range addr.PropertyAddr {
-		discriminator := ""
-		if segment.discriminatorValue != nil {
-			discriminator = *segment.discriminatorValue
+		newSegment := SwaggerPropertyAddrSegment{
+			name: segment.name,
 		}
-		newAddr.PropertyAddr = append(newAddr.PropertyAddr, SwaggerPropertyAddrSegment{
-			name:               segment.name,
-			discriminatorValue: &discriminator,
-		})
+		if segment.discriminatorValue != nil {
+			newSegment.discriminatorValue = utils.String(*segment.discriminatorValue)
+		}
+		newAddr.PropertyAddr = append(newAddr.PropertyAddr, newSegment)
 	}
 	return newAddr
 }
