@@ -6,9 +6,6 @@
     "network_security_group_id": [
       {
         "prop": "Subnet:properties.networkSecurityGroup.id"
-      },
-      {
-        "prop": "VirtualNetwork:properties.subnets.properties.networkSecurityGroup.id"
       }
     ],
     "subnet_id": [],

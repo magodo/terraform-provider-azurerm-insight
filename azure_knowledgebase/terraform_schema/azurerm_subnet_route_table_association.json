@@ -6,11 +6,8 @@
     "route_table_id": [
       {
         "prop": "Subnet:properties.routeTable.id"
-      },
-      {
-        "prop": "VirtualNetwork:properties.subnets.properties.routeTable.id"
       }
-    ],
+   ],
     "subnet_id": [],
     "timeouts.create": [],
     "timeouts.delete": [],

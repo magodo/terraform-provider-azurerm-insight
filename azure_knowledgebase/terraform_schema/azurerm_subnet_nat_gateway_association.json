@@ -6,9 +6,6 @@
     "nat_gateway_id": [
       {
         "prop": "Subnet:properties.natGateway.id"
-      },
-      {
-        "prop": "VirtualNetwork:properties.subnets.properties.natGateway.id"
       }
     ],
     "subnet_id": [],
