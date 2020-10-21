@@ -1,0 +1,36 @@
+{
+  "Name": "azurerm_service_endpoint_policy_definition",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/serviceEndpointPolicy.json",
+  "PropertyLinks": {
+    "description": [
+      {
+        "prop": "ServiceEndpointPolicyDefinition:properties.description"
+      }
+    ],
+    "id": [
+      {
+        "prop": "ServiceEndpointPolicyDefinition:id"
+      }
+    ],
+    "name": [
+      {
+        "prop": "ServiceEndpointPolicyDefinition:name"
+      }
+    ],
+    "policy_id": [],
+    "service_endpoint_name": [
+      {
+        "prop": "ServiceEndpointPolicyDefinition:properties.service"
+      }
+    ],
+    "service_resources": [
+      {
+        "prop": "ServiceEndpointPolicyDefinition:properties.serviceResources"
+      }
+    ],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "ServiceEndpointPolicy": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties": "all properties are useless read-only ones in context of Terraform"
+    }
+  },
+  "ServiceEndpointPolicyDefinition": {
+    "Properties": {
+      "etag": "granted",
+      "properties.provisioningState": "granted"
+    }
+  }
+}
