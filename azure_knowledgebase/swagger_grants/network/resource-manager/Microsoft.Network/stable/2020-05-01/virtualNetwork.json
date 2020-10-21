@@ -26,7 +26,8 @@
       "properties.subnets.properties.routeTable": "covered in Subnet",
       "properties.subnets.properties.serviceAssociationLinks": "covered in Subnet",
       "properties.subnets.properties.serviceEndpointPolicies": "covered in Subnet",
-      "properties.subnets.properties.serviceEndpoints": "covered in Subnet"
+      "properties.subnets.properties.serviceEndpoints": "covered in Subnet",
+      "properites.properties.virtualNetworkPeerings": "covered in virtualNetworkPeering"
     }
   },
   "Subnet": {
