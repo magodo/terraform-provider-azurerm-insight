@@ -21,6 +21,7 @@ func TestNewSWGSchema(t *testing.T) {
 	specFooPathLocal := filepath.Join(specBasePathLocal, "foo.json")
 	specBarPathLocal := filepath.Join(specBasePathLocal, "bar.json")
 	specFoo, err := LoadSwagger(specFooPathLocal)
+	_ = specFoo
 	require.NoError(t, err)
 	specBar, err := LoadSwagger(specBarPathLocal)
 	_ = specBar
@@ -400,12 +401,21 @@ func TestNewSWGSchema(t *testing.T) {
 				swagger:    specFoo,
 			},
 		},
+		// NO.14: non existent schema name
+		{
+			specBaseURL: specBasePathLocal,
+			specRelPath: "foo.json",
+			schemaName:  "non_existent_schema",
+			err:         fmt.Errorf("schema %q is not found in swagger spec %q", "non_existent_schema", specBasePathLocal+"/foo.json"),
+		},
 	}
 
 	for idx, c := range cases {
 		actual, err := NewSWGSchema(c.specBaseURL, c.specRelPath, c.schemaName)
 		require.Equal(t, c.err, err, idx)
-		require.Equal(t, c.expect, *actual, idx)
+		if err == nil {
+			require.Equal(t, c.expect, *actual, idx)
+		}
 	}
 }
 

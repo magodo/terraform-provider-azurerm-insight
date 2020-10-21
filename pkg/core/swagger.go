@@ -100,7 +100,10 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 		return nil, err
 	}
 
-	schema := swagger.Definitions[schemaName]
+	schema, ok := swagger.Definitions[schemaName]
+	if !ok {
+		return nil, fmt.Errorf("schema %q is not found in swagger spec %q", schemaName, swaggerURI)
+	}
 
 	swgSchema := &SWGSchema{
 		SwaggerRelPath: swaggerRelPath,
