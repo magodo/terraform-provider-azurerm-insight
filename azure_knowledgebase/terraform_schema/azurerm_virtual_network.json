@@ -7,6 +7,11 @@
         "prop": "VirtualNetwork:properties.addressSpace.addressPrefixes"
       }
     ],
+    "bgp_community": [
+      {
+        "prop": "VirtualNetwork:properties.bgpCommunities.virtualNetworkCommunity"
+      }
+    ],
     "ddos_protection_plan.enable": [
       {
         "prop": "VirtualNetwork:properties.enableDdosProtection"
@@ -71,6 +76,11 @@
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],
-    "timeouts.update": []
+    "timeouts.update": [],
+    "vm_protection_enabled": [
+      {
+        "prop": "VirtualNetwork:properties.enableVmProtection"
+      }
+    ]
   }
 }

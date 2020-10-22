@@ -27,7 +27,8 @@
       "properties.subnets.properties.serviceAssociationLinks": "covered in Subnet",
       "properties.subnets.properties.serviceEndpointPolicies": "covered in Subnet",
       "properties.subnets.properties.serviceEndpoints": "covered in Subnet",
-      "properites.properties.virtualNetworkPeerings": "covered in virtualNetworkPeering"
+      "properties.bgpCommunities.regionalCommunity": "the regional BGP community is well-knowned",
+      "properties.virtualNetworkPeerings": "covered in virtualNetworkPeering"
     }
   },
   "Subnet": {
