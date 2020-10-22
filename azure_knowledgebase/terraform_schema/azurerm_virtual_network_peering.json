@@ -1,19 +1,47 @@
 {
   "Name": "azurerm_virtual_network_peering",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualNetwork.json",
   "PropertyLinks": {
-    "allow_forwarded_traffic": [],
-    "allow_gateway_transit": [],
-    "allow_virtual_network_access": [],
-    "id": [],
-    "name": [],
-    "remote_virtual_network_id": [],
+    "allow_forwarded_traffic": [
+      {
+        "prop": "VirtualNetworkPeering:properties.allowForwardedTraffic"
+      }
+    ],
+    "allow_gateway_transit": [
+      {
+        "prop": "VirtualNetworkPeering:properties.allowGatewayTransit"
+      }
+    ],
+    "allow_virtual_network_access": [
+      {
+        "prop": "VirtualNetworkPeering:properties.allowVirtualNetworkAccess"
+      }
+    ],
+    "id": [
+      {
+        "prop": "VirtualNetworkPeering:id"
+      }
+    ],
+    "name": [
+      {
+        "prop": "VirtualNetworkPeering:name"
+      }
+    ],
+    "remote_virtual_network_id": [
+      {
+        "prop": "VirtualNetworkPeering:properties.remoteVirtualNetwork.id"
+      }
+    ],
     "resource_group_name": [],
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],
     "timeouts.update": [],
-    "use_remote_gateways": [],
+    "use_remote_gateways": [
+      {
+        "prop": "VirtualNetworkPeering:properties.useRemoteGateways"
+      }
+    ],
     "virtual_network_name": []
   }
 }

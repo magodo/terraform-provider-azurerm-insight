@@ -60,5 +60,14 @@
       "properties.routeTable.type": "The route table is pre-provisioned, only ID is needed here to reference route table",
       "properties.privateEndpoints": "This is an array of private endpoints thaat reference this subnet, which is useless in context of Terraform"
     }
+  },
+
+  "VirtualNetworkPeering": {
+    "Properties": {
+      "etag": "granted",
+      "properties.peeringState": "This indicates the status of the peering network, which is useless in context of Terraform",
+      "properties.provisioningState": "granted",
+      "properties.remoteAddressSpace": "This is an read-only attributes listing the peering network address space"
+    }
   }
 }
