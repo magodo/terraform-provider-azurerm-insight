@@ -28,7 +28,8 @@
       "properties.subnets.properties.serviceEndpointPolicies": "covered in Subnet",
       "properties.subnets.properties.serviceEndpoints": "covered in Subnet",
       "properties.bgpCommunities.regionalCommunity": "the regional BGP community is well-knowned",
-      "properties.virtualNetworkPeerings": "covered in virtualNetworkPeering"
+      "properties.virtualNetworkPeerings": "covered in virtualNetworkPeering",
+      "properties.ipAllocations": "This is a MS internal feature, non MSFT users have access to enable that feature, so not support it in Terraform for now"
     }
   },
   "Subnet": {
