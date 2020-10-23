@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"log"
@@ -20,19 +21,59 @@ import (
 
 type SWGResourceProviders map[string]*SWGResourceProvider
 
+func (providers SWGResourceProviders) Copy() SWGResourceProviders {
+	out := map[string]*SWGResourceProvider{}
+	for k, v := range providers {
+		newV := v.Copy()
+		out[k] = &newV
+	}
+	return out
+}
+
 type SWGResourceProvider struct {
 	SwaggerRelPath string
 	Apis           SWGResourceProviderAPIs
 }
 
+func (v SWGResourceProvider) Copy() SWGResourceProvider {
+	return SWGResourceProvider{
+		SwaggerRelPath: v.SwaggerRelPath,
+		Apis:           v.Apis.Copy(),
+	}
+}
+
 type SWGResourceProviderAPIs map[string]*SWGResourceProviderAPI
+
+func (apis SWGResourceProviderAPIs) Copy() SWGResourceProviderAPIs {
+	out := map[string]*SWGResourceProviderAPI{}
+	for k, v := range apis {
+		newV := v.Copy()
+		out[k] = &newV
+	}
+	return out
+}
 
 type SWGResourceProviderAPI struct {
 	SwaggerRelPath string
 	Schemas        SWGSchemas
 }
 
+func (v SWGResourceProviderAPI) Copy() SWGResourceProviderAPI {
+	return SWGResourceProviderAPI{
+		SwaggerRelPath: v.SwaggerRelPath,
+		Schemas:        v.Schemas.ShallowCopy(),
+	}
+}
+
 type SWGSchemas map[string]*SWGSchema
+
+func (v SWGSchemas) ShallowCopy() SWGSchemas {
+	out := map[string]*SWGSchema{}
+	for k, v := range v {
+		out[k] = v
+	}
+	return out
+}
 
 type SWGSchema struct {
 	core.SWGSchema
@@ -223,6 +264,31 @@ func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaLocalFS(swagge
 		}
 	}
 	return g.Wait()
+}
+
+func (swgrps *SWGResourceProviders) Filter(allowListFile string) error {
+	f, err := os.Open(allowListFile)
+	if err != nil {
+		return err
+	}
+
+	newswgrps := SWGResourceProviders{}
+
+	p := regexp.MustCompile(`^([^:]+)$|^([^:]+):([^:]+)$|^([^:]+):([^:]+):([^:]+)$`)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		m := p.FindStringSubmatch(scanner.Text())
+		switch len(m) {
+		// TODO: based on the matches, constrcut the newswgrps
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
+	*swgrps = newswgrps
+	return nil
 }
 
 func collectAllTFCandidateSchemas(swaggerRepoBaseURI, relPath string) ([]SWGSchema, error) {
