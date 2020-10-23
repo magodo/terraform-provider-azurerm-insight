@@ -1,0 +1,11 @@
+{
+  "LocalNetworkGateway": {
+    "Properties": {
+      "etag": "granted",
+      "type": "granted",
+      "properties.provisioningState": "granted",
+      "properties.resourceGuid": "granted",
+      "properties.bgpSettings.bgpPeeringAddresses": "This is for virtual network gateway only"
+    }
+  }
+}
