@@ -10,6 +10,8 @@ import (
 	"regexp"
 	"strings"
 
+	"golang.org/x/sync/errgroup"
+
 	openapispec "github.com/go-openapi/spec"
 
 	"github.com/magodo/ghwalk"
@@ -167,56 +169,60 @@ func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaGithubAPI(ctx 
 // CompleteSWGResourceProvidersViaLocalFS is similar to the CompleteSWGResourceProvidersViaGithubAPI, except it walks the Azure Swagger
 // repo on local FS.
 func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaLocalFS(swaggerRepoSpecBasePath string) error {
+	g := new(errgroup.Group)
 	for rpName, rp := range swgrps {
 		for apiName, api := range rp.Apis {
-			schemaFolderPattern := regexp.MustCompile(fmt.Sprintf(`^%[1]s(%[3]sresource-manager(%[3]sMicrosoft.\w+(%[3]s(preview|stable)(%[3]s%[2]s)?)?)?)?$`, rpName, apiName, regexp.QuoteMeta(string(os.PathSeparator))))
-			schemaPattern := regexp.MustCompile(fmt.Sprintf(`^%[1]s%[3]sresource-manager%[3]sMicrosoft.\w+%[3]s(preview|stable)%[3]s%[2]s%[3]s\w+.json$`, rpName, apiName, regexp.QuoteMeta(string(os.PathSeparator))))
-			if err := filepath.Walk(path.Join(swaggerRepoSpecBasePath, rpName),
-				func(p string, info os.FileInfo, err error) error {
-					p, _ = filepath.Abs(p)
-					swaggerRepoSpecBasePath, _ = filepath.Abs(swaggerRepoSpecBasePath)
-					relPath := strings.TrimPrefix(p, swaggerRepoSpecBasePath+string(os.PathSeparator))
-					log.Printf("Searching Swaggers in %s...\n", relPath)
-					if err != nil {
-						return err
-					}
-					if info == nil {
-						return nil
-					}
-
-					// Skip directories not match the schema folder patterns
-					if info.IsDir() {
-						if !schemaFolderPattern.MatchString(relPath) {
-							log.Printf("Skip directory %s!\n", relPath)
-							return filepath.SkipDir
+			g.Go(func() error {
+				schemaFolderPattern := regexp.MustCompile(fmt.Sprintf(`^%[1]s(%[3]sresource-manager(%[3]sMicrosoft.\w+(%[3]s(preview|stable)(%[3]s%[2]s)?)?)?)?$`, rpName, apiName, regexp.QuoteMeta(string(os.PathSeparator))))
+				schemaPattern := regexp.MustCompile(fmt.Sprintf(`^%[1]s%[3]sresource-manager%[3]sMicrosoft.\w+%[3]s(preview|stable)%[3]s%[2]s%[3]s\w+.json$`, rpName, apiName, regexp.QuoteMeta(string(os.PathSeparator))))
+				if err := filepath.Walk(path.Join(swaggerRepoSpecBasePath, rpName),
+					func(p string, info os.FileInfo, err error) error {
+						p, _ = filepath.Abs(p)
+						swaggerRepoSpecBasePath, _ = filepath.Abs(swaggerRepoSpecBasePath)
+						relPath := strings.TrimPrefix(p, swaggerRepoSpecBasePath+string(os.PathSeparator))
+						log.Printf("Searching Swaggers in %s...\n", relPath)
+						if err != nil {
+							return err
 						}
-						return nil
-					}
-
-					// Skip files not match the schema file patterns
-					if !schemaPattern.MatchString(relPath) {
-						log.Printf("Skip file %s!\n", relPath)
-						return nil
-					}
-
-					schemas, err := collectAllTFCandidateSchemas(swaggerRepoSpecBasePath, relPath)
-					if err != nil {
-						return err
-					}
-
-					for _, schema := range schemas {
-						if _, ok := api.Schemas[schema.Name]; !ok {
-							api.Schemas[schema.Name] = &schema
+						if info == nil {
+							return nil
 						}
-					}
 
-					return nil
-				}); err != nil {
-				return err
-			}
+						// Skip directories not match the schema folder patterns
+						if info.IsDir() {
+							if !schemaFolderPattern.MatchString(relPath) {
+								log.Printf("Skip directory %s!\n", relPath)
+								return filepath.SkipDir
+							}
+							return nil
+						}
+
+						// Skip files not match the schema file patterns
+						if !schemaPattern.MatchString(relPath) {
+							log.Printf("Skip file %s!\n", relPath)
+							return nil
+						}
+
+						schemas, err := collectAllTFCandidateSchemas(swaggerRepoSpecBasePath, relPath)
+						if err != nil {
+							return err
+						}
+
+						for _, schema := range schemas {
+							if _, ok := api.Schemas[schema.Name]; !ok {
+								api.Schemas[schema.Name] = &schema
+							}
+						}
+
+						return nil
+					}); err != nil {
+					return err
+				}
+				return nil
+			})
 		}
 	}
-	return nil
+	return g.Wait()
 }
 
 func collectAllTFCandidateSchemas(swaggerRepoBaseURI, relPath string) ([]SWGSchema, error) {
