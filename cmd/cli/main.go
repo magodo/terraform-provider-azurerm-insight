@@ -62,7 +62,9 @@ func main() {
 	}
 
 	if *schemaAllowList != "" {
-		if err := azureswgschemas.Filter(*schemaAllowList); err != nil {
+		var err error
+		azureswgschemas, err = azureswgschemas.Filter(*schemaAllowList)
+		if err != nil {
 			log.Fatal(err)
 		}
 	}

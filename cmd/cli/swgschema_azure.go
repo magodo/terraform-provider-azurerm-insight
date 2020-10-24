@@ -30,6 +30,69 @@ func (providers SWGResourceProviders) Copy() SWGResourceProviders {
 	return out
 }
 
+func (providers SWGResourceProviders) CopyRPFrom(oproviders SWGResourceProviders, rpName string) {
+	if rp, ok := oproviders[rpName]; ok {
+		newRP := rp.Copy()
+		providers[rpName] = &newRP
+	}
+	return
+}
+
+func (providers SWGResourceProviders) CopyAPIFrom(oproviders SWGResourceProviders, rpName, apiVersion string) {
+	rp, ok := oproviders[rpName]
+	if !ok {
+		return
+	}
+	api, ok := rp.Apis[apiVersion]
+	if !ok {
+		return
+	}
+
+	if _, ok := providers[rpName]; !ok {
+		providers[rpName] = &SWGResourceProvider{
+			SwaggerRelPath: rp.SwaggerRelPath,
+			Apis:           SWGResourceProviderAPIs{},
+		}
+	}
+
+	newApi := api.Copy()
+	providers[rpName].Apis[apiVersion] = &newApi
+	return
+}
+
+func (providers SWGResourceProviders) CopySchemaFrom(oproviders SWGResourceProviders, rpName, apiVersion, schemaName string) {
+	rp, ok := oproviders[rpName]
+	if !ok {
+		return
+	}
+	api, ok := rp.Apis[apiVersion]
+	if !ok {
+		return
+	}
+	schema, ok := api.Schemas[schemaName]
+	if !ok {
+		return
+	}
+
+	if _, ok := providers[rpName]; !ok {
+		providers[rpName] = &SWGResourceProvider{
+			SwaggerRelPath: rp.SwaggerRelPath,
+			Apis:           SWGResourceProviderAPIs{},
+		}
+	}
+
+	if _, ok := providers[rpName].Apis[apiVersion]; !ok {
+		providers[rpName].Apis[apiVersion] = &SWGResourceProviderAPI{
+			SwaggerRelPath: api.SwaggerRelPath,
+			Schemas:        SWGSchemas{},
+		}
+	}
+
+	// Note that the SWGSchema is shared (i.e. not copied)
+	providers[rpName].Apis[apiVersion].Schemas[schemaName] = schema
+	return
+}
+
 type SWGResourceProvider struct {
 	SwaggerRelPath string
 	Apis           SWGResourceProviderAPIs
@@ -266,10 +329,10 @@ func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaLocalFS(swagge
 	return g.Wait()
 }
 
-func (swgrps *SWGResourceProviders) Filter(allowListFile string) error {
+func (swgrps SWGResourceProviders) Filter(allowListFile string) (SWGResourceProviders, error) {
 	f, err := os.Open(allowListFile)
 	if err != nil {
-		return err
+		return SWGResourceProviders{}, err
 	}
 
 	newswgrps := SWGResourceProviders{}
@@ -278,17 +341,100 @@ func (swgrps *SWGResourceProviders) Filter(allowListFile string) error {
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		m := p.FindStringSubmatch(scanner.Text())
-		switch len(m) {
-		// TODO: based on the matches, constrcut the newswgrps
+
+		mm := []string{}
+		for _, v := range m[1:] {
+			if v != "" {
+				mm = append(mm, v)
+			}
+		}
+
+		switch len(mm) {
+		case 1:
+			rp := mm[0]
+			if rp == "*" {
+				newswgrps = swgrps.Copy()
+			} else {
+				newswgrps.CopyRPFrom(swgrps, rp)
+			}
+		case 2:
+			rpName, apiName := mm[0], mm[1]
+			if rpName == "*" {
+				if apiName == "*" {
+					newswgrps = swgrps.Copy()
+				} else {
+					for rpName := range swgrps {
+						newswgrps.CopyAPIFrom(swgrps, rpName, apiName)
+					}
+				}
+			} else {
+				if _, ok := swgrps[rpName]; !ok {
+					continue
+				}
+				if apiName == "*" {
+					for api := range swgrps[rpName].Apis {
+						newswgrps.CopyAPIFrom(swgrps, rpName, api)
+					}
+				} else {
+					newswgrps.CopyAPIFrom(swgrps, rpName, apiName)
+				}
+			}
+		case 3:
+			rpName, apiName, schemaName := mm[0], mm[1], mm[2]
+			if rpName == "*" {
+				if apiName == "*" {
+					if schemaName == "*" {
+						newswgrps = swgrps.Copy()
+					} else {
+						for rpName := range swgrps {
+							for apiName := range swgrps[rpName].Apis {
+								newswgrps.CopySchemaFrom(swgrps, rpName, apiName, schemaName)
+							}
+						}
+					}
+				} else {
+					for rpName := range swgrps {
+						if _, ok := swgrps[rpName].Apis[apiName]; !ok {
+							continue
+						}
+
+						if schemaName == "*" {
+							for schemaName := range swgrps[rpName].Apis[apiName].Schemas {
+								newswgrps.CopySchemaFrom(swgrps, rpName, apiName, schemaName)
+							}
+						} else {
+							newswgrps.CopySchemaFrom(swgrps, rpName, apiName, schemaName)
+						}
+					}
+				}
+			} else {
+				if apiName == "*" {
+					if schemaName == "*" {
+						newswgrps.CopyRPFrom(swgrps, rpName)
+					} else {
+						if _, ok := swgrps[rpName]; !ok {
+							continue
+						}
+						for apiName := range swgrps[rpName].Apis {
+							newswgrps.CopySchemaFrom(swgrps, rpName, apiName, schemaName)
+						}
+					}
+				} else {
+					if schemaName == "*" {
+						newswgrps.CopyAPIFrom(swgrps, rpName, apiName)
+					} else {
+						newswgrps.CopySchemaFrom(swgrps, rpName, apiName, schemaName)
+					}
+				}
+			}
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return err
+		return SWGResourceProviders{}, err
 	}
 
-	*swgrps = newswgrps
-	return nil
+	return newswgrps, nil
 }
 
 func collectAllTFCandidateSchemas(swaggerRepoBaseURI, relPath string) ([]SWGSchema, error) {
