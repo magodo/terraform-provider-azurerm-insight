@@ -31,6 +31,7 @@ func main() {
 	swaggerSpecPath := flag.String("swagger-spec-path", "", "The path to the swagger spec directory, either a HTTP URI or local path (e.g. https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification)")
 	showHelp := flag.Bool("help", false, "Display this message")
 	githubToken := flag.String("github-token", "", "Github access token used to interact with github repos")
+	schemaAllowList := flag.String("swagger-schema-allow-list", "", `The allow-list file that each line represents a swagger schema to be shown, in format: "<rp name>:<api version>:<schema name>" (each component allows "*" as a glob)`)
 
 	flag.Parse()
 
@@ -56,6 +57,14 @@ func main() {
 		}
 	} else {
 		if err := azureswgschemas.CompleteSWGResourceProvidersViaLocalFS(*swaggerSpecPath); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	if *schemaAllowList != "" {
+		var err error
+		azureswgschemas, err = azureswgschemas.Filter(*schemaAllowList)
+		if err != nil {
 			log.Fatal(err)
 		}
 	}
