@@ -112,10 +112,6 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 			"": {
 				TFLinks: []TFLink{},
 				schema:  schema,
-				//resolvedRefs: map[string]interface{}{
-				//	// Consider this schemas itself as resolved reference
-				//	normalizePaths("#/definitions/"+schemaName, swaggerURI): struct{}{},
-				//},
 			},
 		},
 		swaggerURL: swaggerURI,
@@ -203,21 +199,38 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 				if !ok {
 					panic(fmt.Sprintf("failed to find variant dscSchema who implements discriminator %q in %q", discriminator, addr.String()))
 				}
-				for dscSchemaName, dscSchema := range s.swagger.Definitions {
-					if v, ok := dscSchema.Extensions[swaggerExtensionMSDiscriminatorValue].(string); ok && v == variant {
-						// Since we removed the discriminator base schema before, we should in turn add the exact variant schema expanded to the "resolvedRefs".
-						resolvedRefs := map[string]interface{}{}
-						for k, v := range prop.resolvedRefs {
-							resolvedRefs[k] = v
-						}
-						resolvedRefs[normalizePaths("#/definitions/"+dscSchemaName, s.swaggerURL)] = struct{}{}
+				var dscSchemaName string
 
-						p := NewSWGSchemaProperty(dscSchema, prop.TFLinks, resolvedRefs)
-						addr := addr.AsVariant(dscSchemaName)
-						s.addProperty(addr, *p)
-						continue outLoop
+				for name, schema := range s.swagger.Definitions {
+					if v, ok := schema.Extensions[swaggerExtensionMSDiscriminatorValue].(string); ok && v == variant {
+						dscSchemaName = name
+						break
 					}
 				}
+
+				// For some malformed swagger, the 'x-ms-discriminator-value' is not defined for the variant schemas,
+				// then we will simply try a schema name match
+				if dscSchemaName == "" {
+					if _, ok := s.swagger.Definitions[variant]; ok {
+						dscSchemaName = variant
+					}
+				}
+
+				if dscSchemaName == "" {
+					return fmt.Errorf("variant schema with discriminator set to %q is not found", variant)
+				}
+
+				// Since we removed the discriminator base schema before, we should in turn add the exact variant schema expanded to the "resolvedRefs".
+				resolvedRefs := map[string]interface{}{}
+				for k, v := range prop.resolvedRefs {
+					resolvedRefs[k] = v
+				}
+				resolvedRefs[normalizePaths("#/definitions/"+dscSchemaName, s.swaggerURL)] = struct{}{}
+
+				p := NewSWGSchemaProperty(s.swagger.Definitions[dscSchemaName], prop.TFLinks, resolvedRefs)
+				addr := addr.AsVariant(dscSchemaName)
+				s.addProperty(addr, *p)
+				continue outLoop
 			}
 
 			return nil
