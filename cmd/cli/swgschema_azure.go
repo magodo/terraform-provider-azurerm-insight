@@ -276,6 +276,13 @@ func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaLocalFS(swagge
 	g := new(errgroup.Group)
 	for rpName, rp := range swgrps {
 		for apiName, api := range rp.Apis {
+
+			// Copy the variables which will be used in the goroutine's closure
+			// Especiall,y the api.Schemas should be shallow copied so that the modifications will be reflected to the swgrps
+			apiSchemas := api.Schemas
+			rpName := rpName
+			apiName := apiName
+
 			g.Go(func() error {
 				schemaFolderPattern := regexp.MustCompile(fmt.Sprintf(`^%[1]s(%[3]sresource-manager(%[3]sMicrosoft.\w+(%[3]s(preview|stable)(%[3]s%[2]s)?)?)?)?$`, rpName, apiName, regexp.QuoteMeta(string(os.PathSeparator))))
 				schemaPattern := regexp.MustCompile(fmt.Sprintf(`^%[1]s%[3]sresource-manager%[3]sMicrosoft.\w+%[3]s(preview|stable)%[3]s%[2]s%[3]s\w+.json$`, rpName, apiName, regexp.QuoteMeta(string(os.PathSeparator))))
@@ -313,8 +320,8 @@ func (swgrps SWGResourceProviders) CompleteSWGResourceProvidersViaLocalFS(swagge
 						}
 
 						for _, schema := range schemas {
-							if _, ok := api.Schemas[schema.Name]; !ok {
-								api.Schemas[schema.Name] = &schema
+							if _, ok := apiSchemas[schema.Name]; !ok {
+								apiSchemas[schema.Name] = &schema
 							}
 						}
 
