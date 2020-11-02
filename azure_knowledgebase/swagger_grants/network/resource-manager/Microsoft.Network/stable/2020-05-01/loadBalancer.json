@@ -6,7 +6,11 @@
       "properties.backendAddressPools.properties.outboundRule": "Replaced by `outboundRules`",
       "properties.backendAddressPools.properties.provisioningState": "granted",
       "properties.backendAddressPools.properties.loadBalancerBackendAddresses.properties.ipAddress": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform.",
-      "properties.backendAddressPools.properties.loadBalancerBackendAddresses.properties.virtualNetwork": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform."
+      "properties.backendAddressPools.properties.loadBalancerBackendAddresses.properties.virtualNetwork": "This is a preview feature and has some API issue (https://github.com/Azure/azure-rest-api-specs/issues/11234). Hence currently not to be supported in Terraform.",
+      "properties.outboundRules.etag": "granted",
+      "properties.outboundRules.type": "granted",
+      "properties.outboundRules.properties.provisioningState": "granted"
+
     }
   },
   "BackendAddressPool": {

@@ -1,17 +1,53 @@
 {
   "Name": "azurerm_lb_outbound_rule",
-  "swagger": "",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/loadBalancer.json",
   "PropertyLinks": {
-    "allocated_outbound_ports": [],
-    "backend_address_pool_id": [],
-    "enable_tcp_reset": [],
-    "frontend_ip_configuration.id": [],
+    "allocated_outbound_ports": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.properties.allocatedOutboundPorts"
+      }
+    ],
+    "backend_address_pool_id": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.properties.backendAddressPool.id"
+      }
+    ],
+    "enable_tcp_reset": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.properties.enableTcpReset"
+      }
+    ],
+    "frontend_ip_configuration.id": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.properties.frontendIPConfigurations.id"
+      }
+    ],
     "frontend_ip_configuration.name": [],
-    "id": [],
-    "idle_timeout_in_minutes": [],
-    "loadbalancer_id": [],
-    "name": [],
-    "protocol": [],
+    "id": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.id"
+      }
+    ],
+    "idle_timeout_in_minutes": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.properties.idleTimeoutInMinutes"
+      }
+    ],
+    "loadbalancer_id": [
+      {
+        "prop": "LoadBalancer:id"
+      }
+    ],
+    "name": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.name"
+      }
+    ],
+    "protocol": [
+      {
+        "prop": "LoadBalancer:properties.outboundRules.properties.protocol"
+      }
+    ],
     "resource_group_name": [],
     "timeouts.create": [],
     "timeouts.delete": [],
