@@ -1,0 +1,131 @@
+{
+  "Name": "azurerm_vpn_gateway_connection",
+  "swagger": "network/resource-manager/Microsoft.Network/stable/2020-05-01/virtualWan.json",
+  "PropertyLinks": {
+    "id": [
+      {
+        "prop": "VpnConnection:id"
+      }
+    ],
+    "internet_security_enabled": [
+      {
+        "prop": "VpnConnection:properties.enableInternetSecurity"
+      }
+    ],
+    "name": [
+      {
+        "prop": "VpnConnection:name"
+      }
+    ],
+    "remote_vpn_site_id": [
+      {
+        "prop": "VpnConnection:properties.remoteVpnSite.id"
+      }
+    ],
+    "routing_configuration.associated_route_table": [
+      {
+        "prop": "VpnConnection:properties.routingConfiguration.associatedRouteTable"
+      }
+    ],
+    "routing_configuration.propagated_route_tables": [
+      {
+        "prop": "VpnConnection:properties.routingConfiguration.propagatedRouteTables"
+      }
+    ],
+    "timeouts.create": [],
+    "timeouts.delete": [],
+    "timeouts.read": [],
+    "timeouts.update": [],
+    "vpn_gateway_id": [],
+    "vpn_link_connection.bandwidth_mbps": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.connectionBandwidth"
+      }
+    ],
+    "vpn_link_connection.bgp_enabled": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.enableBgp"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.dh_group": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.dhGroup"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.ike_encryption_algorithm": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.ikeEncryption"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.ike_integrity_algorithm": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.ikeIntegrity"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.ipsec_encryption_algorithm": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.ipsecEncryption"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.ipsec_integrity_algorithm": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.ipsecIntegrity"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.pfs_group": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.pfsGroup"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.sa_data_size_kb": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.saDataSizeKilobytes"
+      }
+    ],
+    "vpn_link_connection.ipsec_policy.sa_lifetime_sec": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.ipsecPolicies.saLifeTimeSeconds"
+      }
+    ],
+    "vpn_link_connection.name": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.name"
+      }
+    ],
+    "vpn_link_connection.protocol": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.vpnConnectionProtocolType"
+      }
+    ],
+    "vpn_link_connection.ratelimit_enabled": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.enableRateLimiting"
+      }
+    ],
+    "vpn_link_connection.route_weight": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.routingWeight"
+      }
+    ],
+    "vpn_link_connection.shared_key": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.sharedKey"
+      }
+    ],
+    "vpn_link_connection.use_local_azure_ip_address": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.useLocalAzureIpAddress"
+      }
+    ],
+    "vpn_link_connection.use_policy_based_traffic_selector": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.usePolicyBasedTrafficSelectors"
+      }
+    ],
+    "vpn_link_connection.vpn_site_link_id": [
+      {
+        "prop": "VpnConnection:properties.vpnLinkConnections.properties.vpnSiteLink.id"
+      }
+    ]
+  }
+}
