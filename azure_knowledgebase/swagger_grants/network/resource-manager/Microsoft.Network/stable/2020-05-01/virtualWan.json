@@ -27,6 +27,7 @@
       "properties.ingressBytesTransferred": "deprecated in favor of the same named property inside `vpnLinkConnections`",
       "properties.ipsecPolicies": "deprecated in favor of the same named property inside `vpnLinkConnections`",
       "properties.provisioningState": "deprecated in favor of the same named property inside `vpnLinkConnections`",
+      "properties.routingConfiguration.vnetRoutes": "is only used for hub vnet connections, but not s2s connection", 
       "properties.routingWeight": "deprecated in favor of the same named property inside `vpnLinkConnections`",
       "properties.sharedKey": "deprecated in favor of the same named property inside `vpnLinkConnections`",
       "properties.useLocalAzureIpAddress": "deprecated in favor of the same named property inside `vpnLinkConnections`",
