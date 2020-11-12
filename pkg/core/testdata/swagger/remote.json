@@ -1,0 +1,17 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Foo"
+  },
+  "host": "management.azure.com",
+  "schemes": [
+    "https"
+  ],
+  "definitions": {
+    "def_foo": {
+      "properties": {
+        "prop_primitive": {}
+      }
+    }
+  }
+}

@@ -20,16 +20,20 @@ func TestNewSWGSchema(t *testing.T) {
 	specBasePathLocal := filepath.Join(pwd, "testdata", "swagger")
 	specFooPathLocal := filepath.Join(specBasePathLocal, "foo.json")
 	specBarPathLocal := filepath.Join(specBasePathLocal, "bar.json")
+	specRemotePathLocal := filepath.Join(specBasePathLocal, "remote.json")
 	specFoo, err := LoadSwagger(specFooPathLocal)
 	_ = specFoo
 	require.NoError(t, err)
 	specBar, err := LoadSwagger(specBarPathLocal)
 	_ = specBar
 	require.NoError(t, err)
+	specRemote, err := LoadSwagger(specRemotePathLocal)
+	_ = specRemote
+	require.NoError(t, err)
 
-	specBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/c1e7508ce27c985390353d7d5f32655028536a13"
-	specFooURL := specBaseURL + "/foo.json"
-	_ = specFooURL
+	specRemoteBaseURL := "https://gist.githubusercontent.com/magodo/f054bb1c2e7a1c74fd78f65eb42a17bb/raw/8308d9295287bc590be9b431ea0353b626da7ada"
+	specRemoteFileURL := specRemoteBaseURL + "/remote.json"
+	_ = specRemoteFileURL
 
 	cases := []struct {
 		specBaseURL string
@@ -352,24 +356,24 @@ func TestNewSWGSchema(t *testing.T) {
 		},
 		// NO.12: from http swagger spec
 		{
-			specBaseURL: specBaseURL,
-			specRelPath: "foo.json",
+			specBaseURL: specRemoteBaseURL,
+			specRelPath: "remote.json",
 			schemaName:  "def_foo",
 			err:         nil,
 			expect: SWGSchema{
-				SwaggerRelPath: "foo.json",
+				SwaggerRelPath: "remote.json",
 				Name:           "def_foo",
 				Properties: map[string]*SWGSchemaProperty{
 					"prop_primitive": {
 						TFLinks: []TFLink{},
-						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+						schema:  specRemote.Definitions["def_foo"].Properties["prop_primitive"],
 						resolvedRefs: map[string]interface{}{
-							specFooURL + "#/definitions/def_foo": struct{}{},
+							specRemoteFileURL + "#/definitions/def_foo": struct{}{},
 						},
 					},
 				},
-				swaggerURL: specFooURL,
-				swagger:    specFoo,
+				swaggerURL: specRemoteFileURL,
+				swagger:    specRemote,
 			},
 		},
 		// NO.13: discriminator
@@ -391,9 +395,9 @@ func TestNewSWGSchema(t *testing.T) {
 					},
 					"{def_variant2}": {
 						TFLinks: []TFLink{},
-						schema:  specFoo.Definitions["def_variant2"],
+						schema:  specFoo.Definitions["variant2_def"],
 						resolvedRefs: map[string]interface{}{
-							specFooPathLocal + "#/definitions/def_variant2": struct{}{},
+							specFooPathLocal + "#/definitions/variant2_def": struct{}{},
 						},
 					},
 				},
@@ -407,6 +411,67 @@ func TestNewSWGSchema(t *testing.T) {
 			specRelPath: "foo.json",
 			schemaName:  "non_existent_schema",
 			err:         fmt.Errorf("schema %q is not found in swagger spec %q", "non_existent_schema", specBasePathLocal+"/foo.json"),
+		},
+
+		// NO.15
+		{
+			specBaseURL: specBasePathLocal,
+			specRelPath: "foo.json",
+			schemaName:  "AlertRule",
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "AlertRule",
+				Properties: map[string]*SWGSchemaProperty{
+					"{MicrosoftSecurityIncidentCreation}": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["MicrosoftSecurityIncidentCreationAlertRule"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/MicrosoftSecurityIncidentCreationAlertRule": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPathLocal,
+				swagger:    specFoo,
+			},
+		},
+
+		//// NO.16: nested allOf
+		{
+			specBaseURL: specBasePathLocal,
+			specRelPath: "foo.json",
+			schemaName:  "all_of_1",
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "all_of_1",
+				Properties: map[string]*SWGSchemaProperty{
+					"prop_primitive": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/all_of_1": struct{}{},
+							specFooPathLocal + "#/definitions/all_of_2": struct{}{},
+							specFooPathLocal + "#/definitions/def_foo":  struct{}{},
+						},
+					},
+					"prop1": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["all_of_1"].Properties["prop1"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/all_of_1": struct{}{},
+						},
+					},
+					"prop2": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["all_of_2"].Properties["prop2"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/all_of_1": struct{}{},
+							specFooPathLocal + "#/definitions/all_of_2": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPathLocal,
+				swagger:    specFoo,
+			},
 		},
 	}
 
@@ -707,10 +772,10 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 					},
 					"p1{def_variant2}": {
 						TFLinks: []TFLink{},
-						schema:  specFoo.Definitions["def_variant2"],
+						schema:  specFoo.Definitions["variant2_def"],
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_c":        struct{}{},
-							specFooPath + "#/definitions/def_variant2": struct{}{},
+							specFooPath + "#/definitions/variant2_def": struct{}{},
 						},
 					},
 				},
@@ -741,10 +806,10 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 					},
 					"p1{def_variant2}": {
 						TFLinks: []TFLink{},
-						schema:  specFoo.Definitions["def_variant2"],
+						schema:  specFoo.Definitions["variant2_def"],
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_c":        struct{}{},
-							specFooPath + "#/definitions/def_variant2": struct{}{},
+							specFooPath + "#/definitions/variant2_def": struct{}{},
 						},
 					},
 				},
@@ -828,6 +893,69 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/ruleCollectionGroup":  struct{}{},
 							specFooPath + "#/definitions/filterRuleCollection": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		// NO.13: Root level schema is a discriminator
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "def_base",
+			err:            nil,
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("def_base", "{def_variant1}"),
+			},
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "def_base",
+				Properties: map[string]*SWGSchemaProperty{
+					"{def_variant1}.type": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_base"].Properties["type"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_variant1": struct{}{},
+						},
+					},
+					"{def_variant2}": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["variant2_def"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/variant2_def": struct{}{},
+						},
+					},
+				},
+				swaggerURL: specFooPath,
+				swagger:    specFoo,
+			},
+		},
+		////NO.14
+		{
+			swaggerRelPath: "foo.json",
+			schemaName:     "AlertRule",
+			err:            nil,
+			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
+				propertyaddr.MustNewSwaggerPropertyAddr("AlertRule", "{MicrosoftSecurityIncidentCreation}"),
+			},
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "AlertRule",
+				Properties: map[string]*SWGSchemaProperty{
+					"{MicrosoftSecurityIncidentCreation}.description": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["MicrosoftSecurityIncidentCreationAlertRule"].Properties["description"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/MicrosoftSecurityIncidentCreationAlertRule": struct{}{},
+						},
+					},
+					"{MicrosoftSecurityIncidentCreation}.kind": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["AlertRuleKind"].Properties["kind"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/MicrosoftSecurityIncidentCreationAlertRule": struct{}{},
+							specFooPath + "#/definitions/AlertRuleKind":                              struct{}{},
 						},
 					},
 				},

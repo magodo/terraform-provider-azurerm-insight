@@ -233,7 +233,7 @@ func ParseSwaggerRelPropertyAddr(addr string) (SwaggerRelPropertyAddr, error) {
 		return nil, nil
 	}
 	var props SwaggerRelPropertyAddr
-	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.+)?\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
+	discriminatorPattern := regexp.MustCompile(fmt.Sprintf(`^(.*)\%s(.+)\%s$`, swaggerPropertyDiscriminatorStartMark, swaggerPropertyDiscriminatorEndMark))
 	for _, prop := range strings.Split(addr, swaggerPropertyAddrSep) {
 		if !strings.HasSuffix(prop, swaggerPropertyDiscriminatorEndMark) {
 			props = append(props, SwaggerPropertyAddrSegment{
