@@ -55,9 +55,12 @@ type SWGSchemaProperty struct {
 
 	// The resolved URI refs along the way to this schemas, each is an absolute/normalized reference.
 	resolvedRefs map[string]interface{}
+
+	// The URI of the schema file
+	swaggerURL string
 }
 
-func NewSWGSchemaProperty(schema openapispec.Schema, tflinks []TFLink, resolvedRefs map[string]interface{}) *SWGSchemaProperty {
+func NewSWGSchemaProperty(schema openapispec.Schema, tflinks []TFLink, resolvedRefs map[string]interface{}, schemaURI string) *SWGSchemaProperty {
 	newTFLinks := []TFLink{}
 	if len(tflinks) != 0 {
 		newTFLinks = make([]TFLink, len(tflinks))
@@ -74,6 +77,7 @@ func NewSWGSchemaProperty(schema openapispec.Schema, tflinks []TFLink, resolvedR
 		TFLinks:      newTFLinks,
 		schema:       schema,
 		resolvedRefs: newResolvedRefs,
+		swaggerURL:   schemaURI,
 	}
 }
 
@@ -120,8 +124,9 @@ func NewSWGSchema(swaggerBaseURL, swaggerRelPath string, schemaName string) (*SW
 		Name:           schemaName,
 		Properties: map[string]*SWGSchemaProperty{
 			"": {
-				TFLinks: []TFLink{},
-				schema:  schema,
+				TFLinks:    []TFLink{},
+				schema:     schema,
+				swaggerURL: swaggerURI,
 			},
 		},
 		swaggerURL: swaggerURI,
@@ -262,7 +267,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 			}
 			resolvedRefs[normalizePaths("#/definitions/"+dscSchemaName, s.swaggerURL)] = struct{}{}
 
-			p := NewSWGSchemaProperty(s.swagger.Definitions[dscSchemaName], prop.TFLinks, resolvedRefs)
+			p := NewSWGSchemaProperty(s.swagger.Definitions[dscSchemaName], prop.TFLinks, resolvedRefs, prop.swaggerURL)
 			addr := addr.AsVariant(variant)
 			s.addProperty(addr, *p)
 			continue outLoop
@@ -276,7 +281,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 func (s *SWGSchema) expandSubProperties(addr propertyaddr.SwaggerPropertyAddr, prop *SWGSchemaProperty) SWGSchemaProperties {
 	output := NewSWGSchemaProperties()
 	for propK, propV := range prop.schema.Properties {
-		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs)
+		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs, prop.swaggerURL)
 		addr, _ := addr.Append(propK)
 		output[addr.PropertyAddr.String()] = p
 	}
@@ -290,7 +295,7 @@ func (s *SWGSchema) expandAllOfProperties(addr propertyaddr.SwaggerPropertyAddr,
 
 		// We construct a temp SWGSchemaProperty here (as it has no object/property related) to expand it into a concrete schemas.
 		// Then we will iterate that schemas's property which by concept is the top level property of this parent property.
-		tmpProp := NewSWGSchemaProperty(schema, prop.TFLinks, prop.resolvedRefs)
+		tmpProp := NewSWGSchemaProperty(schema, prop.TFLinks, prop.resolvedRefs, prop.swaggerURL)
 
 		// AllOf contains refs, then need to expand the reference properties first.
 		if tmpProp.schema.Ref.String() != "" {
@@ -343,14 +348,19 @@ func (s *SWGSchema) expandRefPropertyInPlace(prop *SWGSchemaProperty) (isCyclic 
 		ref = schema.Ref
 	}
 
-	normalizedRefURI := normalizeFileRef(&ref, s.swaggerURL).String()
+	normalizedRef := normalizeFileRef(&ref, prop.swaggerURL)
+	normalizedRefURI := normalizedRef.String()
 
 	// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.
 	if _, ok := prop.resolvedRefs[normalizedRefURI]; ok {
 		return true, nil
 	}
 
-	schema, err := openapispec.ResolveRefWithBase(s.swagger, &ref, &openapispec.ExpandOptions{RelativeBase: s.swaggerURL})
+	swagger, err := LoadSwagger(prop.swaggerURL)
+	if err != nil {
+		return false, err
+	}
+	schema, err := openapispec.ResolveRefWithBase(swagger, &ref, &openapispec.ExpandOptions{RelativeBase: prop.swaggerURL})
 	if err != nil {
 		return false, fmt.Errorf("resolve reference %s: %w", ref.String(), err)
 	}
@@ -365,6 +375,9 @@ func (s *SWGSchema) expandRefPropertyInPlace(prop *SWGSchemaProperty) (isCyclic 
 
 	// update the stored schemas by the derefed schemas
 	prop.schema = *schema
+
+	// update the swaggerURL to using the referenced swagger
+	prop.swaggerURL = normalizedRef.GetURL().Path
 
 	return s.expandRefPropertyInPlace(prop)
 }
