@@ -185,7 +185,7 @@
         }
       ]
     },
-    "def_variant2": {
+    "variant2_def": {
       "x-ms-discriminator-value":"def_variant2",
       "properties": {},
       "allOf": [
@@ -193,6 +193,28 @@
           "$ref": "#/definitions/def_base"
         }
       ]
+    },
+
+    "all_of_1": {
+      "allOf":[
+        {
+          "$ref": "#/definitions/all_of_2"
+        }
+      ],
+      "properties": {
+        "prop1": {}
+      }
+    },
+
+    "all_of_2": {
+      "allOf":[
+        {
+          "$ref": "#/definitions/def_foo"
+        }
+      ],
+      "properties": {
+        "prop2": {}
+      }
     },
 
     "ruleCollectionGroup": {
@@ -240,6 +262,39 @@
       ],
       "properties": {
         "action": {}
+      }
+    },
+
+    "AlertRule": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/AlertRuleKind"
+        }
+      ],
+      "discriminator": "kind"
+    },
+
+    "AlertRuleKind": {
+      "properties": {
+        "kind": {
+          "enum": [
+            "MicrosoftSecurityIncidentCreation"
+          ]
+        }
+      }
+    },
+
+    "MicrosoftSecurityIncidentCreationAlertRule": {
+      "x-ms-discriminator-value": "MicrosoftSecurityIncidentCreation",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AlertRule"
+        }
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        }
       }
     }
   }
