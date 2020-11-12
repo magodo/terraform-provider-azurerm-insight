@@ -217,6 +217,14 @@
       }
     },
 
+    "all_of_cross_folder": {
+      "allOf":[
+        {
+          "$ref": "some_folder/baz.json#/definitions/all_of_baz"
+        }
+      ]
+    },
+
     "ruleCollectionGroup": {
       "properties" : {
         "ruleCollections": {

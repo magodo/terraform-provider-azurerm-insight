@@ -20,12 +20,16 @@ func TestNewSWGSchema(t *testing.T) {
 	specBasePathLocal := filepath.Join(pwd, "testdata", "swagger")
 	specFooPathLocal := filepath.Join(specBasePathLocal, "foo.json")
 	specBarPathLocal := filepath.Join(specBasePathLocal, "bar.json")
+	specBazPathLocal := filepath.Join(specBasePathLocal, "some_folder", "baz.json")
 	specRemotePathLocal := filepath.Join(specBasePathLocal, "remote.json")
 	specFoo, err := LoadSwagger(specFooPathLocal)
 	_ = specFoo
 	require.NoError(t, err)
 	specBar, err := LoadSwagger(specBarPathLocal)
 	_ = specBar
+	require.NoError(t, err)
+	specBaz, err := LoadSwagger(specBazPathLocal)
+	_ = specBaz
 	require.NoError(t, err)
 	specRemote, err := LoadSwagger(specRemotePathLocal)
 	_ = specRemote
@@ -58,6 +62,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_foo": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -80,6 +85,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop_array_of_primitive": {
 						TFLinks: []TFLink{},
@@ -87,6 +93,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop_array_of_object": {
 						TFLinks: []TFLink{},
@@ -94,6 +101,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop_object": {
 						TFLinks: []TFLink{},
@@ -101,6 +109,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -123,6 +132,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_propInFileRef": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -145,6 +155,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_propSelfRef": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -167,6 +178,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_propCrossFileRef": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -190,6 +202,7 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/def_inFileRef": struct{}{},
 							specFooPathLocal + "#/definitions/def_foo":       struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -213,6 +226,7 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/def_crossFileRef": struct{}{},
 							specBarPathLocal + "#/definitions/def_bar":          struct{}{},
 						},
+						swaggerURL: specBarPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -235,6 +249,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_selfRef": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -257,6 +272,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_allOf": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop_nested1": {
 						TFLinks: []TFLink{},
@@ -264,6 +280,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_allOf": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop_nested2": {
 						TFLinks: []TFLink{},
@@ -271,6 +288,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_allOf": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop_primitive": {
 						TFLinks: []TFLink{},
@@ -279,6 +297,7 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/def_allOf": struct{}{},
 							specBarPathLocal + "#/definitions/def_bar":   struct{}{},
 						},
+						swaggerURL: specBarPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -301,6 +320,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_array_simple": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -324,6 +344,7 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/def_foo":       struct{}{},
 							specFooPathLocal + "#/definitions/def_array_ref": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -348,6 +369,7 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/def_array_ref":     struct{}{},
 							specFooPathLocal + "#/definitions/def_array_ref_ref": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -370,6 +392,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specRemoteFileURL + "#/definitions/def_foo": struct{}{},
 						},
+						swaggerURL: specRemoteFileURL,
 					},
 				},
 				swaggerURL: specRemoteFileURL,
@@ -392,6 +415,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/def_variant1": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"{def_variant2}": {
 						TFLinks: []TFLink{},
@@ -399,6 +423,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/variant2_def": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -428,6 +453,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/MicrosoftSecurityIncidentCreationAlertRule": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -435,7 +461,7 @@ func TestNewSWGSchema(t *testing.T) {
 			},
 		},
 
-		//// NO.16: nested allOf
+		// NO.16: nested allOf
 		{
 			specBaseURL: specBasePathLocal,
 			specRelPath: "foo.json",
@@ -452,6 +478,7 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/all_of_2": struct{}{},
 							specFooPathLocal + "#/definitions/def_foo":  struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop1": {
 						TFLinks: []TFLink{},
@@ -459,6 +486,7 @@ func TestNewSWGSchema(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPathLocal + "#/definitions/all_of_1": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
 					},
 					"prop2": {
 						TFLinks: []TFLink{},
@@ -467,6 +495,32 @@ func TestNewSWGSchema(t *testing.T) {
 							specFooPathLocal + "#/definitions/all_of_1": struct{}{},
 							specFooPathLocal + "#/definitions/all_of_2": struct{}{},
 						},
+						swaggerURL: specFooPathLocal,
+					},
+				},
+				swaggerURL: specFooPathLocal,
+				swagger:    specFoo,
+			},
+		},
+
+		// NO.17: nested allOf cross folder reference
+		{
+			specBaseURL: specBasePathLocal,
+			specRelPath: "foo.json",
+			schemaName:  "all_of_cross_folder",
+			expect: SWGSchema{
+				SwaggerRelPath: "foo.json",
+				Name:           "all_of_cross_folder",
+				Properties: map[string]*SWGSchemaProperty{
+					"prop_primitive": {
+						TFLinks: []TFLink{},
+						schema:  specBaz.Definitions["def_baz"].Properties["prop_primitive"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/all_of_cross_folder": struct{}{},
+							specBazPathLocal + "#/definitions/all_of_baz":          struct{}{},
+							specBazPathLocal + "#/definitions/def_baz":             struct{}{},
+						},
+						swaggerURL: specBazPathLocal,
 					},
 				},
 				swaggerURL: specFooPathLocal,
@@ -524,6 +578,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_foo": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -549,6 +604,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_foo": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -574,6 +630,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"prop_array_of_primitive": {
 						TFLinks: []TFLink{},
@@ -581,6 +638,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"prop_array_of_object.prop_primitive": {
 						TFLinks: []TFLink{},
@@ -589,6 +647,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_regular": struct{}{},
 							specFooPath + "#/definitions/def_foo":     struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"prop_object.prop_nested": {
 						TFLinks: []TFLink{},
@@ -596,6 +655,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_regular": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -621,6 +681,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_propInFileRef": struct{}{},
 							specFooPath + "#/definitions/def_foo":           struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -645,6 +706,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_propSelfRef": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -670,6 +732,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_propCrossFileRef": struct{}{},
 							specBarPath + "#/definitions/def_bar":              struct{}{},
 						},
+						swaggerURL: specBarPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -695,6 +758,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_inFileRef": struct{}{},
 							specFooPath + "#/definitions/def_foo":       struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -720,6 +784,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_crossFileRef": struct{}{},
 							specBarPath + "#/definitions/def_bar":          struct{}{},
 						},
+						swaggerURL: specBarPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -744,6 +809,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_selfRef": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -769,6 +835,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_c":        struct{}{},
 							specFooPath + "#/definitions/def_variant1": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"p1{def_variant2}": {
 						TFLinks: []TFLink{},
@@ -777,6 +844,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_c":        struct{}{},
 							specFooPath + "#/definitions/variant2_def": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -803,6 +871,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_c":        struct{}{},
 							specFooPath + "#/definitions/def_variant1": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"p1{def_variant2}": {
 						TFLinks: []TFLink{},
@@ -811,6 +880,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/def_c":        struct{}{},
 							specFooPath + "#/definitions/variant2_def": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -836,6 +906,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"ruleCollections{filterRuleCollection}": {
 						TFLinks: []TFLink{},
@@ -844,6 +915,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/ruleCollectionGroup":  struct{}{},
 							specFooPath + "#/definitions/filterRuleCollection": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -870,6 +942,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"ruleCollections{natRuleCollection}.ruleCollectionType": {
 						TFLinks: []TFLink{},
@@ -878,6 +951,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"ruleCollections{natRuleCollection}.name": {
 						TFLinks: []TFLink{},
@@ -886,6 +960,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/ruleCollectionGroup": struct{}{},
 							specFooPath + "#/definitions/natRuleCollection":   struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"ruleCollections{filterRuleCollection}": {
 						TFLinks: []TFLink{},
@@ -894,6 +969,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/ruleCollectionGroup":  struct{}{},
 							specFooPath + "#/definitions/filterRuleCollection": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -918,6 +994,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/def_variant1": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"{def_variant2}": {
 						TFLinks: []TFLink{},
@@ -925,13 +1002,14 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/variant2_def": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
 				swagger:    specFoo,
 			},
 		},
-		////NO.14
+		// NO.14
 		{
 			swaggerRelPath: "foo.json",
 			schemaName:     "AlertRule",
@@ -949,6 +1027,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						resolvedRefs: map[string]interface{}{
 							specFooPath + "#/definitions/MicrosoftSecurityIncidentCreationAlertRule": struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 					"{MicrosoftSecurityIncidentCreation}.kind": {
 						TFLinks: []TFLink{},
@@ -957,6 +1036,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 							specFooPath + "#/definitions/MicrosoftSecurityIncidentCreationAlertRule": struct{}{},
 							specFooPath + "#/definitions/AlertRuleKind":                              struct{}{},
 						},
+						swaggerURL: specFooPath,
 					},
 				},
 				swaggerURL: specFooPath,
@@ -1024,6 +1104,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specFooPath + "#/definitions/def_foo": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p1": {
 								TFLinks: []TFLink{},
@@ -1031,6 +1112,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p2": {
 								TFLinks: []TFLink{},
@@ -1038,6 +1120,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p3": {
 								TFLinks: []TFLink{},
@@ -1045,6 +1128,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1069,6 +1153,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specFooPath + "#/definitions/def_foo": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p1": {
 								TFLinks: []TFLink{},
@@ -1076,6 +1161,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p2": {
 								TFLinks: []TFLink{},
@@ -1083,6 +1169,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p3": {
 								TFLinks: []TFLink{},
@@ -1090,6 +1177,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1113,16 +1201,18 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specFooPath + "#/definitions/def_foo": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p1.prop_primitive": {
 								TFLinks: []TFLink{
 									{*propertyaddr.ParseTerraformPropertyAddr("res1:p2")},
 								},
-								schema: specFoo.Definitions["def_foo"].Properties["prop_primitive"],
+								schema: specBar.Definitions["def_foo"].Properties["prop_primitive"],
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specBarPath + "#/definitions/def_bar": struct{}{},
 								},
+								swaggerURL: specBarPath,
 							},
 							"p1.p1_1": {
 								TFLinks: []TFLink{},
@@ -1130,6 +1220,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p2": {
 								TFLinks: []TFLink{},
@@ -1137,6 +1228,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p3": {
 								TFLinks: []TFLink{},
@@ -1144,6 +1236,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1167,6 +1260,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specFooPath + "#/definitions/def_foo": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p1.prop_primitive": {
 								TFLinks: []TFLink{
@@ -1177,6 +1271,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specBarPath + "#/definitions/def_bar": struct{}{},
 								},
+								swaggerURL: specBarPath,
 							},
 							"p1.p1_1": {
 								TFLinks: []TFLink{},
@@ -1184,6 +1279,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p2": {
 								TFLinks: []TFLink{},
@@ -1191,6 +1287,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_a": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 							"p3.prop_primitive": {
 								TFLinks: []TFLink{
@@ -1201,6 +1298,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 									specFooPath + "#/definitions/def_a":   struct{}{},
 									specBarPath + "#/definitions/def_bar": struct{}{},
 								},
+								swaggerURL: specBarPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1230,6 +1328,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_b": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1252,6 +1351,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_b": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1281,6 +1381,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_b": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
@@ -1303,6 +1404,7 @@ func TestLinkSWGSchema_AddTFLink(t *testing.T) {
 								resolvedRefs: map[string]interface{}{
 									specFooPath + "#/definitions/def_b": struct{}{},
 								},
+								swaggerURL: specFooPath,
 							},
 						},
 						swaggerURL: specFooPath,
