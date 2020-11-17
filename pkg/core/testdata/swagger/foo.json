@@ -24,10 +24,20 @@
             "type": "int"
           }
         },
-        "prop_array_of_object": {
+        "prop_array_of_ref": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/def_foo"
+          }
+        },
+        "prop_array_of_object": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "prop_nested": {
+                "type": "string"
+              }
+            }
           }
         },
         "prop_object": {
