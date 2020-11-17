@@ -221,6 +221,7 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 	discriminator := prop.schema.Discriminator
 	if discriminator == "" {
 		s.Properties.Add(levelSWGProperties)
+		return nil
 	}
 
 	// If the property to be expanded is a discriminator, we will expand it into its variants
