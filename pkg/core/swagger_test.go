@@ -95,6 +95,14 @@ func TestNewSWGSchema(t *testing.T) {
 						},
 						swaggerURL: specFooPathLocal,
 					},
+					"prop_array_of_ref": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_regular"].Properties["prop_array_of_ref"],
+						resolvedRefs: map[string]interface{}{
+							specFooPathLocal + "#/definitions/def_regular": struct{}{},
+						},
+						swaggerURL: specFooPathLocal,
+					},
 					"prop_array_of_object": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_regular"].Properties["prop_array_of_object"],
@@ -617,6 +625,7 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 			schemaName:     "def_regular",
 			expandAddrs: []propertyaddr.SwaggerPropertyAddr{
 				propertyaddr.MustNewSwaggerPropertyAddr("def_regular", "prop_object"),
+				propertyaddr.MustNewSwaggerPropertyAddr("def_regular", "prop_array_of_ref"),
 				propertyaddr.MustNewSwaggerPropertyAddr("def_regular", "prop_array_of_object"),
 			},
 			err: nil,
@@ -640,7 +649,15 @@ func TestSWGSchema_ExpandPropertyOneLevelDeep(t *testing.T) {
 						},
 						swaggerURL: specFooPath,
 					},
-					"prop_array_of_object.prop_primitive": {
+					"prop_array_of_object.prop_nested": {
+						TFLinks: []TFLink{},
+						schema:  specFoo.Definitions["def_regular"].Properties["prop_array_of_object"].Items.Schema.Properties["prop_nested"],
+						resolvedRefs: map[string]interface{}{
+							specFooPath + "#/definitions/def_regular": struct{}{},
+						},
+						swaggerURL: specFooPath,
+					},
+					"prop_array_of_ref.prop_primitive": {
 						TFLinks: []TFLink{},
 						schema:  specFoo.Definitions["def_foo"].Properties["prop_primitive"],
 						resolvedRefs: map[string]interface{}{
@@ -1455,6 +1472,7 @@ func TestSWGSchema_Marshal(t *testing.T) {
     "Properties": {
         "prop_array_of_primitive": {},
         "prop_array_of_object": {},
+        "prop_array_of_ref": {},
         "prop_object": {},
         "prop_primitive": {}
     }

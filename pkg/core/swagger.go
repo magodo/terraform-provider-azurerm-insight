@@ -279,9 +279,16 @@ func (s *SWGSchema) ExpandPropertyOneLevelDeep(addr propertyaddr.SwaggerProperty
 }
 
 // expandSubProperties expand direct containing sub-properties for property (prop) in the specified address (addr)
+// Especially, if the property is an array to object, it will expand to the sub-properties of the object item instead.
 func (s *SWGSchema) expandSubProperties(addr propertyaddr.SwaggerPropertyAddr, prop *SWGSchemaProperty) SWGSchemaProperties {
 	output := NewSWGSchemaProperties()
-	for propK, propV := range prop.schema.Properties {
+	var properties map[string]openapispec.Schema
+	if prop.schema.Items != nil {
+		properties = prop.schema.Items.Schema.Properties
+	} else {
+		properties = prop.schema.Properties
+	}
+	for propK, propV := range properties {
 		p := NewSWGSchemaProperty(propV, prop.TFLinks, prop.resolvedRefs, prop.swaggerURL)
 		addr, _ := addr.Append(propK)
 		output[addr.PropertyAddr.String()] = p
@@ -349,7 +356,7 @@ func (s *SWGSchema) expandRefPropertyInPlace(prop *SWGSchemaProperty) (isCyclic 
 		ref = schema.Ref
 	}
 
-	normalizedRef := normalizeFileRef(&ref, prop.swaggerURL)
+	normalizedRef := NormalizeFileRef(&ref, prop.swaggerURL)
 	normalizedRefURI := normalizedRef.String()
 
 	// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.

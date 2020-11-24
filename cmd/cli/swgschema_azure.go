@@ -457,6 +457,20 @@ func collectAllTFCandidateSchemas(swaggerRepoBaseURI, relPath string) ([]SWGSche
 			}
 
 			for _, param := range p.Put.Parameters {
+				// The param is a ref, we simply deref it for once
+				if param.Ref.String() != "" {
+					swaggerURI := swaggerRepoBaseURI + "/" + relPath
+					swagger, err := core.LoadSwagger(swaggerURI)
+					if err != nil {
+						panic(fmt.Sprintf("loading swagger %q: %v", relPath, err))
+					}
+					pparam, err := openapispec.ResolveParameterWithBase(swagger, param.Ref, &openapispec.ExpandOptions{RelativeBase: swaggerURI})
+					if err != nil {
+						panic(fmt.Sprintf("resolve param ref %q: %v", param.Ref.String(), err))
+					}
+					param = *pparam
+				}
+
 				if param.In != "body" {
 					continue
 				}
