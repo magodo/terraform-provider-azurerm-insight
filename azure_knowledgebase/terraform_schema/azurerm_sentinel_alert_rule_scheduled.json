@@ -1,20 +1,68 @@
 {
   "Name": "azurerm_sentinel_alert_rule_scheduled",
-  "swagger": "",
+  "swagger": "securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2019-01-01-preview/SecurityInsights.json",
   "PropertyLinks": {
-    "description": [],
-    "display_name": [],
-    "enabled": [],
-    "id": [],
+    "description": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.description"
+      }
+    ],
+    "display_name": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.displayName"
+      }
+    ],
+    "enabled": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.enabled"
+      }
+    ],
+    "id": [
+      {
+        "prop": "AlertRule:{Scheduled}.id"
+      }
+    ],
     "log_analytics_workspace_id": [],
-    "name": [],
-    "query": [],
-    "query_frequency": [],
-    "query_period": [],
-    "severity": [],
-    "suppression_duration": [],
-    "suppression_enabled": [],
-    "tactics": [],
+    "name": [
+      {
+        "prop": "AlertRule:{Scheduled}.name"
+      }
+    ],
+    "query": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.query"
+      }
+    ],
+    "query_frequency": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.queryFrequency"
+      }
+    ],
+    "query_period": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.queryPeriod"
+      }
+    ],
+    "severity": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.severity"
+      }
+    ],
+    "suppression_duration": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.suppressionDuration"
+      }
+    ],
+    "suppression_enabled": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.suppressionEnabled"
+      }
+    ],
+    "tactics": [
+      {
+        "prop": "AlertRule:{Scheduled}.properties.tactics"
+      }
+    ],
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],

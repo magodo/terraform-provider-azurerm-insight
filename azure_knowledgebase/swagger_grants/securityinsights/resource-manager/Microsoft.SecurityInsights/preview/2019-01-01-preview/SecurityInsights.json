@@ -1,0 +1,14 @@
+{
+    "AlertRule": {
+        "Properties": {
+            "{Scheduled}.etag": "granted",
+            "{Scheduled}.kind": "granted",
+            "{Scheduled}.type": "granted",
+            "{Scheduled}.properties.lastModifiedUtc": "granted",
+            "{MicrosoftSecurityIncidentCreation}.etag": "granted",
+            "{MicrosoftSecurityIncidentCreation}.kind": "granted",
+            "{MicrosoftSecurityIncidentCreation}.type": "granted",
+            "{MicrosoftSecurityIncidentCreation}.properties.lastModifiedUtc": "granted"
+        }
+    }
+}

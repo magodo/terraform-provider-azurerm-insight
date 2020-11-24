@@ -1,17 +1,53 @@
 {
   "Name": "azurerm_sentinel_alert_rule_ms_security_incident",
-  "swagger": "",
+  "swagger": "securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2019-01-01-preview/SecurityInsights.json",
   "PropertyLinks": {
-    "description": [],
-    "display_name": [],
-    "display_name_filter": [],
-    "enabled": [],
-    "id": [],
+    "description": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.description"
+      }
+    ],
+    "display_name": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.displayName"
+      }
+    ],
+    "display_name_filter": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.displayNamesFilter"
+      }
+    ],
+    "enabled": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.enabled"
+      }
+    ],
+    "id": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.id"
+      }
+    ],
     "log_analytics_workspace_id": [],
-    "name": [],
-    "product_filter": [],
-    "severity_filter": [],
-    "text_whitelist": [],
+    "name": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.name"
+      }
+    ],
+    "product_filter": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.productFilter"
+      }
+    ],
+    "severity_filter": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.severitiesFilter"
+      }
+    ],
+    "text_whitelist": [
+      {
+        "prop": "AlertRule:{MicrosoftSecurityIncidentCreation}.properties.displayNamesFilter"
+      }
+    ],
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],
