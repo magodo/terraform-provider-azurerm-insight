@@ -356,7 +356,7 @@ func (s *SWGSchema) expandRefPropertyInPlace(prop *SWGSchemaProperty) (isCyclic 
 		ref = schema.Ref
 	}
 
-	normalizedRef := normalizeFileRef(&ref, prop.swaggerURL)
+	normalizedRef := NormalizeFileRef(&ref, prop.swaggerURL)
 	normalizedRefURI := normalizedRef.String()
 
 	// If current ref has already been derefed, meaning a cyclic ref is hit, we will return.

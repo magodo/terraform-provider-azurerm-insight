@@ -2,15 +2,16 @@ package core
 
 import (
 	"fmt"
-	openapispec "github.com/go-openapi/spec"
 	"net/url"
 	"path"
 	"path/filepath"
 	"strings"
+
+	openapispec "github.com/go-openapi/spec"
 )
 
 // relativeBase could be an ABSOLUTE file path or an ABSOLUTE URL
-func normalizeFileRef(ref *openapispec.Ref, relativeBase string) *openapispec.Ref {
+func NormalizeFileRef(ref *openapispec.Ref, relativeBase string) *openapispec.Ref {
 	if ref.String() == "" {
 		r, _ := openapispec.NewRef(relativeBase)
 		return &r
