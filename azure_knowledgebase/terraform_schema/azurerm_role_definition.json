@@ -1,15 +1,47 @@
 {
   "Name": "azurerm_role_definition",
-  "swagger": "",
+  "swagger": "authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/authorization-RoleDefinitionsCalls.json",
   "PropertyLinks": {
-    "assignable_scopes": [],
-    "description": [],
-    "id": [],
-    "name": [],
-    "permissions.actions": [],
-    "permissions.data_actions": [],
-    "permissions.not_actions": [],
-    "permissions.not_data_actions": [],
+    "assignable_scopes": [
+      {
+        "prop": "RoleDefinition:properties.assignableScopes"
+      }
+    ],
+    "description": [
+      {
+        "prop": "RoleDefinition:properties.description"
+      }
+    ],
+    "id": [
+      {
+        "prop": "RoleDefinition:id"
+      }
+    ],
+    "name": [
+      {
+        "prop": "RoleDefinition:properties.roleName"
+      }
+    ],
+    "permissions.actions": [
+      {
+        "prop": "RoleDefinition:properties.permissions.actions"
+      }
+    ],
+    "permissions.data_actions": [
+      {
+        "prop": "RoleDefinition:properties.permissions.dataActions"
+      }
+    ],
+    "permissions.not_actions": [
+      {
+        "prop": "RoleDefinition:properties.permissions.notActions"
+      }
+    ],
+    "permissions.not_data_actions": [
+      {
+        "prop": "RoleDefinition:properties.permissions.notDataActions"
+      }
+    ],
     "role_definition_id": [],
     "role_definition_resource_id": [],
     "scope": [],

@@ -1,15 +1,47 @@
 {
   "Name": "azurerm_role_assignment",
-  "swagger": "",
+  "swagger": "authorization/resource-manager/Microsoft.Authorization/preview/2020-04-01-preview/authorization-RoleAssignmentsCalls.json",
   "PropertyLinks": {
-    "id": [],
-    "name": [],
-    "principal_id": [],
-    "principal_type": [],
-    "role_definition_id": [],
-    "role_definition_name": [],
-    "scope": [],
-    "skip_service_principal_aad_check": [],
+    "id": [
+      {
+        "prop": "RoleAssignment:id"
+      }
+    ],
+    "name": [
+      {
+        "prop": "RoleAssignment:name"
+      }
+    ],
+    "principal_id": [
+      {
+        "prop": "RoleAssignment:properties.principalId"
+      }
+    ],
+    "principal_type": [
+      {
+        "prop": "RoleAssignment:properties.principalType"
+      }
+    ],
+    "role_definition_id": [
+      {
+        "prop": "RoleAssignment:properties.roleDefinitionId"
+      }
+    ],
+    "role_definition_name": [
+      {
+        "prop": "RoleAssignment:properties.roleDefinitionId"
+      }
+    ],
+    "scope": [
+      {
+        "prop": "RoleAssignment:properties.scope"
+      }
+    ],
+    "skip_service_principal_aad_check": [
+      {
+        "prop": "RoleAssignment:properties.principalType"
+      }
+    ],
     "timeouts.create": [],
     "timeouts.delete": [],
     "timeouts.read": [],

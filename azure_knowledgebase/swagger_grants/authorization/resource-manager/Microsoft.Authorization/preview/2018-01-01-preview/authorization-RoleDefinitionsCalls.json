@@ -1,0 +1,9 @@
+{
+    "RoleDefinition": {
+        "Properties": {
+            "name": "in favor of properties.roleName",
+            "type": "grant",
+            "properties.type": "grant"
+        }
+    }
+}
